@@ -1,11 +1,11 @@
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 import Header from "../components/Header";
 import pic1 from "../assets/1.png";
 import { Check } from "lucide-react";
 
 const LandingLayout = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#05070A]">
       {/* Header ...  */}
       <Header />
 
