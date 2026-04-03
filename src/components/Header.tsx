@@ -1,26 +1,38 @@
 const Header = () => {
   return (
-    <>
-      <div className="flex justify-between py-3 px-9 border-b border-[rgba(80,72,229,0.10)]">
-        <div>
-          <button className="text-[#CEBDFF] text-xl tracking-[-1px] font-bold leading-7 cursor-pointer">
-            Deepterview
-          </button>
-        </div>
-        <div className="flex gap-8 text-sm font-medium leading-5 tracking-[0.35px]">
-          <button className="text-[#CEBDFF] cursor-pointer">Overview</button>
-          <button className="text-[#94A3B8] cursor-pointer">Resources</button>
-        </div>
-        <div className="flex gap-6">
-          <button className="text-white text-sm font-medium leading-5 cursor-pointer">
-            Login
-          </button>
-          <button className="text-white text-sm font-medium px-2 py-2 bg-[rgba(155, 127, 237, 0.80)] rounded-2xl border  cursor-pointer">
+    <div className="flex items-center justify-between px-10 py-4 border-b border-white/10">
+      {/* Logo */}
+      <button className="text-[#CEBDFF] text-xl font-bold tracking-tight">
+        Deepterview
+      </button>
+
+      {/* Menu */}
+      <div className="flex items-center gap-8 text-sm font-medium">
+        <button className="text-[#CEBDFF] hover:text-white transition">
+          Overview
+        </button>
+        <button className="text-[#94A3B8] hover:text-white transition">
+          Resources
+        </button>
+      </div>
+
+      {/* Actions */}
+      <div className="flex items-center gap-6">
+        <button className="text-white text-sm hover:opacity-80 transition">
+          Login
+        </button>
+
+        {/* Sign Up */}
+        <div className="relative">
+          {/* Glow */}
+          <div className="absolute inset-0 rounded-full bg-purple-500 blur-xl opacity-40"></div>
+
+          <button className="relative z-10 px-4 py-2 text-sm font-medium text-[#2E1065] rounded-full bg-linear-to-r from-[#a78bfa] to-[#7c3aed] hover:opacity-90 transition cursor-pointer">
             Sign Up
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
