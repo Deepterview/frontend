@@ -1,38 +1,53 @@
 const Header = () => {
   return (
-    <div className="flex items-center justify-between px-10 py-4 border-b border-white/10">
-      {/* Logo */}
-      <button className="text-[#CEBDFF] text-xl font-bold tracking-tight">
-        Deepterview
-      </button>
+    <header className="sticky top-0 z-50 h-16 w-full shrink-0 border-b border-[rgba(206,189,255,0.1)] bg-[rgba(2,6,23,0.6)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-[32px]">
+      <div className="relative mx-auto flex h-full max-w-[1536px] items-center justify-between px-6 sm:px-8">
+        <div className="shadow-[0_0_8px_0_rgba(206,189,255,0.4)]">
+          <span className="text-xl font-bold tracking-tight text-[#cebdff]">
+            Deepterview
+          </span>
+        </div>
 
-      {/* Menu */}
-      <div className="flex items-center gap-8 text-sm font-medium">
-        <button className="text-[#CEBDFF] hover:text-white transition">
-          Overview
-        </button>
-        <button className="text-[#94A3B8] hover:text-white transition">
-          Resources
-        </button>
-      </div>
+        <nav
+          className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 md:flex"
+          aria-label="Primary"
+        >
+          <a
+            href="#overview"
+            className="border-b-2 border-[#cebdff] pb-1.5 text-sm font-medium tracking-wide text-[#cebdff]"
+          >
+            Overview
+          </a>
+          <a
+            href="#resources"
+            className="text-sm font-medium tracking-wide text-[#94a3b8] transition hover:text-white"
+          >
+            Resources
+          </a>
+        </nav>
 
-      {/* Actions */}
-      <div className="flex items-center gap-6">
-        <button className="text-white text-sm hover:opacity-80 transition">
-          Login
-        </button>
-
-        {/* Sign Up */}
-        <div className="relative">
-          {/* Glow */}
-          <div className="absolute inset-0 rounded-full bg-purple-500 blur-xl opacity-40"></div>
-
-          <button className="relative z-10 px-4 py-2 text-sm font-medium text-[#2E1065] rounded-full bg-linear-to-r from-[#a78bfa] to-[#7c3aed] hover:opacity-90 transition cursor-pointer">
-            Sign Up
+        <div className="flex items-center gap-6">
+          <button
+            type="button"
+            className="text-sm font-medium text-white transition hover:opacity-80"
+          >
+            Login
           </button>
+          <div className="relative">
+            <div
+              className="absolute inset-0 rounded-full bg-purple-500 opacity-40 blur-xl"
+              aria-hidden
+            />
+            <button
+              type="button"
+              className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90"
+            >
+              Sign Up
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
