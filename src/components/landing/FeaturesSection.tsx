@@ -9,7 +9,6 @@ import personaAvatar2 from "../../assets/personaAvatar2.jpeg";
 const FeaturesSection = () => {
   return (
     <section
-      id="resources"
       className="flex w-full max-w-[1280px] flex-col gap-12 px-6 pt-8"
       aria-labelledby="features-heading"
     >

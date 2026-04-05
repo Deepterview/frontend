@@ -19,6 +19,7 @@ const LandingLayout = () => {
         />
         <HeroSection />
         <MockUiSection />
+        <div id="resources" />
         <FeaturesSection />
         <CtaSection />
       </main>
