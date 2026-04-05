@@ -40,7 +40,7 @@ const MockUiSection = () => {
                 REC
               </span>
             </div>
-            <div className="rounded-full bg-[rgba(206,189,255,0.1)] px-3 py-1">
+            <div className="rounded-full bg-[rgba(206,189,255,0.1)] px-3 py-1 flex justify-center">
               <span className="text-[10px] font-bold uppercase text-[#cebdff]">
                 00:14:52
               </span>
@@ -81,8 +81,25 @@ const MockUiSection = () => {
                   className="h-3 w-2 object-contain"
                 />
               </div>
-              <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-[rgba(255,255,255,0.05)]">
-                <div className="absolute inset-y-0 left-0 w-2/3 rounded-full bg-linear-to-r from-[#cebdff] to-[#7bd0ff]" />
+              <div className="relative h-2 min-h-2 flex-1 overflow-hidden rounded-full bg-[rgba(255,255,255,0.05)]">
+                <div
+                  className="mock-void-fill absolute inset-y-0 left-0 overflow-hidden rounded-full"
+                  style={{
+                    width: "66%",
+                    background:
+                      "linear-gradient(90deg, #c4b5fd, #a78bfa, #7bd0ff, #22d3ee, #a5b4fc, #c4b5fd)",
+                    backgroundSize: "220% 100%",
+                    animation:
+                      "mock-void-gradient 3s linear infinite, mock-void-width 3.8s ease-in-out infinite",
+                  }}
+                >
+                  <div
+                    className="mock-void-sheen pointer-events-none absolute inset-y-0 w-1/3 bg-linear-to-r from-transparent via-white/40 to-transparent"
+                    style={{
+                      animation: "mock-void-sheen 2.2s ease-in-out infinite",
+                    }}
+                  />
+                </div>
               </div>
               <span className="font-mono text-xs uppercase tracking-tight text-[#94a3b8]">
                 Analyzing...
@@ -116,11 +133,52 @@ const MockUiSection = () => {
                 Emotion Analysis
               </p>
               <div className="flex h-32 items-end justify-center gap-2">
-                <div className="h-16 flex-1 rounded-t-sm bg-[rgba(206,189,255,0.2)]" />
-                <div className="h-24 flex-1 rounded-t-sm bg-[rgba(206,189,255,0.4)]" />
-                <div className="h-full flex-1 rounded-t-sm bg-[#cebdff]" />
-                <div className="h-[85px] flex-1 rounded-t-sm bg-[rgba(123,208,255,0.4)]" />
-                <div className="h-[43px] flex-1 rounded-t-sm bg-[rgba(123,208,255,0.2)]" />
+                {(
+                  [
+                    {
+                      h: "h-16",
+                      bg: "bg-[rgba(206,189,255,0.2)]",
+                      delay: "0ms",
+                      duration: "4s",
+                    },
+                    {
+                      h: "h-24",
+                      bg: "bg-[rgba(206,189,255,0.4)]",
+                      delay: "180ms",
+                      duration: "4s",
+                    },
+                    {
+                      h: "h-full",
+                      bg: "bg-[#cebdff]",
+                      delay: "90ms",
+                      duration: "4s",
+                    },
+                    {
+                      h: "h-[85px]",
+                      bg: "bg-[rgba(123,208,255,0.4)]",
+                      delay: "260ms",
+                      duration: "4s",
+                    },
+                    {
+                      h: "h-[43px]",
+                      bg: "bg-[rgba(123,208,255,0.2)]",
+                      delay: "320ms",
+                      duration: "4s",
+                    },
+                  ] as const
+                ).map((bar, i) => (
+                  <div
+                    key={i}
+                    className={`mock-emotion-bar ${bar.h} flex-1 origin-bottom rounded-t-sm ${bar.bg}`}
+                    style={{
+                      animationName: "mock-emotion-wave",
+                      animationDuration: bar.duration,
+                      animationTimingFunction: "ease-in-out",
+                      animationIterationCount: "infinite",
+                      animationDelay: bar.delay,
+                    }}
+                  />
+                ))}
               </div>
               <div className="mt-4 border-t border-[rgba(255,255,255,0.05)] pt-4 text-center">
                 <p className="text-[10px] uppercase text-[#64748b]">

@@ -1,1 +1,64 @@
 @import "tailwindcss";
+
+@keyframes mock-void-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes mock-void-width {
+  0%,
+  100% {
+    width: 30%;
+  }
+  50% {
+    width: 100%;
+  }
+}
+
+@keyframes mock-void-sheen {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(120%);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+@keyframes mock-emotion-wave {
+  0%,
+  100% {
+    transform: scaleY(0.88);
+  }
+  50% {
+    transform: scaleY(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mock-void-fill,
+  .mock-void-sheen,
+  .mock-emotion-bar {
+    animation: none !important;
+  }
+
+  .mock-void-fill {
+    width: 66% !important;
+  }
+
+  .mock-emotion-bar {
+    transform: scaleY(1) !important;
+  }
+}
