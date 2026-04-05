@@ -1,11 +1,26 @@
+import { useState } from "react";
+
+type NavKey = "overview" | "resources";
+
 const Header = () => {
+  const [activeNav, setActiveNav] = useState<NavKey>("overview");
+
+  const navLinkClass = (key: NavKey) => {
+    const base =
+      "border-b-2 pb-1.5 text-sm font-medium tracking-wide transition-colors";
+    if (activeNav === key) {
+      return `${base} border-[#cebdff] text-[#cebdff]`;
+    }
+    return `${base} border-transparent text-[#94a3b8] hover:text-white`;
+  };
+
   return (
     <header className="sticky top-0 z-50 h-16 w-full shrink-0 border-b border-[rgba(206,189,255,0.1)] bg-[rgba(2,6,23,0.6)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-[32px]">
       <div className="relative mx-auto flex h-full max-w-[1536px] items-center justify-between px-6 sm:px-8">
         <div className="shadow-[0_0_8px_0_rgba(206,189,255,0.4)]">
-          <span className="text-xl font-bold tracking-tight text-[#cebdff]">
+          <button className="text-xl font-bold tracking-tight text-[#cebdff] cursor-pointer">
             Deepterview
-          </span>
+          </button>
         </div>
 
         <nav
@@ -14,13 +29,15 @@ const Header = () => {
         >
           <a
             href="#overview"
-            className="border-b-2 border-[#cebdff] pb-1.5 text-sm font-medium tracking-wide text-[#cebdff]"
+            className={navLinkClass("overview")}
+            onClick={() => setActiveNav("overview")}
           >
             Overview
           </a>
           <a
             href="#resources"
-            className="text-sm font-medium tracking-wide text-[#94a3b8] transition hover:text-white"
+            className={navLinkClass("resources")}
+            onClick={() => setActiveNav("resources")}
           >
             Resources
           </a>
@@ -29,7 +46,7 @@ const Header = () => {
         <div className="flex items-center gap-6">
           <button
             type="button"
-            className="text-sm font-medium text-white transition hover:opacity-80"
+            className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
           >
             Login
           </button>
@@ -40,7 +57,7 @@ const Header = () => {
             />
             <button
               type="button"
-              className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90"
+              className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
             >
               Sign Up
             </button>

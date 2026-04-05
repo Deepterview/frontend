@@ -33,13 +33,13 @@ const HeroSection = () => {
       <div className="flex w-full flex-col items-center justify-center gap-4 pt-4 sm:flex-row sm:gap-6">
         <button
           type="button"
-          className="w-full rounded-full bg-[#cebdff] px-10 py-5 text-base font-bold text-[#381385] transition hover:opacity-90 sm:w-auto"
+          className="w-full rounded-full bg-[#cebdff] px-10 py-5 text-base font-bold text-[#381385] transition hover:opacity-90 sm:w-auto cursor-pointer"
         >
           Elevate Your Career
         </button>
         <button
           type="button"
-          className="w-full rounded-full border border-[rgba(255,255,255,0.05)] bg-[#191c1f] px-10 py-5 text-base font-medium text-[#e1e2e7] transition hover:border-white/10 sm:w-auto"
+          className="w-full rounded-full border border-[rgba(255,255,255,0.05)] bg-[#191c1f] px-10 py-5 text-base font-medium text-[#e1e2e7] transition hover:bg-[#cebdff]/10 sm:w-auto cursor-pointer"
         >
           Watch Simulation
         </button>

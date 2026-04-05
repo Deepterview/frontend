@@ -27,7 +27,7 @@ const CtaSection = () => {
         </p>
         <button
           type="button"
-          className="mt-8 rounded-full bg-[rgba(206,189,255,0.8)] px-12 py-5 text-lg font-bold text-[#381385] transition hover:opacity-90"
+          className="mt-8 rounded-full bg-[rgba(206,189,255,0.8)] px-12 py-5 text-lg font-bold text-[#381385] transition hover:opacity-90 cursor-pointer"
         >
           Start Free Session
         </button>

@@ -69,15 +69,15 @@ const FeaturesSection = () => {
               PE partners to collaborative technical leads.
             </p>
           </div>
-          <div className="mt-8 overflow-hidden rounded-[32px] opacity-40">
+          <div className="mt-8 overflow-hidden rounded-[32px] border border-[rgba(255,255,255,0.06)] bg-[#0c0e12]">
             <div className="relative aspect-[518/96] w-full overflow-hidden rounded-[32px]">
               <img
                 src={keyboardScene}
                 alt=""
-                className="absolute inset-0 h-[540%] w-full max-w-none object-cover object-top"
+                className="absolute inset-0 size-full object-cover object-center"
               />
               <div
-                className="pointer-events-none absolute inset-0 rounded-[32px] bg-white mix-blend-saturation"
+                className="pointer-events-none absolute inset-0 rounded-[32px] bg-linear-to-t from-[#05070a]/90 via-transparent to-transparent"
                 aria-hidden
               />
             </div>
