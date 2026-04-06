@@ -1,5 +1,11 @@
+import AuthLayout from "../layouts/AuthLayout";
+
 const SignIn = () => {
-  return <div>SignIn</div>;
+  return (
+    <div>
+      <AuthLayout />
+    </div>
+  );
 };
 
 export default SignIn;

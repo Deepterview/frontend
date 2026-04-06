@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type NavKey = "overview" | "resources";
 
 const Header = () => {
   const [activeNav, setActiveNav] = useState<NavKey>("overview");
+  const navigate = useNavigate();
 
   const navLinkClass = (key: NavKey) => {
     const base =
@@ -47,6 +49,7 @@ const Header = () => {
           <button
             type="button"
             className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
+            onClick={() => navigate("/signin")}
           >
             Login
           </button>
