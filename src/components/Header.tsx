@@ -70,6 +70,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
             <button
               type="button"
               className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
+              onClick={() => navigate("/signin")}
             >
               Sign Up
             </button>

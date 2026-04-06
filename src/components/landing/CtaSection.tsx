@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 const CtaSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section
       className="relative w-full max-w-[896px] px-6 pt-8"
@@ -26,6 +30,7 @@ const CtaSection = () => {
           before the big day.
         </p>
         <button
+          onClick={() => navigate("/signin")}
           type="button"
           className="mt-8 rounded-full bg-[rgba(206,189,255,0.8)] px-12 py-5 text-lg font-bold text-[#381385] transition hover:opacity-90 cursor-pointer"
         >
