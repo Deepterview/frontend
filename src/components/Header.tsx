@@ -1,10 +1,13 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-type NavKey = "overview" | "resources";
+export type NavKey = "overview" | "resources";
 
-const Header = () => {
-  const [activeNav, setActiveNav] = useState<NavKey>("overview");
+type HeaderProps = {
+  activeNav: NavKey;
+  onNavigateSection: (key: NavKey) => void;
+};
+
+const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
   const navigate = useNavigate();
 
   const navLinkClass = (key: NavKey) => {
@@ -32,14 +35,20 @@ const Header = () => {
           <a
             href="#overview"
             className={navLinkClass("overview")}
-            onClick={() => setActiveNav("overview")}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigateSection("overview");
+            }}
           >
             Overview
           </a>
           <a
             href="#resources"
             className={navLinkClass("resources")}
-            onClick={() => setActiveNav("resources")}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigateSection("resources");
+            }}
           >
             Resources
           </a>
