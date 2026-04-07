@@ -1,16 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import type { NavKey } from "../types/Landing";
-import { useState } from "react";
-import type { View } from "../types";
+import { useLocation } from "react-router-dom";
 
 type HeaderProps = {
-  activeNav: NavKey;
-  onNavigateSection: (key: NavKey) => void;
+  activeNav?: NavKey;
+  onNavigateSection?: (key: NavKey) => void;
 };
 
 const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
-  const [view, setView] = useState<View>("landing");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isLandingPage = location.pathname === "/";
 
   const navLinkClass = (key: NavKey) => {
     const base =
@@ -30,33 +31,34 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
           </button>
         </div>
 
-        <nav
-          className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 md:flex"
-          aria-label="Primary"
-        >
-          <a
-            href="#overview"
-            className={navLinkClass("overview")}
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigateSection("overview");
-            }}
+        {isLandingPage && (
+          <nav
+            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 md:flex"
+            aria-label="Primary"
           >
-            Overview
-          </a>
-          <a
-            href="#resources"
-            className={navLinkClass("resources")}
-            onClick={(e) => {
-              e.preventDefault();
+            <a
+              href="#overview"
+              className={navLinkClass("overview")}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateSection?.("overview");
+              }}
+            >
+              Overview
+            </a>
+            <a
+              href="#resources"
+              className={navLinkClass("resources")}
+              onClick={(e) => {
+                e.preventDefault();
 
-              onNavigateSection("resources");
-            }}
-          >
-            Resources
-          </a>
-        </nav>
-
+                onNavigateSection?.("resources");
+              }}
+            >
+              Resources
+            </a>
+          </nav>
+        )}
         <div className="flex items-center gap-6">
           <button
             type="button"
