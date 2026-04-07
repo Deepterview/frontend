@@ -1,5 +1,11 @@
+import Header from "../components/Header";
+
 const AuthLayout = () => {
-  return <div>AuthLayout</div>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 };
 
 export default AuthLayout;

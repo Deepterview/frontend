@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-
-export type NavKey = "overview" | "resources";
+import type { NavKey } from "../types/Landing";
+import { useState } from "react";
+import type { View } from "../types";
 
 type HeaderProps = {
   activeNav: NavKey;
@@ -8,6 +9,7 @@ type HeaderProps = {
 };
 
 const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
+  const [view, setView] = useState<View>("landing");
   const navigate = useNavigate();
 
   const navLinkClass = (key: NavKey) => {
@@ -47,6 +49,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
             className={navLinkClass("resources")}
             onClick={(e) => {
               e.preventDefault();
+
               onNavigateSection("resources");
             }}
           >

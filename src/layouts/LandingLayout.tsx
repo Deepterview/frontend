@@ -1,68 +1,65 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import Header, { type NavKey } from "../components/Header";
+import { useState, useEffect } from "react";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 import HeroSection from "../components/landing/HeroSection";
 import MockUiSection from "../components/landing/MockUiSection";
 import FeaturesSection from "../components/landing/FeaturesSection";
 import CtaSection from "../components/landing/CtaSection";
-
-const HEADER_OFFSET_PX = 96;
-/** Ignore scroll-spy right after a nav click so it doesn't overwrite state mid–smooth-scroll. */
-const SCROLL_SPY_LOCK_MS = 900;
+import type { NavKey } from "../types/Landing";
+import { useNavigate } from "react-router-dom";
 
 const LandingLayout = () => {
   const [activeNav, setActiveNav] = useState<NavKey>("overview");
-  const scrollSpyLockUntilRef = useRef(0);
-  const syncActiveNavRef = useRef<() => void>(() => {});
-
-  const navigateSection = useCallback((key: NavKey) => {
-    scrollSpyLockUntilRef.current = Date.now() + SCROLL_SPY_LOCK_MS;
+  const navigate = useNavigate();
+  const handleSelectNav = (key: NavKey) => {
     setActiveNav(key);
-    const id = key === "overview" ? "overview" : "resources";
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", `#${id}`);
-
-    window.setTimeout(() => {
-      scrollSpyLockUntilRef.current = 0;
-      syncActiveNavRef.current();
-    }, SCROLL_SPY_LOCK_MS);
-  }, []);
+    document.getElementById(key)?.scrollIntoView({
+      behavior: "smooth",
+    });
+    window.history.pushState(null, "", `#${key}`);
+    navigate(`#${key}`);
+  };
 
   useEffect(() => {
-    const resourcesEl = document.getElementById("resources");
-    if (!resourcesEl) return;
+    const sections: NavKey[] = ["overview", "resources"];
 
-    const updateFromScroll = () => {
-      if (Date.now() < scrollSpyLockUntilRef.current) return;
-      const scrollTop =
-        window.scrollY || document.documentElement.scrollTop || 0;
-      if (scrollTop < 12) {
-        setActiveNav("overview");
-        return;
-      }
-      const top = resourcesEl.getBoundingClientRect().top;
-      setActiveNav(top <= HEADER_OFFSET_PX ? "resources" : "overview");
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const key = entry.target.id as NavKey;
 
-    syncActiveNavRef.current = updateFromScroll;
+            // update state
+            setActiveNav(key);
 
-    updateFromScroll();
-    window.addEventListener("scroll", updateFromScroll, { passive: true });
-    window.addEventListener("resize", updateFromScroll);
-    window.addEventListener("scrollend", updateFromScroll);
+            // update URL (không reload)
+            navigate(`#${key}`);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-30% 0px -60% 0px", // 👈 tinh chỉnh vùng trigger
+        threshold: 0,
+      },
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
 
     return () => {
-      window.removeEventListener("scroll", updateFromScroll);
-      window.removeEventListener("resize", updateFromScroll);
-      window.removeEventListener("scrollend", updateFromScroll);
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
+      });
     };
   }, []);
 
   return (
     <div className="min-h-screen bg-[#05070a] text-white">
-      <Header activeNav={activeNav} onNavigateSection={navigateSection} />
+      <Header activeNav={activeNav} onNavigateSection={handleSelectNav} />
       <main className="relative mx-auto flex w-full max-w-[1408px] flex-col items-center gap-16 overflow-x-hidden pb-24 pt-16 sm:gap-20 sm:pt-20 md:gap-24 md:pb-32">
         <div
           className="pointer-events-none absolute right-0 top-[18%] h-96 w-96 rounded-full bg-[rgba(123,208,255,0.05)] blur-[50px]"
