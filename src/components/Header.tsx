@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { NavKey } from "../types/Landing";
 import { useLocation } from "react-router-dom";
+import { Bell, UserCircle } from "lucide-react";
 
 type HeaderProps = {
   activeNav?: NavKey;
@@ -12,6 +13,8 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
   const location = useLocation();
 
   const isLandingPage = location.pathname === "/";
+  const isSignInPage = location.pathname === "/signin";
+  const isDashBoardPage = location.pathname === "/dashboard";
 
   const navLinkClass = (key: NavKey) => {
     const base =
@@ -26,7 +29,10 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
     <header className="sticky top-0 z-50 h-16 w-full shrink-0 border-b border-[rgba(206,189,255,0.1)] bg-[rgba(2,6,23,0.6)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-[32px]">
       <div className="relative mx-auto flex h-full max-w-[1536px] items-center justify-between px-6 sm:px-8">
         <div className="shadow-[0_0_8px_0_rgba(206,189,255,0.4)]">
-          <button className="text-xl font-bold tracking-tight text-[#cebdff] cursor-pointer">
+          <button
+            className="text-xl font-bold tracking-tight text-[#cebdff] cursor-pointer"
+            onClick={() => navigate("/")}
+          >
             Deepterview
           </button>
         </div>
@@ -59,28 +65,42 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
             </a>
           </nav>
         )}
-        <div className="flex items-center gap-6">
-          <button
-            type="button"
-            className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
-            onClick={() => navigate("/signin")}
-          >
-            Login
-          </button>
-          <div className="relative">
-            <div
-              className="absolute inset-0 rounded-full bg-purple-500 opacity-40 blur-xl"
-              aria-hidden
-            />
+        {(isLandingPage || isSignInPage) && (
+          <div className="flex items-center gap-6">
             <button
               type="button"
-              className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
+              className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
               onClick={() => navigate("/signin")}
             >
-              Sign Up
+              Login
+            </button>
+            <div className="relative">
+              <div
+                className="absolute inset-0 rounded-full bg-purple-500 opacity-40 blur-xl"
+                aria-hidden
+              />
+              <button
+                type="button"
+                className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
+                onClick={() => navigate("/signin")}
+              >
+                Sign Up
+              </button>
+            </div>
+          </div>
+        )}
+        {isDashBoardPage && (
+          <div className="flex items-center gap-4">
+            <button className="relative p-2 rounded-full hover:bg-white/10 transition cursor-pointer">
+              <Bell className="text-[#94A3B8] w-5 h-5" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-purple-400 rounded-full" />
+            </button>
+
+            <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(155,127,237,0.15)] hover:bg-[rgba(155,127,237,0.25)] transition cursor-pointer">
+              <UserCircle className="text-[#9B7FED] w-6 h-6" strokeWidth={2} />
             </button>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );
