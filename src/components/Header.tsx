@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import type { NavKey } from "../types/Landing";
 import { useLocation } from "react-router-dom";
-import { Bell, UserCircle } from "lucide-react";
+import { Bell, LogOut, User, UserCircle } from "lucide-react";
+import { useState } from "react";
 
 type HeaderProps = {
   activeNav?: NavKey;
@@ -15,6 +16,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
   const isLandingPage = location.pathname === "/";
   const isSignInPage = location.pathname === "/signin";
   const isDashBoardPage = location.pathname === "/dashboard";
+  const [isOpen, setIsOpen] = useState(false);
 
   const navLinkClass = (key: NavKey) => {
     const base =
@@ -96,9 +98,44 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
               <span className="absolute top-1 right-1 w-2 h-2 bg-purple-400 rounded-full" />
             </button>
 
-            <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(155,127,237,0.15)] hover:bg-[rgba(155,127,237,0.25)] transition cursor-pointer">
-              <UserCircle className="text-[#9B7FED] w-6 h-6" strokeWidth={2} />
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setIsOpen((prev) => !prev)}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(155,127,237,0.15)] hover:bg-[rgba(155,127,237,0.25)] transition cursor-pointer"
+              >
+                <UserCircle
+                  className="text-[#9B7FED] w-6 h-6"
+                  strokeWidth={2}
+                />
+              </button>
+
+              {isOpen && (
+                <div className="absolute right-0 mt-2 w-40 rounded-xl bg-[rgba(15,23,42,0.95)] border border-white/10 shadow-lg backdrop-blur-md overflow-hidden">
+                  <button
+                    onClick={() => {
+                      navigate("/my-info");
+                      setIsOpen(false);
+                    }}
+                    className="flex items-center gap-2 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition cursor-pointer"
+                  >
+                    <User className="w-4 h-4" />
+                    My Info
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      // TODO: logout logic here
+                      console.log("logout");
+                      setIsOpen(false);
+                    }}
+                    className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-400 hover:bg-white/10 transition cursor-pointer"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
