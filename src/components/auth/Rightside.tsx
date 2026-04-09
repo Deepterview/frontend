@@ -50,7 +50,7 @@ const Rightside = () => {
               <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
               <input
                 type="email"
-                placeholder="name@company.com"
+                placeholder="name@gmail.com"
                 className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
               />
             </div>
@@ -97,7 +97,7 @@ const Rightside = () => {
             </label>
           </div>
 
-          <button className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group">
+          <button className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer">
             Sign in
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
