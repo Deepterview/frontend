@@ -29,7 +29,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
 
   return (
     <header className="sticky top-0 z-50 h-16 w-full shrink-0 border-b border-[rgba(206,189,255,0.1)] bg-[rgba(2,6,23,0.6)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-[32px]">
-      <div className="relative mx-auto flex h-full max-w-[1536px] items-center justify-between px-6 sm:px-8">
+      <div className="relative flex h-full w-full items-center justify-between px-6 sm:px-8">
         <div className="shadow-[0_0_8px_0_rgba(206,189,255,0.4)]">
           <button
             className="text-xl font-bold tracking-tight text-[#cebdff] cursor-pointer"
@@ -113,7 +113,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                 <div className="absolute right-0 mt-2 w-40 rounded-xl bg-[rgba(15,23,42,0.95)] border border-white/10 shadow-lg backdrop-blur-md overflow-hidden">
                   <button
                     onClick={() => {
-                      navigate("/my-info");
+                      navigate("/dashboard/my-info");
                       setIsOpen(false);
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition cursor-pointer"
