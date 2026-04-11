@@ -3,14 +3,24 @@ import Sidebar from "../components/dashboard/Sidebar";
 import StartSessionButton from "../components/dashboard/home/StartSessionButton";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import DocumentsCard from "../components/dashboard/home/DocumentsCard";
 
 const DashboardLayout = () => {
   return (
-    <div className="min-h-screen bg-[#05070a] text-white">
+    <motion.div
+      className="min-h-screen bg-[#05070a] text-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+    >
       <Header />
-      <main className="ml-64 flex flex-col">
+      <motion.main
+        className="ml-64 flex flex-col"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.8 }}
+      >
         {/* Sidebar (Left Navigation) */}
         <Sidebar />
 
@@ -18,8 +28,9 @@ const DashboardLayout = () => {
         <div className="mt-32 px-12 max-w-7xl w-full mx-auto flex-1">
           {/* Header Section */}
           <motion.section
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
             className="mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-[#e1e2e7] mb-4">
@@ -31,16 +42,27 @@ const DashboardLayout = () => {
           </motion.section>
 
           {/* Configuration Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 mb-10">
+          <motion.div
+            className="grid grid-cols-1 xl:grid-cols-2 gap-10 mb-10"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
             <InterviewSetupCard />
             <DocumentsCard />
-          </div>
+          </motion.div>
 
-          <StartSessionButton />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1, duration: 0.4 }}
+          >
+            <StartSessionButton />
+          </motion.div>
         </div>
-      </main>
+      </motion.main>
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 

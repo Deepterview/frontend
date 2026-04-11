@@ -1,9 +1,11 @@
 import { useState } from "react";
 import type { Auth } from "../../types";
 import { ArrowRight, Lock, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Rightside = () => {
   const [activeTab, setActiveTab] = useState<Auth>("login");
+  const navigate = useNavigate();
   return (
     <section className="w-full md:w-1/2 bg-background flex items-center justify-center p-6 md:p-12 lg:p-20 relative">
       <div className="w-full max-w-md">
@@ -97,7 +99,10 @@ const Rightside = () => {
             </label>
           </div>
 
-          <button className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer">
+          <button
+            className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"
+            onClick={() => navigate("/dashboard")}
+          >
             Sign in
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
