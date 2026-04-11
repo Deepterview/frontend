@@ -15,7 +15,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
 
   const isLandingPage = location.pathname === "/";
   const isSignInPage = location.pathname === "/signin";
-  const isDashBoardPage = location.pathname === "/dashboard";
+  const isDashBoardPage = location.pathname.startsWith("/dashboard");
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinkClass = (key: NavKey) => {
@@ -124,8 +124,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
 
                   <button
                     onClick={() => {
-                      // TODO: logout logic here
-                      console.log("logout");
+                      navigate("/signin");
                       setIsOpen(false);
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-400 hover:bg-white/10 transition cursor-pointer"
