@@ -13,9 +13,9 @@ const Sidebar = () => {
     {
       icon: History,
       label: "History",
-      link: "dashboard/history",
+      link: "/dashboard/history",
     },
-    { icon: User, label: "My Info", link: "dashboard/my-info" },
+    { icon: User, label: "My Info", link: "/dashboard/myinfo" },
   ];
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,7 +46,7 @@ const Sidebar = () => {
               key={item.label}
               onClick={() => handleClickSidebarNav(item.link)}
               whileHover={{ x: 4 }}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group w-full cursor-pointer ${
                 isNavActive
                   ? "text-[#cebdff] bg-[#cebdff]/10 border-r-2 border-[#cebdff]"
                   : "text-[#cbc3d7]/70 hover:bg-[#323539]/30"

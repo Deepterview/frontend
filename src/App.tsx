@@ -1,9 +1,11 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Landing from "./pages/Landing";
 import SignIn from "./pages/SignIn";
+import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
-import Practice from "./components/dashboard/practice/Practice";
-import DashboardLayout from "./layouts/DashboardLayout";
+import PracticeLayout from "./layouts/DashboardLayout/PracticeLayout";
+import HistoryLayout from "./layouts/DashboardLayout/HistoryLayout";
+import MyinfoLayout from "./layouts/DashboardLayout/MyinfoLayout";
 
 function App() {
   return (
@@ -14,17 +16,33 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <DashboardLayout>
-              <Dashboard />
-            </DashboardLayout>
+            <Dashboard>
+              <DashboardLayout />
+            </Dashboard>
           }
         />
         <Route
           path="/dashboard/practice"
           element={
-            <DashboardLayout>
-              <Practice />
-            </DashboardLayout>
+            <Dashboard>
+              <PracticeLayout />
+            </Dashboard>
+          }
+        />
+        <Route
+          path="/dashboard/history"
+          element={
+            <Dashboard>
+              <HistoryLayout />
+            </Dashboard>
+          }
+        />
+        <Route
+          path="/dashboard/myinfo"
+          element={
+            <Dashboard>
+              <MyinfoLayout />
+            </Dashboard>
           }
         />
       </Routes>

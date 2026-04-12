@@ -113,7 +113,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                 <div className="absolute right-0 mt-2 w-40 rounded-xl bg-[rgba(15,23,42,0.95)] border border-white/10 shadow-lg backdrop-blur-md overflow-hidden">
                   <button
                     onClick={() => {
-                      navigate("/dashboard/my-info");
+                      navigate("/dashboard/myinfo");
                       setIsOpen(false);
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition cursor-pointer"
