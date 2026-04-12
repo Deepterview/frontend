@@ -1,5 +1,5 @@
 import { Home, BrainCircuit, History, User } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {

@@ -27,7 +27,7 @@ const Dashboard = ({ children }: DashboardLayoutProps) => {
         <Sidebar />
 
         {/* Right Main Content Area */}
-        <div className="mt-32 px-12 max-w-7xl w-full mx-auto flex-1">
+        <div className="mt-4 px-12 max-w-7xl w-full mx-auto flex-1">
           {children}
         </div>
         <Footer />
