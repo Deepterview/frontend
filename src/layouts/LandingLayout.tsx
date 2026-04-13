@@ -5,7 +5,7 @@ import HeroSection from "../components/landing/HeroSection";
 import MockUiSection from "../components/landing/MockUiSection";
 import FeaturesSection from "../components/landing/FeaturesSection";
 import CtaSection from "../components/landing/CtaSection";
-import type { NavKey } from "../types/Landing";
+import type { NavKey } from "../types/index";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 

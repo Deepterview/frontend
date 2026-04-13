@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { NavKey } from "../types/Landing";
+import type { NavKey } from "../types/index";
 import { useLocation } from "react-router-dom";
 import { Bell, LogOut, User, UserCircle } from "lucide-react";
 import { useState } from "react";

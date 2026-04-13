@@ -38,16 +38,18 @@ const Transcript = () => {
           <div className="space-y-2">
             <p className="text-sm font-bold text-[#cebdff]">Interviewer:</p>
             <p className="text-[#e1e2e7]/80 leading-relaxed italic">
-              "Can you describe a time when you had to manage a conflicting set
-              of priorities from multiple stakeholders?"
+              "Can you walk me through your design process when tackling a
+              complex navigation problem for a multi-platform application?"
             </p>
           </div>
 
           <div className="space-y-2">
             <p className="text-[#e1e2e7] leading-relaxed text-lg font-light">
-              "In my previous role as Lead Designer, I faced a situation where
-              the engineering team wanted to push a technical refactor while the
-              marketing team was insisting on a new feature launch..."
+              Absolutely. I usually start with an audit of the current
+              architecture. For multi platform, the key is defining "core
+              actions" that remain consistent while allowing the UI to adapt. In
+              my last project at Dropbox, we used a tokenized system that
+              prioritized mobile-first constraints
             </p>
           </div>
         </div>
