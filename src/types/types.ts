@@ -45,3 +45,26 @@ export interface SessionListProps {
 export interface SessionDetailHeaderProps {
   session: InterviewSession;
 }
+
+export interface UserProfile {
+  name: string;
+  email: string;
+  avatar: string;
+  bio: string;
+}
+
+export interface AccountActionsProps {
+  onSave: () => void;
+  onDelete: () => void;
+  isSaving: boolean;
+}
+
+export interface AvatarUploadProps {
+  avatar: string;
+  onAvatarChange: (newAvatar: string) => void;
+}
+
+export interface ProfileFormProps {
+  profile: UserProfile;
+  onChange: (field: keyof UserProfile, value: string) => void;
+}
