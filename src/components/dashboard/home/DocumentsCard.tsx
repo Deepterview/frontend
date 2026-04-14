@@ -13,7 +13,7 @@ const DocumentsCard = () => {
         <div className="p-2 bg-[#cebdff]/10 rounded-lg">
           <FileText size={20} className="text-[#cebdff]" />
         </div>
-        <h3 className="text-xl font-semibold tracking-tight">Documents</h3>
+        <h3 className="text-xl font-semibold tracking-tight">문서</h3>
       </div>
 
       <div className="flex-1 flex flex-col">
@@ -24,15 +24,17 @@ const DocumentsCard = () => {
           <div className="w-16 h-16 rounded-full bg-[#cebdff]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500">
             <Upload size={28} className="text-[#cebdff]" />
           </div>
-          <p className="text-[#e1e2e7] font-medium mb-1">Drop files here</p>
+          <p className="text-[#e1e2e7] font-medium mb-1">
+            여기에 파일을 드롭하세요
+          </p>
           <p className="text-[#cbc3d7]/40 text-[0.75rem] max-w-[200px]">
-            Upload resumes or job descriptions (PDF, DOCX)
+            이력서 또는 직무 설명서를 업로드하세요 (PDF, DOCX)
           </p>
         </motion.div>
 
         <div className="space-y-4">
           <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 font-semibold">
-            Uploaded Assets
+            업로드된 파일
           </p>
 
           <motion.div
@@ -46,10 +48,10 @@ const DocumentsCard = () => {
               </div>
               <div>
                 <p className="text-sm font-medium text-[#e1e2e7]">
-                  candidate_resume.docx
+                  지원자_이력서.docx
                 </p>
                 <p className="text-[0.65rem] text-[#cbc3d7]/50 mt-0.5">
-                  2.4 MB • Uploaded 2 mins ago
+                  2.4 MB • 2분 전 업로드됨
                 </p>
               </div>
             </div>

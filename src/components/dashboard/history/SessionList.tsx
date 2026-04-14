@@ -10,7 +10,7 @@ const SessionList = ({
     <div className="w-80 flex flex-col gap-4 pr-4 border-r border-[#494454]/10 h-full overflow-y-auto custom-scrollbar">
       <div className="px-2 mb-2">
         <h4 className="text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/40 font-bold">
-          Past Sessions
+          이전 세션
         </h4>
       </div>
 
@@ -34,8 +34,8 @@ const SessionList = ({
               }`}
             >
               {selectedSessionId === session.id
-                ? "Active Selection"
-                : "Archive"}
+                ? "선택됨"
+                : "아카이브"}
             </span>
             <h5 className="text-sm font-bold text-[#e1e2e7] leading-tight">
               {session.company} @ {session.role}

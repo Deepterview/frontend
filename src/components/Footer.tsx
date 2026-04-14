@@ -8,24 +8,26 @@ const Footer = () => {
               Deepterview
             </p>
             <p className="text-xs uppercase tracking-[1.2px] text-[#64748b]">
-              © 2026 Deepterview. The Midnight Observer Edition.
+              © 2026 Deepterview. 한밤의 관찰자 에디션.
             </p>
           </div>
-          <nav
-            className="flex flex-wrap gap-x-10 gap-y-2"
-            aria-label="Footer"
-          >
-            {(["Privacy", "Terms", "Support", "Contact"] as const).map(
-              (label) => (
-                <a
-                  key={label}
-                  href={`#${label.toLowerCase()}`}
-                  className="text-xs uppercase tracking-[1.2px] text-[#475569] transition hover:text-[#94a3b8]"
-                >
-                  {label}
-                </a>
-              ),
-            )}
+          <nav className="flex flex-wrap gap-x-10 gap-y-2" aria-label="Footer">
+            {(
+              [
+                { label: "개인정보 처리방침", key: "privacy" },
+                { label: "이용약관", key: "terms" },
+                { label: "고객지원", key: "support" },
+                { label: "문의하기", key: "contact" },
+              ] as const
+            ).map(({ label, key }) => (
+              <a
+                key={key}
+                href={`#${key}`}
+                className="text-xs uppercase tracking-[1.2px] text-[#475569] transition hover:text-[#94a3b8]"
+              >
+                {label}
+              </a>
+            ))}
           </nav>
         </div>
       </div>

@@ -3,20 +3,20 @@ import { motion } from "framer-motion";
 const EmotionAnalysis = () => {
   const metrics = [
     {
-      label: "Confidence",
-      value: "HIGH",
+      label: "자신감",
+      value: "높음",
       color: "text-green-400",
       bg: "bg-green-400/10",
     },
     {
-      label: "Stress Levels",
-      value: "NOMINAL",
+      label: "스트레스 수준",
+      value: "정상",
       color: "text-yellow-400",
       bg: "bg-yellow-400/10",
     },
     {
-      label: "Engagement",
-      value: "OPTIMAL",
+      label: "몰입도",
+      value: "최적",
       color: "text-[#cebdff]",
       bg: "bg-[#cebdff]/10",
     },
@@ -27,7 +27,7 @@ const EmotionAnalysis = () => {
   return (
     <div className="bg-[#191c1f] rounded-[2rem] p-8 border border-[#494454]/10 h-full">
       <h4 className="text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/60 font-bold mb-8">
-        Emotion Real-Time
+        실시간 감정 분석
       </h4>
 
       <div className="space-y-6 mb-12">

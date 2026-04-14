@@ -14,10 +14,10 @@ const DashboardLayout = () => {
         className="mb-16"
       >
         <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-[#e1e2e7] mb-4">
-          Configure Session
+          세션 설정
         </h2>
         <p className="text-[#cbc3d7] text-xl max-w-2xl leading-relaxed font-light">
-          Define the intelligence parameters for your AI-driven interview.
+          AI 기반 면접을 위한 지능형 설정을 정의하세요.
         </p>
       </motion.section>
 

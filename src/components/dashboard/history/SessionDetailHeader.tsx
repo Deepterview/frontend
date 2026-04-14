@@ -42,11 +42,11 @@ const SessionDetailHeader = ({ session }: SessionDetailHeaderProps) => {
         </div>
 
         <div>
-          <h3 className="text-2xl font-black tracking-tighter text-[#e1e2e7]">
+          <h3 className="text-2xl font-black tracking-tighter text-[#e1e2e7] whitespace-nowrap">
             {session.company} • {session.role}
           </h3>
           <p className="text-[#cbc3d7]/60 text-sm mt-1">
-            Interviewed on {session.date}
+            면접 날짜: {session.date}
           </p>
           <div className="flex items-center gap-4 mt-4">
             <div className="flex items-center gap-2 px-3 py-1.5 bg-[#cebdff]/10 rounded-full border border-[#cebdff]/20">
@@ -58,7 +58,7 @@ const SessionDetailHeader = ({ session }: SessionDetailHeaderProps) => {
             <div className="flex items-center gap-2 px-3 py-1.5 bg-[#7bd0ff]/10 rounded-full border border-[#7bd0ff]/20">
               <MessageSquare size={12} className="text-[#7bd0ff]" />
               <span className="text-[0.65rem] font-bold text-[#7bd0ff] uppercase tracking-widest">
-                {session.questionCount} Questions
+                {session.questionCount} 질문
               </span>
             </div>
           </div>
@@ -66,11 +66,11 @@ const SessionDetailHeader = ({ session }: SessionDetailHeaderProps) => {
       </div>
 
       <div className="flex items-center gap-4">
-        <button className="flex items-center gap-2 px-6 py-3 bg-[#111417] border border-[#494454]/20 text-[#e1e2e7] rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#191c1f] transition-all">
-          <Share2 size={14} /> Share Report
+        <button className="flex flex-nowrap items-center gap-2 px-6 py-3 whitespace-nowrap bg-[#111417] border border-[#494454]/20 text-[#e1e2e7] rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#191c1f] transition-all">
+          <Share2 size={14} /> 보고서 공유
         </button>
-        <button className="flex items-center gap-2 px-8 py-4 bg-[#9b7fed] text-[#31057e] rounded-full text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-[#9b7fed]/20">
-          <FileText size={14} /> View Full Analysis
+        <button className="flex flex-nowrap items-center gap-2 px-8 py-4 whitespace-nowrap bg-[#9b7fed] text-[#31057e] rounded-full text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-[#9b7fed]/20">
+          <FileText size={14} /> 전체 분석 보기
         </button>
       </div>
     </motion.div>

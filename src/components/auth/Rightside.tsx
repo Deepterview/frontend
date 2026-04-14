@@ -11,10 +11,10 @@ const Rightside = () => {
       <div className="w-full max-w-md">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-on-background mb-2">
-            Welcome Back
+            다시 오신 것을 환영합니다
           </h2>
           <p className="text-on-surface-variant/60">
-            Continue your journey to interview mastery.
+            면접 마스터를 향한 여정을 계속하세요.
           </p>
         </div>
 
@@ -28,7 +28,7 @@ const Rightside = () => {
                 : "text-on-surface-variant/60 hover:text-on-background"
             }`}
           >
-            Login
+            로그인
           </button>
           <button
             onClick={() => setActiveTab("register")}
@@ -38,7 +38,7 @@ const Rightside = () => {
                 : "text-on-surface-variant/60 hover:text-on-background"
             }`}
           >
-            Register
+            회원가입
           </button>
         </div>
 
@@ -46,7 +46,7 @@ const Rightside = () => {
         <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
           <div className="flex flex-col gap-2">
             <label className="text-[0.7rem] uppercase tracking-[0.15em] font-bold text-primary/80 ml-4">
-              Email Address
+              이메일 주소
             </label>
             <div className="relative group">
               <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
@@ -61,13 +61,13 @@ const Rightside = () => {
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center px-4">
               <label className="text-[0.7rem] uppercase tracking-[0.15em] font-bold text-primary/80">
-                Password
+                비밀번호
               </label>
               <a
                 href="#"
                 className="text-[0.7rem] uppercase tracking-[0.15em] text-on-surface-variant/40 hover:text-primary transition-colors"
               >
-                Forgot?
+                비밀번호를 잊으셨나요?
               </a>
             </div>
             <div className="relative group">
@@ -95,7 +95,7 @@ const Rightside = () => {
               htmlFor="keep-logged"
               className="text-sm text-on-surface-variant/80 cursor-pointer select-none"
             >
-              Keep me logged in
+              로그인 상태 유지
             </label>
           </div>
 
@@ -103,19 +103,19 @@ const Rightside = () => {
             className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"
             onClick={() => navigate("/dashboard")}
           >
-            Sign in
+            로그인
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </form>
 
         <div className="mt-12 text-center">
           <p className="text-sm text-on-surface-variant/50">
-            New to the platform?
+            플랫폼이 처음이신가요?
             <a
               href="#"
               className="text-primary font-semibold ml-1 hover:underline underline-offset-4 decoration-primary/30"
             >
-              Sign up for free
+              무료로 회원가입
             </a>
           </p>
         </div>

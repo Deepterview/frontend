@@ -73,7 +73,7 @@ const VideoFeed = () => {
         <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/20 backdrop-blur-md rounded-full border border-red-500/30">
           <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
           <span className="text-[0.65rem] font-bold text-red-500 uppercase tracking-widest">
-            Live Session
+            라이브 세션
           </span>
         </div>
         <div className="px-3 py-1.5 bg-black/40 backdrop-blur-md rounded-full border border-white/10">

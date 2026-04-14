@@ -5,20 +5,20 @@ const ProfileForm = ({ profile, onChange }: ProfileFormProps) => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div className="space-y-3">
         <label className="text-[0.65rem] uppercase tracking-[0.3em] text-[#cebdff] font-black ml-1">
-          Name
+          이름
         </label>
         <input
           type="text"
           value={profile.name}
           onChange={(e) => onChange("name", e.target.value)}
-          placeholder="The Midnight Observer"
+          placeholder="김동우"
           className="w-full bg-[#111417] border border-[#494454]/20 rounded-2xl py-4 px-6 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all outline-none"
         />
       </div>
 
       <div className="space-y-3">
         <label className="text-[0.65rem] uppercase tracking-[0.3em] text-[#cebdff] font-black ml-1">
-          Email
+          이메일
         </label>
         <input
           type="email"
@@ -31,12 +31,12 @@ const ProfileForm = ({ profile, onChange }: ProfileFormProps) => {
 
       <div className="col-span-1 md:col-span-2 space-y-3">
         <label className="text-[0.65rem] uppercase tracking-[0.3em] text-[#cebdff] font-black ml-1">
-          About Me
+          소개
         </label>
         <textarea
           value={profile.bio}
           onChange={(e) => onChange("bio", e.target.value)}
-          placeholder="Tell us about yourself..."
+          placeholder="자신에 대해 알려주세요..."
           rows={6}
           className="w-full bg-[#111417] border border-[#494454]/20 rounded-3xl py-4 px-6 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all outline-none resize-none"
         />

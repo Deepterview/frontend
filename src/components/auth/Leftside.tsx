@@ -9,7 +9,7 @@ const Leftside = () => {
 
       <div className="relative z-10 max-w-xl">
         <span className="text-primary text-[0.75rem] uppercase tracking-[0.2em] font-bold mb-6 block">
-          Revolutionizing Prep
+          혁신적인 면접 준비
         </span>
 
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-[1.05] text-on-background">
@@ -22,9 +22,8 @@ const Leftside = () => {
         </h1>
 
         <p className="text-lg md:text-xl text-on-surface-variant/80 mb-12 leading-relaxed font-light">
-          Harness the power of cinematic realism and generative intelligence to
-          receive real-time feedback that refines your delivery, tone, and
-          confidence.
+          시네마틱한 리얼리즘과 생성형 지능의 힘을 활용하여 전달력, 말투,
+          자신감을 다듬어주는 실시간 피드백을 받으세요.
         </p>
 
         {/* Testimonial Block */}
@@ -33,9 +32,9 @@ const Leftside = () => {
             “
           </div>
           <p className="text-on-background italic text-lg mb-6 leading-relaxed relative z-10">
-            The AI feedback was spookily accurate. It caught nuances in my tone
-            I hadn't even noticed. I landed my dream role at a Fortune 500
-            thanks to these sessions.
+            AI 피드백이 놀라울 정도로 정확했습니다. 제가 깨닫지 못한 말투의
+            뉘앙스까지 잡아내더군요. 이 세션들 덕분에 포춘 500대 기업에서 꿈꾸던
+            역할을 얻게 되었습니다.
           </p>
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest ring-2 ring-primary/20">
@@ -49,7 +48,7 @@ const Leftside = () => {
             <div>
               <p className="font-bold text-on-background">Marcus Chen</p>
               <p className="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">
-                Senior Product Lead
+                시니어 제품 리드
               </p>
             </div>
           </div>

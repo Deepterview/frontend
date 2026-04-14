@@ -30,7 +30,7 @@ const InterviewTimeline = ({ qaPairs }: InterviewTimelineProps) => {
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
                 <span className="px-3 py-1 bg-white/5 text-[#cbc3d7]/60 text-[0.6rem] font-bold uppercase rounded-full border border-white/10">
-                  Live Transcript
+                  실시간 대화록
                 </span>
                 {pair.tags?.map((tag) => (
                   <span
@@ -55,7 +55,7 @@ const InterviewTimeline = ({ qaPairs }: InterviewTimelineProps) => {
                   ) : (
                     <Sparkles size={12} />
                   )}
-                  AI Insight: {pair.aiInsight}
+                  AI 인사이트: {pair.aiInsight}
                 </div>
               )}
             </div>

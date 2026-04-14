@@ -26,10 +26,10 @@ const MockUiSection = () => {
             </div>
             <div>
               <h2 className="text-sm font-bold tracking-[-0.35px] text-[#e1e2e7]">
-                Live Interview Session
+                실시간 면접 세션
               </h2>
               <p className="text-[10px] font-normal uppercase tracking-wider text-[#64748b]">
-                Position: Senior Product Designer
+                직무: 시니어 프로덕트 디자이너
               </p>
             </div>
           </div>
@@ -37,7 +37,7 @@ const MockUiSection = () => {
             <div className="flex items-center gap-2 rounded-full bg-[rgba(239,68,68,0.1)] px-3 py-1">
               <span className="size-1.5 rounded-full bg-[#ef4444]" />
               <span className="text-[10px] font-bold uppercase text-[#f87171]">
-                REC
+                녹화 중
               </span>
             </div>
             <div className="rounded-full bg-[rgba(206,189,255,0.1)] px-3 py-1 flex justify-center">
@@ -67,8 +67,8 @@ const MockUiSection = () => {
                   />
                 </div>
                 <p className="max-w-md text-center text-lg font-medium leading-7 text-[#e2e8f0] sm:text-xl">
-                  &ldquo;How would you handle a situation where real-world data
-                  contradicts your design intuition?&rdquo;
+                  &ldquo;실제 데이터가 당신의 디자인 직관과 충돌할 때 어떻게
+                  대응하시겠습니까?&rdquo;
                 </p>
               </div>
             </div>
@@ -102,7 +102,7 @@ const MockUiSection = () => {
                 </div>
               </div>
               <span className="font-mono text-xs uppercase tracking-tight text-[#94a3b8]">
-                Analyzing...
+                분석 중...
               </span>
             </div>
           </div>
@@ -110,27 +110,27 @@ const MockUiSection = () => {
           <div className="flex flex-col gap-6 lg:col-span-4">
             <div className="rounded-[32px] border border-[rgba(255,255,255,0.05)] bg-[#191c1f] p-6">
               <p className="mb-4 text-[10px] font-bold uppercase tracking-wider text-[#64748b]">
-                Live Analysis
+                실시간 분석
               </p>
               <ul className="flex flex-col gap-4">
                 <li className="flex items-center justify-between text-sm">
-                  <span className="text-[#94a3b8]">Confidence</span>
+                  <span className="text-[#94a3b8]">자신감</span>
                   <span className="font-bold text-[#cebdff]">88%</span>
                 </li>
                 <li className="flex items-center justify-between text-sm">
-                  <span className="text-[#94a3b8]">Speech Pace</span>
-                  <span className="font-bold text-[#7bd0ff]">Optimal</span>
+                  <span className="text-[#94a3b8]">말하기 속도</span>
+                  <span className="font-bold text-[#7bd0ff]">적절함</span>
                 </li>
                 <li className="flex items-center justify-between text-sm">
-                  <span className="text-[#94a3b8]">Filler Words</span>
-                  <span className="text-[#e1e2e7]">2 (low)</span>
+                  <span className="text-[#94a3b8]">불필요한 단어</span>
+                  <span className="text-[#e1e2e7]">2개 (적음)</span>
                 </li>
               </ul>
             </div>
 
             <div className="overflow-hidden rounded-[32px] border border-[rgba(255,255,255,0.05)] bg-[#191c1f] px-6 pb-6 pt-6">
               <p className="mb-4 text-[10px] font-bold uppercase tracking-wider text-[#64748b]">
-                Emotion Analysis
+                감정 분석
               </p>
               <div className="flex h-32 items-end justify-center gap-2">
                 {(
@@ -182,7 +182,7 @@ const MockUiSection = () => {
               </div>
               <div className="mt-4 border-t border-[rgba(255,255,255,0.05)] pt-4 text-center">
                 <p className="text-[10px] uppercase text-[#64748b]">
-                  System: Stable
+                  시스템: 안정적
                 </p>
               </div>
             </div>

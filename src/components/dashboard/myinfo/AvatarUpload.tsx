@@ -49,7 +49,7 @@ const AvatarUpload = ({ avatar, onAvatarChange }: AvatarUploadProps) => {
 
       <div className="text-center">
         <h3 className="text-xl font-black text-[#e1e2e7] tracking-tight">
-          Profile Information
+          프로필 정보
         </h3>
         <div className="w-12 h-1 bg-[#cebdff] mx-auto mt-2 rounded-full opacity-50" />
       </div>

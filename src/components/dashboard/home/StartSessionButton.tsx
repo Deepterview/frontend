@@ -14,7 +14,7 @@ const StartSessionButton = () => {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-[#cebdff] to-[#7bd0ff] opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
         <div className="flex items-center gap-5 text-[#31057e] font-black text-lg tracking-[0.25em]">
-          <span>START SESSION</span>
+          <span>세션 시작하기</span>
           <ChevronRight
             size={24}
             className="group-hover:translate-x-1 transition-transform duration-300"

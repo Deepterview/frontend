@@ -7,7 +7,7 @@ import AccountActions from "../../components/dashboard/myinfo/AccountActions";
 
 const MyinfoLayout = () => {
   const [profile, setProfile] = useState<UserProfile>({
-    name: "Kim Dong ju",
+    name: "김동우",
     email: "kimdongju123@gmail.com",
     avatar: "",
     bio: "",
@@ -23,17 +23,15 @@ const MyinfoLayout = () => {
     // Simulate API call
     setTimeout(() => {
       setIsSaving(false);
-      alert("Profile updated successfully!");
+      alert("프로필이 성공적으로 업데이트되었습니다!");
     }, 1000);
   };
 
   const handleDelete = () => {
     if (
-      window.confirm(
-        "Are you sure you want to delete your account? This action cannot be undone.",
-      )
+      window.confirm("계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")
     ) {
-      alert("Account deletion requested.");
+      alert("계정 삭제가 요청되었습니다.");
     }
   };
   return (
@@ -45,10 +43,10 @@ const MyinfoLayout = () => {
         transition={{ delay: 0.6, duration: 0.6 }}
       >
         <h2 className="text-5xl font-black tracking-tighter text-[#e1e2e7] mb-4">
-          My Profile
+          내 프로필
         </h2>
         <p className="text-[#cbc3d7]/60 text-lg font-light">
-          Manage your personal information and account settings
+          개인 정보 및 계정 설정을 관리하세요
         </p>
       </motion.div>
 

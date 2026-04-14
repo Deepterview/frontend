@@ -52,7 +52,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                 onNavigateSection?.("overview");
               }}
             >
-              Overview
+              개요
             </a>
             <a
               href="#resources"
@@ -63,7 +63,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                 onNavigateSection?.("resources");
               }}
             >
-              Resources
+              리소스
             </a>
           </nav>
         )}
@@ -74,7 +74,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
               className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
               onClick={() => navigate("/signin")}
             >
-              Login
+              로그인
             </button>
             <div className="relative">
               <div
@@ -86,7 +86,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                 className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
                 onClick={() => navigate("/signin")}
               >
-                Sign Up
+                회원가입
               </button>
             </div>
           </div>
@@ -119,7 +119,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                     className="flex items-center gap-2 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition cursor-pointer"
                   >
                     <User className="w-4 h-4" />
-                    My Info
+                    내 정보
                   </button>
 
                   <button
@@ -130,7 +130,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                     className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-400 hover:bg-white/10 transition cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
-                    Logout
+                    로그아웃
                   </button>
                 </div>
               )}

@@ -29,19 +29,19 @@ const HistoryLayout = () => {
       >
         <div>
           <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#cebdff] font-black mb-2 block">
-            Archive
+            아카이브
           </span>
           <h2 className="text-5xl font-black tracking-tighter text-[#e1e2e7]">
-            Session History
+            세션 히스토리
           </h2>
         </div>
 
         <div className="flex items-center gap-4">
           <button className="flex items-center gap-3 px-5 py-3 bg-[#191c1f] border border-[#494454]/20 text-[#cbc3d7] rounded-2xl text-xs font-bold hover:border-[#cebdff]/30 transition-all">
-            <Calendar size={14} /> Last 30 Days
+            <Calendar size={14} /> 최근 30일
           </button>
           <button className="flex items-center gap-3 px-5 py-3 bg-[#191c1f] border border-[#494454]/20 text-[#cbc3d7] rounded-2xl text-xs font-bold hover:border-[#cebdff]/30 transition-all">
-            <Filter size={14} /> All Roles
+            <Filter size={14} /> 모든 직무
           </button>
         </div>
       </motion.div>

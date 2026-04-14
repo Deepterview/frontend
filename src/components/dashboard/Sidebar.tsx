@@ -4,23 +4,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const navItems = [
-    { icon: Home, label: "Home", link: "/dashboard" },
+    { icon: Home, label: "홈", link: "/dashboard" },
     {
       icon: BrainCircuit,
-      label: "Practice",
+      label: "연습",
       link: "/dashboard/practice",
     },
     {
       icon: BarChart3,
-      label: "analytics",
+      label: "분석",
       link: "/dashboard/analytics",
     },
     {
       icon: History,
-      label: "History",
+      label: "히스토리",
       link: "/dashboard/history",
     },
-    { icon: User, label: "My Info", link: "/dashboard/myinfo" },
+    { icon: User, label: "내 정보", link: "/dashboard/myinfo" },
   ];
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,10 +36,10 @@ const Sidebar = () => {
           Deepterview
         </h1>
         <p className="font-sans tracking-widest uppercase text-[0.65rem] text-[#cbc3d7]/70 mt-4">
-          The Midnight Observer
+          미드나잇 옵저버
         </p>
         <p className="font-sans text-[0.6rem] text-[#cbc3d7]/40 mt-0.5">
-          Premium AI Coach
+          프리미엄 AI 코치
         </p>
       </div>
 

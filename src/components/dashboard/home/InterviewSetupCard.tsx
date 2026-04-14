@@ -12,22 +12,20 @@ const InterviewSetupCard = () => {
         <div className="p-2 bg-[#cebdff]/10 rounded-lg">
           <Sliders size={20} className="text-[#cebdff]" />
         </div>
-        <h3 className="text-xl font-semibold tracking-tight">
-          Interview Setup
-        </h3>
+        <h3 className="text-xl font-semibold tracking-tight">면접 설정</h3>
       </div>
 
       <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
         <div>
           <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 mb-3 font-semibold">
-            Interview Scenario
+            면접 시나리오
           </label>
           <div className="relative group">
             <select className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none">
-              <option>Technical Architecture</option>
-              <option>Behavioral Leadership</option>
-              <option>Product Case Study</option>
-              <option>Frontend Engineering</option>
+              <option>기술 아키텍처</option>
+              <option>행동 리더십</option>
+              <option>제품 케이스 스터디</option>
+              <option>프론트엔드 엔지니어링</option>
             </select>
             <ChevronDown
               size={18}
@@ -39,33 +37,33 @@ const InterviewSetupCard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 mb-3 font-semibold">
-              Target Company
+              목표 기업
             </label>
             <input
               type="text"
               className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 outline-none"
-              placeholder="e.g. Google, Stripe"
+              placeholder="예: 구글, 스트라이프"
             />
           </div>
           <div>
             <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 mb-3 font-semibold">
-              Open Position
+              모집 분야
             </label>
             <input
               type="text"
               className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 outline-none"
-              placeholder="e.g. Senior Architect"
+              placeholder="예: 시니어 아키텍트"
             />
           </div>
         </div>
 
         <div>
           <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 mb-3 font-semibold">
-            Core Objective
+            핵심 목표
           </label>
           <textarea
             className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 resize-none outline-none min-h-[120px]"
-            placeholder="Describe what you want the AI to focus on during the evaluation..."
+            placeholder="평가 중에 AI가 집중했으면 하는 내용을 설명해주세요..."
           />
         </div>
       </form>

@@ -37,7 +37,7 @@ const TranscriptItem = ({ pair }: TranscriptItemProps) => {
               ) : (
                 <Sparkles size={14} />
               )}
-              AI Insight: {pair.aiInsight}
+              AI 인사이트: {pair.aiInsight}
             </div>
           )}
         </div>
