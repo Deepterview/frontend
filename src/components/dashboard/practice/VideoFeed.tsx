@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Mic, MicOff, VibrateOff, Video, VideoOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const VideoFeed = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMicOn, setIsMicOn] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function setupCamera() {
@@ -100,6 +102,9 @@ const VideoFeed = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg shadow-red-500/30"
+          onClick={() => {
+            navigate("/dashboard/analytics");
+          }}
         >
           <VibrateOff size={28} />
         </motion.button>

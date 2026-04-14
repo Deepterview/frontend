@@ -68,3 +68,15 @@ export interface ProfileFormProps {
   profile: UserProfile;
   onChange: (field: keyof UserProfile, value: string) => void;
 }
+
+export interface AnalyticsHeaderProps {
+  company: string;
+  role: string;
+  date: string;
+  duration: string;
+  score: number;
+}
+
+export interface TranscriptItemProps {
+  pair: QAPair;
+}

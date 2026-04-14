@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import PracticeLayout from "./layouts/DashboardLayout/PracticeLayout";
 import HistoryLayout from "./layouts/DashboardLayout/HistoryLayout";
 import MyinfoLayout from "./layouts/DashboardLayout/MyinfoLayout";
+import AnalyticsLayout from "./layouts/DashboardLayout/AnalyticsLayout";
 
 function App() {
   return (
@@ -26,6 +27,14 @@ function App() {
           element={
             <Dashboard>
               <PracticeLayout />
+            </Dashboard>
+          }
+        />
+        <Route
+          path="/dashboard/analytics"
+          element={
+            <Dashboard>
+              <AnalyticsLayout />
             </Dashboard>
           }
         />
