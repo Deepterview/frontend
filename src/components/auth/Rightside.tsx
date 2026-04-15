@@ -80,6 +80,23 @@ const Rightside = () => {
             </div>
           </div>
 
+          {/* when click Register button logic  */}
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center px-4">
+              <label className="text-[0.7rem] uppercase tracking-[0.15em] font-bold text-primary/80">
+                다시 비밀번호
+              </label>
+            </div>
+            <div className="relative group">
+              <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+              <input
+                type="password"
+                placeholder="••••••••"
+                className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
+              />
+            </div>
+          </div>
+
           <div className="flex items-center gap-3 px-4">
             <div className="relative flex items-center">
               <input
