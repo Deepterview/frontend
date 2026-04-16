@@ -99,24 +99,26 @@ const Rightside = () => {
               </div>
             </div>
           )}
-          <div className="flex items-center gap-3 px-4">
-            <div className="relative flex items-center">
-              <input
-                type="checkbox"
-                id="keep-logged"
-                className="peer appearance-none w-5 h-5 rounded border border-white/10 bg-surface-container-lowest checked:bg-primary-container checked:border-primary-container transition-all cursor-pointer"
-              />
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity">
-                <div className="w-2 h-2 bg-on-background rounded-full" />
+          {activeTab === "login" && (
+            <div className="flex items-center gap-3 px-4">
+              <div className="relative flex items-center">
+                <input
+                  type="checkbox"
+                  id="keep-logged"
+                  className="peer appearance-none w-5 h-5 rounded border border-white/10 bg-surface-container-lowest checked:bg-primary-container checked:border-primary-container transition-all cursor-pointer"
+                />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity">
+                  <div className="w-2 h-2 bg-on-background rounded-full" />
+                </div>
               </div>
+              <label
+                htmlFor="keep-logged"
+                className="text-sm text-on-surface-variant/80 cursor-pointer select-none"
+              >
+                로그인 상태 유지
+              </label>
             </div>
-            <label
-              htmlFor="keep-logged"
-              className="text-sm text-on-surface-variant/80 cursor-pointer select-none"
-            >
-              로그인 상태 유지
-            </label>
-          </div>
+          )}
           <button
             className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"
             onClick={() => {
@@ -132,19 +134,17 @@ const Rightside = () => {
           </button>
         </form>
 
-        {activeTab === "login" && (
-          <div className="mt-12 text-center">
-            <p className="text-sm text-on-surface-variant/50">
-              플랫폼이 처음이신가요?
-              <a
-                onClick={() => setActiveTab("register")}
-                className="text-primary font-semibold ml-1 hover:underline underline-offset-4 decoration-primary/30 cursor-pointer"
-              >
-                무료로 회원가입
-              </a>
-            </p>
-          </div>
-        )}
+        <div className="mt-12 text-center">
+          <p className="text-sm text-on-surface-variant/50">
+            플랫폼이 처음이신가요?
+            <a
+              onClick={() => setActiveTab("register")}
+              className="text-primary font-semibold ml-1 hover:underline underline-offset-4 decoration-primary/30 cursor-pointer"
+            >
+              무료로 회원가입
+            </a>
+          </p>
+        </div>
       </div>
     </section>
   );
