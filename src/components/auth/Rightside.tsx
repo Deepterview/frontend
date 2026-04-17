@@ -119,6 +119,7 @@ const Rightside = () => {
               </label>
             </div>
           )}
+          {/* logic sign in with Kakao or google */}
           <button
             className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"
             onClick={() => {
