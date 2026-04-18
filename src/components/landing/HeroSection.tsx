@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section
       className="relative flex w-full max-w-[1024px] flex-col items-center gap-8 px-6 text-center"
@@ -34,6 +37,7 @@ const HeroSection = () => {
         <button
           type="button"
           className="w-full rounded-full bg-[#cebdff] px-10 py-5 text-base font-bold text-[#381385] transition hover:opacity-90 sm:w-auto cursor-pointer"
+          onClick={() => navigate("/signin")}
         >
           커리어를 한 단계 높이세요
         </button>

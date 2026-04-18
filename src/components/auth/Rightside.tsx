@@ -136,7 +136,7 @@ const Rightside = () => {
                 {/* Google */}
                 <button
                   type="button"
-                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/5 transition border border-white/5 cursor-pointer"
+                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition border border-white/5 cursor-pointer"
                   onClick={() => {
                     // todo signin google
                     console.log("Google login");
@@ -149,7 +149,7 @@ const Rightside = () => {
                 {/* Kakao */}
                 <button
                   type="button"
-                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:opacity-90 transition cursor-pointer"
+                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition cursor-pointer"
                   onClick={() => {
                     //todo sign in kakao
                     console.log("Kakao login");
