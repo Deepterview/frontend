@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { Auth } from "../../types";
-import { ArrowRight, Lock, Mail } from "lucide-react";
+import { ArrowRight, Lock, Mail, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import iconGoogle from "../../assets/iconGoogle.svg";
 
 const Rightside = () => {
   const [activeTab, setActiveTab] = useState<Auth>("login");
@@ -33,7 +34,7 @@ const Rightside = () => {
           </button>
           <button
             onClick={() => setActiveTab("register")}
-            className={`flex-1 py-3 px-6 rounded-full font-medium transition-all duration-30 cursor-pointer ${
+            className={`flex-1 py-3 px-6 rounded-full font-medium transition-all duration-300 cursor-pointer ${
               activeTab === "register"
                 ? "bg-surface-container-high text-primary shadow-lg"
                 : "text-on-surface-variant/60 hover:text-on-background"
@@ -119,7 +120,48 @@ const Rightside = () => {
               </label>
             </div>
           )}
-          {/* logic sign in with Kakao or google */}
+          {activeTab === "login" && (
+            <>
+              {/* Divider */}
+              <div className="flex items-center gap-4 my-4">
+                <div className="flex-1 h-px bg-white/10" />
+                <span className="text-xs text-white/40 tracking-widest">
+                  OR CONTINUE WITH
+                </span>
+                <div className="flex-1 h-px bg-white/10" />
+              </div>
+
+              {/* Social Login */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Google */}
+                <button
+                  type="button"
+                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/5 transition border border-white/5 cursor-pointer"
+                  onClick={() => {
+                    // todo signin google
+                    console.log("Google login");
+                  }}
+                >
+                  <img src={iconGoogle} alt="google" className="w-5 h-5" />
+                  <span className="font-medium">Google</span>
+                </button>
+
+                {/* Kakao */}
+                <button
+                  type="button"
+                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:opacity-90 transition cursor-pointer"
+                  onClick={() => {
+                    //todo sign in kakao
+                    console.log("Kakao login");
+                  }}
+                >
+                  <MessageCircle className="w-5 h-5 text-[#FEE500]" />
+                  <span className="font-medium">KakaoTalk</span>
+                </button>
+              </div>
+            </>
+          )}
+
           <button
             className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"
             onClick={() => {
