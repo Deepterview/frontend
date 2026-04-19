@@ -46,6 +46,7 @@ const HistoryLayout = () => {
         </div>
       </motion.div>
 
+      {/* process history  */}
       <motion.div
         className="flex gap-10 flex-1 min-h-0"
         initial={{ opacity: 0 }}

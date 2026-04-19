@@ -149,7 +149,7 @@ const Rightside = () => {
                 {/* Kakao */}
                 <button
                   type="button"
-                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition cursor-pointer"
+                  className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition cursor-pointer border border-white/5"
                   onClick={() => {
                     //todo sign in kakao
                     console.log("Kakao login");
