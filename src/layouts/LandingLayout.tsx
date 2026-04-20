@@ -22,19 +22,19 @@ const LandingLayout = () => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, setData] = useState<any>(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-        const json = await res.json();
-        setData(json);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
-  }, []);
+  // const [data, setData] = useState<any>(null);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+  //       const json = await res.json();
+  //       setData(json);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     const sections: NavKey[] = ["overview", "resources"];
@@ -80,7 +80,7 @@ const LandingLayout = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <div>
+      {/* <div>
         {data ? (
           <>
             <p>ID: {data.id}</p>
@@ -90,7 +90,7 @@ const LandingLayout = () => {
         ) : (
           "Loading..."
         )}
-      </div>
+      </div> */}
       <Header activeNav={activeNav} onNavigateSection={handleSelectNav} />
       <main className="relative mx-auto flex w-full max-w-[1408px] flex-col items-center gap-16 overflow-x-hidden pb-24 pt-16 sm:gap-20 sm:pt-20 md:gap-24 md:pb-32">
         <div
