@@ -1,28 +1,22 @@
 import { useState } from "react";
 import type { Auth } from "../../types";
 import { ArrowRight, Lock, Mail, MessageCircle } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import iconGoogle from "../../assets/iconGoogle.svg";
 
 const Rightside = () => {
+  const [activeTab, setActiveTab] = useState<Auth>("login");
   const navigate = useNavigate();
-  const location = useLocation();
-  const [activeTab, setActiveTab] = useState<Auth>(
-    location.state?.tab || "login"
-  );
   const isRegister = activeTab === "register";
-
   return (
     <section className="w-full md:w-1/2 bg-background flex items-center justify-center p-6 md:p-12 lg:p-20 relative">
       <div className="w-full max-w-md">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-on-background mb-2">
-            {isRegister ? "환영합니다" : "안녕하세요!"}
+            다시 오신 것을 환영합니다
           </h2>
           <p className="text-on-surface-variant/60">
-            {isRegister
-              ? "딥터뷰와 함께 완벽한 면접을 준비해 보세요."
-              : "면접 마스터를 향한 여정을 계속하세요."}
+            면접 마스터를 향한 여정을 계속하세요.
           </p>
         </div>
 
@@ -54,7 +48,7 @@ const Rightside = () => {
         <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
           <div className="flex flex-col gap-2">
             <label className="text-[0.7rem] uppercase tracking-[0.15em] font-bold text-primary/80 ml-4">
-              이메일
+              이메일 주소
             </label>
             <div className="relative group">
               <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
@@ -75,7 +69,7 @@ const Rightside = () => {
                   href="#"
                   className="text-[0.7rem] uppercase tracking-[0.15em] text-on-surface-variant/40 hover:text-primary transition-colors"
                 >
-                  비밀번호 재설정
+                  비밀번호를 잊으셨나요?
                 </a>
               )}
             </div>
@@ -93,7 +87,7 @@ const Rightside = () => {
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center px-4">
                 <label className="text-[0.7rem] uppercase tracking-[0.15em] font-bold text-primary/80">
-                  비밀번호 확인
+                  다시 비밀번호
                 </label>
               </div>
               <div className="relative group">
@@ -122,7 +116,7 @@ const Rightside = () => {
                 htmlFor="keep-logged"
                 className="text-sm text-on-surface-variant/80 cursor-pointer select-none"
               >
-                로그인 유지
+                로그인 상태 유지
               </label>
             </div>
           )}
@@ -132,7 +126,7 @@ const Rightside = () => {
               <div className="flex items-center gap-4 my-4">
                 <div className="flex-1 h-px bg-white/10" />
                 <span className="text-xs text-white/40 tracking-widest">
-                  소셜 로그인
+                  OR CONTINUE WITH
                 </span>
                 <div className="flex-1 h-px bg-white/10" />
               </div>
@@ -162,7 +156,7 @@ const Rightside = () => {
                   }}
                 >
                   <MessageCircle className="w-5 h-5 text-[#FEE500]" />
-                  <span className="font-medium">카카오톡</span>
+                  <span className="font-medium">KakaoTalk</span>
                 </button>
               </div>
             </>
@@ -185,13 +179,12 @@ const Rightside = () => {
 
         <div className="mt-12 text-center">
           <p className="text-sm text-on-surface-variant/50">
-            {/* 조건부 렌더링: 현재 탭 상태에 따라 질문과 링크 텍스트가 바뀝니다. */}
-            {isRegister ? "이미 계정이 있으신가요?" : "플랫폼이 처음이신가요?"}
+            플랫폼이 처음이신가요?
             <a
-              onClick={() => setActiveTab(isRegister ? "login" : "register")}
+              onClick={() => setActiveTab("register")}
               className="text-primary font-semibold ml-1 hover:underline underline-offset-4 decoration-primary/30 cursor-pointer"
             >
-              {isRegister ? "로그인하기" : "회원가입"}
+              무료로 회원가입
             </a>
           </p>
         </div>

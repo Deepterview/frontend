@@ -1,7 +1,75 @@
+import { useRef, useState } from "react";
 import { FileText, Upload, X, FileCode } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
+
+// 업로드된 파일 정보
+type UploadedFile = {
+  name: string;
+  size: string;
+  time: string;
+};
 
 const DocumentsCard = () => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [file, setFile] = useState<UploadedFile | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleClickClickToUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      processFile(e.target.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const processFile = (selectedFile: File) => {
+    const sizeInBytes = selectedFile.size;
+    const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
+    const sizeString =
+      sizeInMB !== "0.00"
+        ? `${sizeInMB} MB`
+        : `${(sizeInBytes / 1024).toFixed(1)} KB`;
+
+    const now = new Date();
+    const timeString = now.toLocaleTimeString("ko-KR", {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+
+    setFile({
+      name: selectedFile.name,
+      size: sizeString,
+      time: `${timeString} 업로드됨`,
+    });
+  };
+
+  const handleDelete = () => {
+    setFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; 
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -13,53 +81,74 @@ const DocumentsCard = () => {
         <div className="p-2 bg-[#cebdff]/10 rounded-lg">
           <FileText size={20} className="text-[#cebdff]" />
         </div>
-        <h3 className="text-xl font-semibold tracking-tight">문서</h3>
+        <h3 className="text-xl font-bold tracking-tight text-white">문서</h3>
       </div>
 
       <div className="flex-1 flex flex-col">
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+          accept=".pdf,.doc,.docx" 
+        />
+
         <motion.div
+          onClick={handleClickClickToUpload}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
           whileHover={{ backgroundColor: "rgba(50, 53, 57, 0.2)" }}
-          className="border-2 border-dashed border-[#494454]/20 rounded-3xl p-10 flex flex-col items-center justify-center text-center transition-all cursor-pointer group mb-8"
+          className={`border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center text-center transition-all cursor-pointer group mb-8 ${
+            isDragging
+              ? "border-[#cebdff] bg-[#cebdff]/5" 
+              : "border-[#494454]/20"
+          }`}
         >
-          <div className="w-16 h-16 rounded-full bg-[#cebdff]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500">
+          <div className="w-16 h-16 rounded-full bg-[#cebdff]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <Upload size={28} className="text-[#cebdff]" />
           </div>
-          <p className="text-[#e1e2e7] font-medium mb-1">
-            여기에 파일을 드롭하세요
+          <p className="text-[#e1e2e7] font-bold mb-1 pointer-events-none text-sm">
+            여기에 파일을 드롭하거나 클릭하여 업로드하세요
           </p>
-          <p className="text-[#cbc3d7]/40 text-[0.75rem] max-w-[200px]">
-            이력서 또는 직무 설명서를 업로드하세요 (PDF, DOCX)
+          <p className="text-[#cbc3d7]/60 text-xs font-medium max-w-[200px] pointer-events-none">
+            이력서를 업로드하세요 (PDF, DOCX)
           </p>
         </motion.div>
 
-        <div className="space-y-4">
-          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 font-semibold">
-            업로드된 파일
-          </p>
+        {file && (
+          <div className="space-y-4">
+            <p className="text-xs tracking-widest text-[#cbc3d7]/70 font-bold">
+              업로드된 파일
+            </p>
 
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center justify-between p-4 bg-[#0c0e12] rounded-2xl border border-[#494454]/10 group hover:border-[#cebdff]/20 transition-colors"
-          >
-            <div className="flex items-center gap-4">
-              <div className="p-2.5 bg-[#7bd0ff]/10 rounded-xl">
-                <FileCode size={20} className="text-[#7bd0ff]" />
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center justify-between p-4 bg-[#0c0e12] rounded-2xl border border-[#494454]/10 group hover:border-[#cebdff]/20 transition-colors"
+            >
+              <div className="flex items-center gap-4 overflow-hidden">
+                <div className="p-2.5 bg-[#7bd0ff]/10 rounded-xl shrink-0">
+                  <FileCode size={20} className="text-[#7bd0ff]" />
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-sm font-bold text-[#e1e2e7] truncate w-40 sm:w-48">
+                    {file.name}
+                  </p>
+                  <p className="text-xs font-medium text-[#cbc3d7]/60 mt-1">
+                    {file.size} • {file.time}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-[#e1e2e7]">
-                  지원자_이력서.docx
-                </p>
-                <p className="text-[0.65rem] text-[#cbc3d7]/50 mt-0.5">
-                  2.4 MB • 2분 전 업로드됨
-                </p>
-              </div>
-            </div>
-            <button className="text-[#cbc3d7]/30 hover:text-red-400 transition-colors p-1">
-              <X size={18} />
-            </button>
-          </motion.div>
-        </div>
+              <button
+                onClick={handleDelete}
+                className="text-[#cbc3d7]/30 hover:text-red-400 transition-colors p-1 shrink-0 cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </motion.div>
+          </div>
+        )}
       </div>
     </motion.div>
   );

@@ -30,7 +30,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
   return (
     <header className="sticky top-0 z-50 h-16 w-full shrink-0 border-b border-[rgba(206,189,255,0.1)] bg-[rgba(2,6,23,0.6)] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-[32px]">
       <div className="relative flex h-full w-full items-center justify-between px-6 sm:px-8">
-        <div>
+        <div className="shadow-[0_0_8px_0_rgba(206,189,255,0.4)]">
           <button
             className="text-xl font-bold tracking-tight text-[#cebdff] cursor-pointer"
             onClick={() => navigate("/")}
@@ -72,7 +72,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
             <button
               type="button"
               className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
-              onClick={() => navigate("/signin", { state: { tab: "login" } })}
+              onClick={() => navigate("/signin")}
             >
               로그인
             </button>
@@ -84,7 +84,7 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
               <button
                 type="button"
                 className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
-                onClick={() => navigate("/signin", { state: { tab: "register" } })}
+                onClick={() => navigate("/signin")}
               >
                 회원가입
               </button>

@@ -17,7 +17,7 @@ const Sidebar = () => {
     },
     {
       icon: History,
-      label: "기록",
+      label: "히스토리",
       link: "/dashboard/history",
     },
     { icon: User, label: "내 정보", link: "/dashboard/myinfo" },
@@ -31,11 +31,14 @@ const Sidebar = () => {
 
   return (
     <aside className="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col py-8 px-4 bg-gradient-to-r from-[#191c1f] to-transparent border-r border-[#494454]/10">
-      <div className="mb-6 px-2">
+      <div className="mb-10 px-2">
         <h1 className="text-xl font-black text-[#cebdff] tracking-tighter">
           Deepterview
         </h1>
-        <p className="font-sans text-sm text-[#cbc3d7]/40 mt-6">
+        <p className="font-sans tracking-widest uppercase text-[0.65rem] text-[#cbc3d7]/70 mt-4">
+          미드나잇 옵저버
+        </p>
+        <p className="font-sans text-[0.6rem] text-[#cbc3d7]/40 mt-0.5">
           프리미엄 AI 코치
         </p>
       </div>
@@ -62,7 +65,7 @@ const Sidebar = () => {
                     : "group-hover:text-[#cebdff] transition-colors"
                 }
               />
-              <span className="font-sans tracking-widest text-sm font-bold">
+              <span className="font-sans tracking-widest uppercase text-[0.7rem] font-medium">
                 {item.label}
               </span>
             </motion.button>

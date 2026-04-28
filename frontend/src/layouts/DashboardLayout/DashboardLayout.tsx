@@ -1,0 +1,46 @@
+import { motion } from "framer-motion";
+import InterviewSetupCard from "../../components/dashboard/home/InterviewSetupCard";
+import DocumentsCard from "../../components/dashboard/home/DocumentsCard";
+import StartSessionButton from "../../components/dashboard/home/StartSessionButton";
+
+const DashboardLayout = () => {
+  return (
+    <div>
+      {/* Header Section */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+        className="mb-16"
+      >
+        <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-[#e1e2e7] mb-4">
+          세션 설정
+        </h2>
+        <p className="text-[#cbc3d7] text-xl max-w-2xl leading-relaxed font-light">
+          AI 기반 면접을 위한 지능형 설정을 정의하세요.
+        </p>
+      </motion.section>
+
+      {/* Configuration Grid */}
+      <motion.div
+        className="grid grid-cols-1 xl:grid-cols-2 gap-10 mb-10"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+      >
+        <InterviewSetupCard />
+        <DocumentsCard />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1, duration: 0.4 }}
+      >
+        <StartSessionButton />
+      </motion.div>
+    </div>
+  );
+};
+
+export default DashboardLayout;

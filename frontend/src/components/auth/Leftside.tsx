@@ -33,7 +33,7 @@ const Leftside = () => {
           </div>
           <p className="text-on-background italic text-lg mb-6 leading-relaxed relative z-10">
             AI 피드백이 놀라울 정도로 정확했습니다. 제가 깨닫지 못한 말투의
-            뉘앙스까지 잡아내더군요. 이 세션들 덕분에 기업에서 꿈꾸던
+            뉘앙스까지 잡아내더군요. 이 세션들 덕분에 포춘 500대 기업에서 꿈꾸던
             역할을 얻게 되었습니다.
           </p>
           <div className="flex items-center gap-4">
