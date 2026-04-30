@@ -11,7 +11,7 @@ type UploadedFile = {
 
 const DocumentsCard = () => {
   const [isDragging, setIsDragging] = useState(false);
-  const [file, setFile] = useState<UploadedFile | null>(null);
+  const [files, setFiles] = useState<UploadedFile[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClickClickToUpload = () => {
@@ -20,7 +20,7 @@ const DocumentsCard = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      processFile(e.target.files[0]);
+      Array.from(e.target.files).forEach(processFile);
     }
   };
 
@@ -38,7 +38,7 @@ const DocumentsCard = () => {
     e.preventDefault();
     setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      processFile(e.dataTransfer.files[0]);
+      Array.from(e.dataTransfer.files).forEach(processFile);
     }
   };
 
@@ -56,15 +56,18 @@ const DocumentsCard = () => {
       minute: "2-digit",
     });
 
-    setFile({
-      name: selectedFile.name,
-      size: sizeString,
-      time: `${timeString} 업로드됨`,
-    });
+    setFiles((prev) => [
+      ...prev,
+      {
+        name: selectedFile.name,
+        size: sizeString,
+        time: `${timeString} 업로드됨`,
+      },
+    ]);
   };
 
-  const handleDelete = () => {
-    setFile(null);
+  const handleDelete = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -91,6 +94,7 @@ const DocumentsCard = () => {
           onChange={handleFileChange}
           className="hidden"
           accept=".pdf,.doc,.docx"
+          multiple
         />
 
         <motion.div
@@ -116,37 +120,40 @@ const DocumentsCard = () => {
           </p>
         </motion.div>
 
-        {file && (
+        {files.length > 0 && (
           <div className="space-y-4">
-            <p className="text-xs tracking-widest text-[#cbc3d7]/70 font-bold">
+            <p className="text-xs tracking-widest text-[#cbc3d7]/70 font-bold mt-4">
               업로드된 파일
             </p>
 
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center justify-between p-4 bg-[#0c0e12] rounded-2xl border border-[#494454]/10 group hover:border-[#cebdff]/20 transition-colors"
-            >
-              <div className="flex items-center gap-4 overflow-hidden">
-                <div className="p-2.5 bg-[#7bd0ff]/10 rounded-xl shrink-0">
-                  <FileCode size={20} className="text-[#7bd0ff]" />
-                </div>
-                <div className="overflow-hidden">
-                  <p className="text-sm font-bold text-[#e1e2e7] truncate w-40 sm:w-48">
-                    {file.name}
-                  </p>
-                  <p className="text-xs font-medium text-[#cbc3d7]/60 mt-1">
-                    {file.size} • {file.time}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={handleDelete}
-                className="text-[#cbc3d7]/30 hover:text-red-400 transition-colors p-1 shrink-0 cursor-pointer"
+            {files.map((file, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center justify-between p-4 bg-[#0c0e12] rounded-2xl border border-[#494454]/10 group hover:border-[#cebdff]/20 transition-colors"
               >
-                <X size={18} />
-              </button>
-            </motion.div>
+                <div className="flex items-center gap-4 overflow-hidden">
+                  <div className="p-2.5 bg-[#7bd0ff]/10 rounded-xl shrink-0">
+                    <FileCode size={20} className="text-[#7bd0ff]" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="text-sm font-bold text-[#e1e2e7] truncate w-40 sm:w-48">
+                      {file.name}
+                    </p>
+                    <p className="text-xs font-medium text-[#cbc3d7]/60 mt-1">
+                      {file.size} • {file.time}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleDelete(index)}
+                  className="text-[#cbc3d7]/30 hover:text-red-400 transition-colors p-1 shrink-0 cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </motion.div>
+            ))}
           </div>
         )}
       </div>
