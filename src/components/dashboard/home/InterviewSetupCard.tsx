@@ -6,7 +6,7 @@ const InterviewSetupCard = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-[#191c1f] rounded-3xl p-8 shadow-[0_0_40px_0_rgba(206,189,255,0.05)] border border-[#494454]/5"
+      className="bg-[#191c1f] rounded-3xl p-8 shadow-[0_0_40px_0_rgba(206,189,255,0.05)] border border-[#494454]/5 self-start"
     >
       <div className="flex items-center gap-3 mb-8">
         <div className="p-2 bg-[#cebdff]/10 rounded-lg">
@@ -55,16 +55,6 @@ const InterviewSetupCard = () => {
               placeholder="예: 시니어 아키텍트"
             />
           </div>
-        </div>
-
-        <div>
-          <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 mb-3 font-semibold">
-            핵심 목표
-          </label>
-          <textarea
-            className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 resize-none outline-none min-h-[120px]"
-            placeholder="평가 중에 AI가 집중했으면 하는 내용을 설명해주세요..."
-          />
         </div>
       </form>
     </motion.div>

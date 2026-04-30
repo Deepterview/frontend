@@ -66,7 +66,7 @@ const DocumentsCard = () => {
   const handleDelete = () => {
     setFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; 
+      fileInputRef.current.value = "";
     }
   };
 
@@ -90,7 +90,7 @@ const DocumentsCard = () => {
           ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
-          accept=".pdf,.doc,.docx" 
+          accept=".pdf,.doc,.docx"
         />
 
         <motion.div
@@ -99,9 +99,9 @@ const DocumentsCard = () => {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           whileHover={{ backgroundColor: "rgba(50, 53, 57, 0.2)" }}
-          className={`border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center text-center transition-all cursor-pointer group mb-8 ${
+          className={`mt-2 border-2 border-dashed rounded-3xl p-4 flex flex-col items-center justify-center text-center transition-all cursor-pointer group ${
             isDragging
-              ? "border-[#cebdff] bg-[#cebdff]/5" 
+              ? "border-[#cebdff] bg-[#cebdff]/5"
               : "border-[#494454]/20"
           }`}
         >

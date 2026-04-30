@@ -23,7 +23,7 @@ const DashboardLayout = () => {
 
       {/* Configuration Grid */}
       <motion.div
-        className="grid grid-cols-1 xl:grid-cols-2 gap-10 mb-10"
+        className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}

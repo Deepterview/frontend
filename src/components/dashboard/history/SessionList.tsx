@@ -19,7 +19,7 @@ const SessionList = ({
           key={session.id}
           whileHover={{ x: 4 }}
           onClick={() => onSelectSession(session.id)}
-          className={`text-left p-5 rounded-3xl transition-all duration-300 border ${
+          className={`text-left p-5 rounded-3xl transition-all duration-300 border cursor-pointer ${
             selectedSessionId === session.id
               ? "bg-[#cebdff]/10 border-[#cebdff]/30 shadow-[0_0_30px_rgba(206,189,255,0.05)]"
               : "bg-[#191c1f]/40 border-transparent hover:bg-[#191c1f] hover:border-[#494454]/20"
@@ -33,9 +33,7 @@ const SessionList = ({
                   : "text-[#cbc3d7]/40"
               }`}
             >
-              {selectedSessionId === session.id
-                ? "선택됨"
-                : "아카이브"}
+              {selectedSessionId === session.id ? "선택됨" : "아카이브"}
             </span>
             <h5 className="text-sm font-bold text-[#e1e2e7] leading-tight">
               {session.company} @ {session.role}
