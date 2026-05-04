@@ -3,14 +3,39 @@ import type { Auth } from "../../types";
 import { ArrowRight, Lock, Mail, MessageCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import iconGoogle from "../../assets/iconGoogle.svg";
+import { fakeLogin } from "../../mocks/signData";
 
 const Rightside = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [activeTab, setActiveTab] = useState<Auth>(
-    location.state?.tab || "login"
+    location.state?.tab || "login",
   );
   const isRegister = activeTab === "register";
+
+  const handleSubmit = async () => {
+    try {
+      if (isRegister) {
+        // register logic here
+      } else {
+        // login logic here
+        // 1.fetch api (gmail, password)
+
+        const data = await fakeLogin();
+        console.log({ data });
+
+        // 2. store response data from server  (global)
+        localStorage.setItem("accesstoken", data.accessToken);
+        localStorage.setItem("refreshtoken", data.refreshToken);
+        localStorage.setItem("user", JSON.stringify(data));
+        // 3. get accesstoken and fetch /user/me
+        // 4. store user data (global)
+      }
+    } catch {
+      console.log("error");
+    }
+  };
 
   return (
     <section className="w-full md:w-1/2 bg-background flex items-center justify-center p-6 md:p-12 lg:p-20 relative">
@@ -170,13 +195,7 @@ const Rightside = () => {
 
           <button
             className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"
-            onClick={() => {
-              if (isRegister) {
-                // register logic here
-              } else {
-                navigate("/dashboard");
-              }
-            }}
+            onClick={handleSubmit}
           >
             {isRegister ? "회원가입" : "로그인"}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -7,8 +7,18 @@ import PracticeLayout from "./layouts/DashboardLayout/PracticeLayout";
 import HistoryLayout from "./layouts/DashboardLayout/HistoryLayout";
 import MyinfoLayout from "./layouts/DashboardLayout/MyinfoLayout";
 import AnalyticsLayout from "./layouts/DashboardLayout/AnalyticsLayout";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./hooks/AuthContext";
 
 function App() {
+  const { accessToken, setAccessToken } = useContext(AuthContext);
+
+  console.log({ accessToken });
+  // console.log({ accessToken });
+  useEffect(() => {
+    const _accessToken = localStorage.getItem("accesstoken");
+    setAccessToken(_accessToken);
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
