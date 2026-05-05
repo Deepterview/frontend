@@ -17,24 +17,19 @@ const Rightside = () => {
   const handleSubmit = async () => {
     try {
       if (isRegister) {
-        // register logic here
+        //register logic here
+        setActiveTab("login");
       } else {
-        // login logic here
-        // 1.fetch api (gmail, password)
-
+        //login logic here
         const data = await fakeLogin();
-        console.log({ data });
-
-        // 2. store response data from server  (global)
+        console.log(data);
         localStorage.setItem("accesstoken", data.accessToken);
         localStorage.setItem("refreshtoken", data.refreshToken);
-        localStorage.setItem("user", JSON.stringify(data));
+        localStorage.setItem("user", JSON.stringify(data.user));
         navigate("/dashboard");
-        // 3. get accesstoken and fetch /user/me
-        // 4. store user data (global)
       }
-    } catch {
-      console.log("error");
+    } catch (error) {
+      console.log(error);
     }
   };
 
