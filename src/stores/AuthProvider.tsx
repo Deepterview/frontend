@@ -1,22 +1,20 @@
-import { useState } from "react";
-import type { ReactNode } from "react";
-import { AuthContext } from "./AuthContext";
+import { useState, type ReactNode } from "react";
+import { AuthContext } from "../services/AuthContext";
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  // Login
+  //login
   const login = (token: string) => {
     localStorage.setItem("accesstoken", token);
     setAccessToken(token);
   };
 
-  // Logout
+  //logout
   const logout = () => {
     localStorage.removeItem("accesstoken");
     setAccessToken(null);
   };
-
   return (
     <AuthContext.Provider
       value={{ accessToken, setAccessToken, login, logout }}
@@ -25,3 +23,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
+
+export default AuthProvider;
