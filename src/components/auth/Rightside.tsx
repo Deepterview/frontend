@@ -29,6 +29,7 @@ const Rightside = () => {
         localStorage.setItem("accesstoken", data.accessToken);
         localStorage.setItem("refreshtoken", data.refreshToken);
         localStorage.setItem("user", JSON.stringify(data));
+        navigate("/dashboard");
         // 3. get accesstoken and fetch /user/me
         // 4. store user data (global)
       }

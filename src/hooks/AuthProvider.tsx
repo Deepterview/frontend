@@ -1,19 +1,6 @@
-import { createContext, useState, ReactNode } from "react";
-
-interface AuthContextType {
-  accessToken: string | null;
-  setAccessToken: (token: string | null) => void;
-  login: (token: string) => void;
-  logout: () => void;
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const AuthContext = createContext<AuthContextType>({
-  accessToken: null,
-  setAccessToken: () => {},
-  login: () => {},
-  logout: () => {},
-});
+import { useState } from "react";
+import type { ReactNode } from "react";
+import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);

@@ -13,14 +13,6 @@ export interface SessionConfig {
 }
 
 // important
-export interface QAPair {
-  id: string;
-  question: string;
-  answer: string;
-  tags?: string[];
-  aiInsight?: string;
-  aiInsightType?: "positive" | "negative";
-}
 
 export interface InterviewSession {
   id: string;
@@ -32,6 +24,15 @@ export interface InterviewSession {
   questionCount: number;
   qaPairs: QAPair[];
 }
+export interface QAPair {
+  id: string;
+  question: string;
+  answer: string;
+  tags?: string[];
+  aiInsight?: string;
+  aiInsightType?: "positive" | "negative";
+}
+
 // important
 
 export interface InterviewTimelineProps {
