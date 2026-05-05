@@ -1,6 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Auth } from "../../types";
-import { ArrowRight, Lock, Mail, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  Lock,
+  Mail,
+  MessageCircle,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import iconGoogle from "../../assets/iconGoogle.svg";
 import { fakeLogin } from "../../mocks/signData";
@@ -13,14 +20,91 @@ const Rightside = () => {
     location.state?.tab || "login",
   );
   const isRegister = activeTab === "register";
+  const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<"error" | "success" | null>(
+    null,
+  );
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  useEffect(() => {
+    setMessage(null);
+    setMessageType(null);
+  }, [activeTab]);
 
   const handleSubmit = async () => {
+    setMessage(null);
+    setMessageType(null);
     try {
       if (isRegister) {
-        //register logic here
+        const form = document.querySelector("form") as HTMLFormElement;
+        const formData = new FormData(form);
+
+        // validate password and confirm password
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        const confirmPassword = formData.get("confirmPassword") as string;
+        //regrex validate emmail (@gmail.com)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          setMessage(
+            "유효하지 않은 이메일입니다 (abc@domain.com 형식이어야 합니다)",
+          );
+          setMessageType("error");
+          return;
+        }
+        // regex validate password
+        const passwordRegex =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+          setMessage(
+            "비밀번호는 8자 이상이며 대문자, 소문자, 숫자 및 특수문자를 포함",
+          );
+          setMessageType("error");
+          return;
+        }
+        // check confirm password
+        if (password !== confirmPassword) {
+          setMessage("비밀번호가 일치하지 않습니다");
+          setMessageType("error");
+          return;
+        }
+
+        setMessage("회원가입이 완료되었습니다!");
+        setMessageType("success");
+        setTimeout(() => {
+          setMessage(null);
+          setMessageType(null);
+        }, 3000);
         setActiveTab("login");
       } else {
-        //login logic here
+        const form = document.querySelector("form") as HTMLFormElement;
+        const formData = new FormData(form);
+
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+
+        // validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          setMessage(
+            "유효하지 않은 이메일입니다 (abc@domain.com 형식이어야 합니다)",
+          );
+          setMessageType("error");
+          return;
+        }
+
+        // validate password (same rule as register)
+        const passwordRegex =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+        if (!passwordRegex.test(password)) {
+          setMessage(
+            "비밀번호는 8자 이상이며 대문자, 소문자, 숫자 및 특수문자를 포함해야 합니다",
+          );
+          setMessageType("error");
+          return;
+        }
         const data = await fakeLogin();
         console.log(data);
         localStorage.setItem("accesstoken", data.accessToken);
@@ -30,6 +114,8 @@ const Rightside = () => {
       }
     } catch (error) {
       console.log(error);
+      setMessage("Register fall");
+      setMessageType("error");
     }
   };
 
@@ -88,6 +174,7 @@ const Rightside = () => {
               <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
               <input
                 type="email"
+                name="email"
                 placeholder="name@gmail.com"
                 required
                 className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
@@ -111,11 +198,19 @@ const Rightside = () => {
             <div className="relative group">
               <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="••••••••"
                 required
-                className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
+                className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-12 placeholder:text-white/20 transition-all outline-none"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-colors"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
           {/* when click Register button logic  */}
@@ -129,11 +224,23 @@ const Rightside = () => {
               <div className="relative group">
                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
                   placeholder="••••••••"
                   required
-                  className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
+                  className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-12 placeholder:text-white/20 transition-all outline-none"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-colors"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
+                </button>
               </div>
             </div>
           )}
@@ -199,6 +306,19 @@ const Rightside = () => {
             </>
           )}
 
+          {message && (
+            <div
+              className={`flex items-center gap-3 text-sm px-4 py-3 rounded-xl border backdrop-blur-sm transition-all duration-300
+                ${
+                  messageType === "error"
+                    ? "bg-red-500/10 border-red-500/20 text-red-400"
+                    : "bg-green-500/10 border-green-500/20 text-green-400"
+                }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
+              <span>{message}</span>
+            </div>
+          )}
           <button
             type="submit"
             className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"

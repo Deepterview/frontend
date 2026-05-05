@@ -11,14 +11,16 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "./services/AuthContext";
 
 function App() {
-  const { accessToken, setAccessToken } = useContext(AuthContext);
+  const { accessToken, setAccessToken, setIsLogged } = useContext(AuthContext);
   console.log(accessToken);
   useEffect(() => {
     const _accessToken = localStorage.getItem("accesstoken");
     if (_accessToken) {
       setAccessToken(_accessToken);
+      setIsLogged(true);
     } else {
       setAccessToken(null);
+      setIsLogged(false);
     }
   }, []);
   return (
