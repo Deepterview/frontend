@@ -72,7 +72,14 @@ const Rightside = () => {
         </div>
 
         {/* Form */}
-        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <form
+          key={activeTab}
+          className="space-y-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
           <div className="flex flex-col gap-2">
             <label className="text-[0.7rem] uppercase tracking-[0.15em] font-bold text-primary/80 ml-4">
               이메일
@@ -82,6 +89,7 @@ const Rightside = () => {
               <input
                 type="email"
                 placeholder="name@gmail.com"
+                required
                 className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
               />
             </div>
@@ -105,6 +113,7 @@ const Rightside = () => {
               <input
                 type="password"
                 placeholder="••••••••"
+                required
                 className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
               />
             </div>
@@ -122,6 +131,7 @@ const Rightside = () => {
                 <input
                   type="password"
                   placeholder="••••••••"
+                  required
                   className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
                 />
               </div>
@@ -190,8 +200,8 @@ const Rightside = () => {
           )}
 
           <button
+            type="submit"
             className="w-full bg-primary-container text-on-background font-bold py-4 rounded-2xl glow-button flex items-center justify-center gap-2 group cursor-pointer"
-            onClick={handleSubmit}
           >
             {isRegister ? "회원가입" : "로그인"}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
