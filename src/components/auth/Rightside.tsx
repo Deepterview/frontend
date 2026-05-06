@@ -3,10 +3,10 @@ import type { Auth } from "../../types";
 import {
   ArrowRight,
   Lock,
-  Mail,
   MessageCircle,
   Eye,
   EyeOff,
+  User,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import iconGoogle from "../../assets/iconGoogle.svg";
@@ -32,6 +32,45 @@ const Rightside = () => {
     setMessageType(null);
   }, [activeTab]);
 
+  useEffect(() => {
+    const handleSocialLogin = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const accessToken = params.get("accessToken");
+      const refreshToken = params.get("refreshToken");
+
+      if (!accessToken || !refreshToken) return;
+
+      try {
+        // save token
+        localStorage.setItem("accesstoken", accessToken);
+        localStorage.setItem("refreshtoken", refreshToken);
+
+        // get user info
+        const res = await fetch("/api/v1/users/me", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        const user = await res.json();
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // clear URL
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname,
+        );
+
+        navigate("/dashboard");
+      } catch (err) {
+        console.error("Social login failed", err);
+      }
+    };
+
+    handleSocialLogin();
+  }, [navigate]);
+
   const handleSubmit = async () => {
     setMessage(null);
     setMessageType(null);
@@ -41,15 +80,12 @@ const Rightside = () => {
         const formData = new FormData(form);
 
         // validate password and confirm password
-        const email = formData.get("email") as string;
+        const id = formData.get("id") as string;
         const password = formData.get("password") as string;
         const confirmPassword = formData.get("confirmPassword") as string;
-        //regrex validate emmail (@gmail.com)
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          setMessage(
-            "유효하지 않은 이메일입니다 (abc@domain.com 형식이어야 합니다)",
-          );
+
+        if (!id || id.trim() === "") {
+          setMessage("아이디를 입력해주세요.");
           setMessageType("error");
           return;
         }
@@ -70,8 +106,10 @@ const Rightside = () => {
           return;
         }
 
-        setMessage("회원가입이 완료되었습니다!");
-        setMessageType("success");
+        setTimeout(() => {
+          setMessage("회원가입이 완료되었습니다!");
+          setMessageType("success");
+        });
         setTimeout(() => {
           setMessage(null);
           setMessageType(null);
@@ -81,15 +119,11 @@ const Rightside = () => {
         const form = document.querySelector("form") as HTMLFormElement;
         const formData = new FormData(form);
 
-        const email = formData.get("email") as string;
+        const id = formData.get("id") as string;
         const password = formData.get("password") as string;
 
-        // validate email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          setMessage(
-            "유효하지 않은 이메일입니다 (abc@domain.com 형식이어야 합니다)",
-          );
+        if (!id || id.trim() === "") {
+          setMessage("아이디를 입력해주세요.");
           setMessageType("error");
           return;
         }
@@ -168,14 +202,14 @@ const Rightside = () => {
         >
           <div className="flex flex-col gap-2">
             <label className="text-[0.7rem] uppercase tracking-[0.15em] font-bold text-primary/80 ml-4">
-              이메일
+              아이디
             </label>
             <div className="relative group">
-              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+              <User className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
               <input
-                type="email"
-                name="email"
-                placeholder="name@gmail.com"
+                type="text"
+                name="id"
+                placeholder="아이디를 입력하세요"
                 required
                 className="w-full bg-surface-container-lowest border-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/50 rounded-2xl py-4 pl-14 pr-6 placeholder:text-white/20 transition-all outline-none"
               />
@@ -207,7 +241,7 @@ const Rightside = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-colors"
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-colors cursor-pointer"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -233,7 +267,7 @@ const Rightside = () => {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-colors"
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-colors cursor-pointer"
                 >
                   {showConfirmPassword ? (
                     <EyeOff size={18} />
@@ -282,8 +316,13 @@ const Rightside = () => {
                   type="button"
                   className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition border border-white/5 cursor-pointer"
                   onClick={() => {
-                    // todo signin google
-                    console.log("Google login");
+                    try {
+                      // 1. Redirect to backend OAuth endpoint
+                      window.location.href =
+                        "http://localhost:8080/api/v1/auth/google";
+                    } catch (error) {
+                      console.error("Google login error:", error);
+                    }
                   }}
                 >
                   <img src={iconGoogle} alt="google" className="w-5 h-5" />
@@ -295,8 +334,13 @@ const Rightside = () => {
                   type="button"
                   className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition cursor-pointer border border-white/5"
                   onClick={() => {
-                    //todo sign in kakao
-                    console.log("Kakao login");
+                    try {
+                      // Redirect to backend OAuth endpoint for Kakao
+                      window.location.href =
+                        "http://localhost:8080/api/v1/auth/kakao";
+                    } catch (error) {
+                      console.error("Kakao login error:", error);
+                    }
                   }}
                 >
                   <MessageCircle className="w-5 h-5 text-[#FEE500]" />

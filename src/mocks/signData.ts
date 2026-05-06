@@ -1,6 +1,6 @@
 type Login = {
   user: {
-    gmail: string;
+    id: string;
     avatar: string;
     age: number;
   };
@@ -8,10 +8,10 @@ type Login = {
   refreshToken: string;
 };
 
-export async function fakeLogin(gmail?: string): Promise<Login> {
+export async function fakeLogin(id?: string): Promise<Login> {
   return {
     user: {
-      gmail: gmail || "abc@gmail.com",
+      id: id || "hau2412",
       avatar: "",
       age: 20,
     },
