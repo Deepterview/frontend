@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import type { Auth } from "../../types";
 import {
   ArrowRight,
@@ -11,10 +11,13 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import iconGoogle from "../../assets/iconGoogle.svg";
 import { fakeLogin } from "../../mocks/signData";
+import { AuthContext } from "../../services/AuthContext";
+import { authService } from "../../services/authService";
 
 const Rightside = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { login, loginSocial } = useContext(AuthContext);
 
   const [activeTab, setActiveTab] = useState<Auth>(
     location.state?.tab || "login",
@@ -27,10 +30,11 @@ const Rightside = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  useEffect(() => {
+  const handleTabChange = (tab: Auth) => {
+    setActiveTab(tab);
     setMessage(null);
     setMessageType(null);
-  }, [activeTab]);
+  };
 
   useEffect(() => {
     const handleSocialLogin = async () => {
@@ -41,19 +45,7 @@ const Rightside = () => {
       if (!accessToken || !refreshToken) return;
 
       try {
-        // save token
-        localStorage.setItem("accesstoken", accessToken);
-        localStorage.setItem("refreshtoken", refreshToken);
-
-        // get user info
-        const res = await fetch("/api/v1/users/me", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        const user = await res.json();
-        localStorage.setItem("user", JSON.stringify(user));
+        await loginSocial(accessToken, refreshToken);
 
         // clear URL
         window.history.replaceState(
@@ -141,9 +133,7 @@ const Rightside = () => {
         }
         const data = await fakeLogin();
         console.log(data);
-        localStorage.setItem("accesstoken", data.accessToken);
-        localStorage.setItem("refreshtoken", data.refreshToken);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        login(data.accessToken, data.refreshToken, data.user);
         navigate("/dashboard");
       }
     } catch (error) {
@@ -170,7 +160,7 @@ const Rightside = () => {
         {/* Tab Switcher */}
         <div className="flex bg-surface-container-lowest p-1.5 rounded-full mb-10 border border-white/5">
           <button
-            onClick={() => setActiveTab("login")}
+            onClick={() => handleTabChange("login")}
             className={`flex-1 py-3 px-6 rounded-full font-medium transition-all duration-300 cursor-pointer ${
               activeTab === "login"
                 ? "bg-surface-container-high text-primary shadow-lg"
@@ -180,7 +170,7 @@ const Rightside = () => {
             로그인
           </button>
           <button
-            onClick={() => setActiveTab("register")}
+            onClick={() => handleTabChange("register")}
             className={`flex-1 py-3 px-6 rounded-full font-medium transition-all duration-300 cursor-pointer ${
               activeTab === "register"
                 ? "bg-surface-container-high text-primary shadow-lg"
@@ -317,9 +307,7 @@ const Rightside = () => {
                   className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition border border-white/5 cursor-pointer"
                   onClick={() => {
                     try {
-                      // 1. Redirect to backend OAuth endpoint
-                      window.location.href =
-                        "http://localhost:8080/api/v1/auth/google";
+                      window.location.href = authService.getGoogleAuthUrl();
                     } catch (error) {
                       console.error("Google login error:", error);
                     }
@@ -335,9 +323,7 @@ const Rightside = () => {
                   className="w-full bg-surface-container-lowest text-white py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white/10 transition cursor-pointer border border-white/5"
                   onClick={() => {
                     try {
-                      // Redirect to backend OAuth endpoint for Kakao
-                      window.location.href =
-                        "http://localhost:8080/api/v1/auth/kakao";
+                      window.location.href = authService.getKakaoAuthUrl();
                     } catch (error) {
                       console.error("Kakao login error:", error);
                     }
@@ -377,7 +363,7 @@ const Rightside = () => {
             {/* 조건부 렌더링: 현재 탭 상태에 따라 질문과 링크 텍스트가 바뀝니다. */}
             {isRegister ? "이미 계정이 있으신가요?" : "플랫폼이 처음이신가요?"}
             <a
-              onClick={() => setActiveTab(isRegister ? "login" : "register")}
+              onClick={() => handleTabChange(isRegister ? "login" : "register")}
               className="text-primary font-semibold ml-1 hover:underline underline-offset-4 decoration-primary/30 cursor-pointer"
             >
               {isRegister ? "로그인하기" : "회원가입"}

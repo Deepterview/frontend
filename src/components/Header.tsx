@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import type { NavKey } from "../types/index";
 import { useLocation } from "react-router-dom";
-import { Bell, LogOut, User, UserCircle } from "lucide-react";
-import { useState } from "react";
+import { Bell, LogOut, User, UserCircle, ChevronRight } from "lucide-react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../services/AuthContext";
 
 type HeaderProps = {
   activeNav?: NavKey;
@@ -12,6 +13,7 @@ type HeaderProps = {
 const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLogged, logout } = useContext(AuthContext);
 
   const isLandingPage = location.pathname === "/";
   const isSignInPage = location.pathname === "/signin";
@@ -69,26 +71,52 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
         )}
         {(isLandingPage || isSignInPage) && (
           <div className="flex items-center gap-6">
-            <button
-              type="button"
-              className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
-              onClick={() => navigate("/signin", { state: { tab: "login" } })}
-            >
-              로그인
-            </button>
-            <div className="relative">
-              <div
-                className="absolute inset-0 rounded-full bg-purple-500 opacity-40 blur-xl"
-                aria-hidden
-              />
-              <button
-                type="button"
-                className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
-                onClick={() => navigate("/signin", { state: { tab: "register" } })}
-              >
-                회원가입
-              </button>
-            </div>
+            {isLogged && isLandingPage ? (
+              <div className="relative group">
+                <div
+                  className="absolute inset-0 rounded-full bg-purple-500 opacity-40 blur-xl group-hover:opacity-60 transition-opacity"
+                  aria-hidden
+                />
+                <button
+                  type="button"
+                  className="relative z-10 flex items-center rounded-full bg-[rgba(155,127,237,0.8)] px-3 py-2.5 text-sm font-semibold text-[#31057e] transition-all hover:scale-105 hover:bg-[rgba(155,127,237,1)] active:scale-95 shadow-lg shadow-purple-500/20 cursor-pointer"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Dashboard
+                  <ChevronRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="text-sm font-medium text-white transition hover:opacity-80 cursor-pointer"
+                  onClick={() =>
+                    navigate("/signin", { state: { tab: "login" } })
+                  }
+                >
+                  로그인
+                </button>
+                <div className="relative">
+                  <div
+                    className="absolute inset-0 rounded-full bg-purple-500 opacity-40 blur-xl"
+                    aria-hidden
+                  />
+                  <button
+                    type="button"
+                    className="relative z-10 rounded-full bg-[rgba(155,127,237,0.8)] px-6 py-2 text-sm font-medium text-[#31057e] transition hover:opacity-90 cursor-pointer"
+                    onClick={() =>
+                      navigate("/signin", { state: { tab: "register" } })
+                    }
+                  >
+                    회원가입
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         )}
         {isDashBoardPage && (
@@ -118,13 +146,13 @@ const Header = ({ activeNav, onNavigateSection }: HeaderProps) => {
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 text-sm text-white hover:bg-white/10 transition cursor-pointer"
                   >
-                    <User className="w-4 h-4" />
-                    내 정보
+                    <User className="w-4 h-4" />내 정보
                   </button>
 
                   <button
                     onClick={() => {
-                      navigate("/signin");
+                      logout();
+                      navigate("/");
                       setIsOpen(false);
                     }}
                     className="flex items-center gap-2 w-full px-4 py-3 text-sm text-red-400 hover:bg-white/10 transition cursor-pointer"

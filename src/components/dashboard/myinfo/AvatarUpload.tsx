@@ -33,7 +33,7 @@ const AvatarUpload = ({ avatar, onAvatarChange }: AvatarUploadProps) => {
 
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="absolute bottom-2 right-2 w-10 h-10 bg-[#cebdff] text-[#31057e] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all z-10"
+          className="absolute bottom-2 right-2 w-10 h-10 bg-[#cebdff] text-[#31057e] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all z-10 cursor-pointer"
         >
           <Camera size={20} />
         </button>
@@ -47,7 +47,7 @@ const AvatarUpload = ({ avatar, onAvatarChange }: AvatarUploadProps) => {
         />
       </div>
 
-      <div className="text-center">
+      <div className="text-center ">
         <h3 className="text-xl font-black text-[#e1e2e7] tracking-tight">
           프로필 정보
         </h3>

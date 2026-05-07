@@ -7,67 +7,64 @@ import PracticeLayout from "./layouts/DashboardLayout/PracticeLayout";
 import HistoryLayout from "./layouts/DashboardLayout/HistoryLayout";
 import MyinfoLayout from "./layouts/DashboardLayout/MyinfoLayout";
 import AnalyticsLayout from "./layouts/DashboardLayout/AnalyticsLayout";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "./services/AuthContext";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import PublicRoute from "./components/auth/PublicRoute";
 
 function App() {
-  const { accessToken, setAccessToken, setIsLogged } = useContext(AuthContext);
-  console.log(accessToken);
-  useEffect(() => {
-    const _accessToken = localStorage.getItem("accesstoken");
-    if (_accessToken) {
-      setAccessToken(_accessToken);
-      setIsLogged(true);
-    } else {
-      setAccessToken(null);
-      setIsLogged(false);
-    }
-  }, []);
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Routes - Anyone can access */}
         <Route path="/" element={<Landing />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route
-          path="/dashboard"
-          element={
-            <Dashboard>
-              <DashboardLayout />
-            </Dashboard>
-          }
-        />
-        <Route
-          path="/dashboard/practice"
-          element={
-            <Dashboard>
-              <PracticeLayout />
-            </Dashboard>
-          }
-        />
-        <Route
-          path="/dashboard/analytics"
-          element={
-            <Dashboard>
-              <AnalyticsLayout />
-            </Dashboard>
-          }
-        />
-        <Route
-          path="/dashboard/history"
-          element={
-            <Dashboard>
-              <HistoryLayout />
-            </Dashboard>
-          }
-        />
-        <Route
-          path="/dashboard/myinfo"
-          element={
-            <Dashboard>
-              <MyinfoLayout />
-            </Dashboard>
-          }
-        />
+
+        {/* Auth Routes - Only for non-logged in users */}
+        <Route element={<PublicRoute />}>
+          <Route path="/signin" element={<SignIn />} />
+        </Route>
+
+        {/* Protected Routes - Only for logged-in users */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/dashboard"
+            element={
+              <Dashboard>
+                <DashboardLayout />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/dashboard/practice"
+            element={
+              <Dashboard>
+                <PracticeLayout />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/dashboard/analytics"
+            element={
+              <Dashboard>
+                <AnalyticsLayout />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/dashboard/history"
+            element={
+              <Dashboard>
+                <HistoryLayout />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/dashboard/myinfo"
+            element={
+              <Dashboard>
+                <MyinfoLayout />
+              </Dashboard>
+            }
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
