@@ -29,7 +29,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("accesstoken", accessToken);
       localStorage.setItem("refreshtoken", refreshToken);
 
-      const userData = await authService.getProfile(accessToken);
+      const userData = await authService.getProfile();
       localStorage.setItem("user", JSON.stringify(userData));
 
       setAccessToken(accessToken);
