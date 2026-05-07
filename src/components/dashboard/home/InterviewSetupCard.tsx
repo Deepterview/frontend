@@ -22,10 +22,12 @@ const InterviewSetupCard = () => {
           </label>
           <div className="relative group">
             <select className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none">
-              <option>기술 아키텍처</option>
-              <option>행동 리더십</option>
-              <option>제품 케이스 스터디</option>
-              <option>프론트엔드 엔지니어링</option>
+              <option>기술 인터뷰 (코딩, 컴퓨터 공학 지식 관련 질문)</option>
+              <option>행동 인터뷰 (팀워크, 갈등 해결, 리더십 관련 질문)</option>
+              <option>
+                인사 인터뷰 (성격, 지원 동기, 조직 문화 적합성 관련 질문)
+              </option>
+              <option>시스템 설계 인터뷰 (아키텍처, 확장성 관련 질문)</option>
             </select>
             <ChevronDown
               size={18}
