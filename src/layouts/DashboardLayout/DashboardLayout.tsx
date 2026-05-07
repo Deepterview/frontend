@@ -1,9 +1,24 @@
 import { motion } from "framer-motion";
 import InterviewSetupCard from "../../components/dashboard/home/InterviewSetupCard";
 import DocumentsCard from "../../components/dashboard/home/DocumentsCard";
-import StartSessionButton from "../../components/dashboard/home/StartSessionButton";
+import { ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 const DashboardLayout = () => {
+  const [scenario, setScenario] = useState("기술 인터뷰");
+  const [targetCompany, setTargetCompany] = useState("");
+  const [openPosition, setOpenPosition] = useState("");
+  const [objective, setObjective] = useState<File[] | null>(null);
+
+  const printConsole = () => {
+    console.log({
+      scenario,
+      targetCompany,
+      openPosition,
+      objective,
+    });
+  };
+
   return (
     <div>
       {/* Header Section */}
@@ -28,8 +43,15 @@ const DashboardLayout = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}
       >
-        <InterviewSetupCard />
-        <DocumentsCard />
+        <InterviewSetupCard
+          scenario={scenario}
+          targetCompany={targetCompany}
+          openPosition={openPosition}
+          setScenario={setScenario}
+          setTargetCompany={setTargetCompany}
+          setOpenPosition={setOpenPosition}
+        />
+        <DocumentsCard objective={objective} setObjective={setObjective} />
       </motion.div>
 
       <motion.div
@@ -37,7 +59,26 @@ const DashboardLayout = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1, duration: 0.4 }}
       >
-        <StartSessionButton />
+        <div className="flex justify-center py-20">
+          <motion.button
+            onClick={printConsole}
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 0 60px rgba(155, 127, 237, 0.4)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="group relative px-14 py-6 bg-[#9b7fed] rounded-full overflow-hidden transition-all duration-500 shadow-[0_0_40px_rgba(155,127,237,0.2)] cursor-pointer"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-[#cebdff] to-[#7bd0ff] opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+            <div className="flex items-center gap-5 text-[#31057e] font-black text-lg tracking-[0.25em]">
+              <span>세션 시작하기</span>
+              <ChevronRight
+                size={24}
+                className="group-hover:translate-x-1 transition-transform duration-300"
+              />
+            </div>
+          </motion.button>
+        </div>
       </motion.div>
     </div>
   );

@@ -1,7 +1,22 @@
 import { Sliders, ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 
-const InterviewSetupCard = () => {
+type InterviewSetupCardProps = {
+  scenario: string;
+  targetCompany: string;
+  openPosition: string;
+  setScenario: (m: string) => void;
+  setTargetCompany: (m: string) => void;
+  setOpenPosition: (m: string) => void;
+};
+const InterviewSetupCard = ({
+  scenario,
+  targetCompany,
+  openPosition,
+  setScenario,
+  setTargetCompany,
+  setOpenPosition,
+}: InterviewSetupCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -21,7 +36,11 @@ const InterviewSetupCard = () => {
             면접 시나리오
           </label>
           <div className="relative group">
-            <select className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none">
+            <select
+              className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none"
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value)}
+            >
               <option>기술 인터뷰 (코딩, 컴퓨터 공학 지식 관련 질문)</option>
               <option>행동 인터뷰 (팀워크, 갈등 해결, 리더십 관련 질문)</option>
               <option>
@@ -45,6 +64,8 @@ const InterviewSetupCard = () => {
               type="text"
               className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 outline-none"
               placeholder="예: 구글, 스트라이프"
+              value={targetCompany}
+              onChange={(e) => setTargetCompany(e.target.value)}
             />
           </div>
           <div>
@@ -55,6 +76,8 @@ const InterviewSetupCard = () => {
               type="text"
               className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 outline-none"
               placeholder="예: 시니어 아키텍트"
+              value={openPosition}
+              onChange={(e) => setOpenPosition(e.target.value)}
             />
           </div>
         </div>

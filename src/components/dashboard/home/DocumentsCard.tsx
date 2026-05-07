@@ -2,16 +2,13 @@ import { useRef, useState } from "react";
 import { FileText, Upload, X, FileCode } from "lucide-react";
 import { motion } from "framer-motion";
 
-// 업로드된 파일 정보
-type UploadedFile = {
-  name: string;
-  size: string;
-  time: string;
+type DocumentsCardProps = {
+  objective: File[] | null;
+  setObjective: React.Dispatch<React.SetStateAction<File[] | null>>;
 };
 
-const DocumentsCard = () => {
+const DocumentsCard = ({ objective, setObjective }: DocumentsCardProps) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [files, setFiles] = useState<UploadedFile[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClickClickToUpload = () => {
@@ -43,31 +40,26 @@ const DocumentsCard = () => {
   };
 
   const processFile = (selectedFile: File) => {
-    const sizeInBytes = selectedFile.size;
-    const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(2);
-    const sizeString =
-      sizeInMB !== "0.00"
-        ? `${sizeInMB} MB`
-        : `${(sizeInBytes / 1024).toFixed(1)} KB`;
+    setObjective((prev: File[] | null) => {
+      if (prev === null) {
+        return [selectedFile];
+      }
 
-    const now = new Date();
-    const timeString = now.toLocaleTimeString("ko-KR", {
-      hour: "numeric",
-      minute: "2-digit",
+      return [...prev, selectedFile];
     });
-
-    setFiles((prev) => [
-      ...prev,
-      {
-        name: selectedFile.name,
-        size: sizeString,
-        time: `${timeString} 업로드됨`,
-      },
-    ]);
   };
 
   const handleDelete = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setObjective((prev: File[] | null) => {
+      if (prev === null) {
+        return null;
+      }
+
+      const updatedFiles = prev.filter((_, i) => i !== index);
+
+      return updatedFiles.length > 0 ? updatedFiles : null;
+    });
+
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -120,13 +112,13 @@ const DocumentsCard = () => {
           </p>
         </motion.div>
 
-        {files.length > 0 && (
+        {objective !== null && objective?.length > 0 && (
           <div className="space-y-4">
             <p className="text-xs tracking-widest text-[#cbc3d7]/70 font-bold mt-4">
               업로드된 파일
             </p>
 
-            {files.map((file, index) => (
+            {objective?.map((file, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: -10 }}
@@ -142,7 +134,7 @@ const DocumentsCard = () => {
                       {file.name}
                     </p>
                     <p className="text-xs font-medium text-[#cbc3d7]/60 mt-1">
-                      {file.size} • {file.time}
+                      {file.size} • {file.lastModified}
                     </p>
                   </div>
                 </div>

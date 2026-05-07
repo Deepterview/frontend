@@ -9,7 +9,7 @@ export interface SessionConfig {
   scenario: string;
   targetCompany: string;
   openPosition: string;
-  objective: string;
+  objective: File | null;
 }
 
 // important
