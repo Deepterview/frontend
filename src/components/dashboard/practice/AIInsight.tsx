@@ -23,7 +23,7 @@ const AIInsight = () => {
         의사 결정 능력을 더 잘 강조하는 것을 고려해 보세요."
       </p>
 
-      <button className="flex items-center gap-2 text-[0.65rem] font-bold uppercase tracking-widest text-[#cebdff] hover:gap-3 transition-all">
+      <button className="flex items-center gap-2 text-[0.65rem] font-bold uppercase tracking-widest text-[#cebdff] hover:gap-3 transition-all cursor-pointer">
         전체 분석 보기 <ArrowRight size={14} />
       </button>
     </div>

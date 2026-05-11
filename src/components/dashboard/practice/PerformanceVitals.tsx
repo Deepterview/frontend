@@ -2,13 +2,25 @@ import React from "react";
 
 const PerformanceVitals = () => {
   const vitals = [
-    { label: "시선 안정성", value: "94%", progress: 94 },
-    { label: "말하기 속도", value: "138 WPM", progress: 65 },
     {
-      label: "불필요한 추임새 횟수",
-      value: "2회 (낮음)",
-      progress: 20,
-      color: "bg-red-400/30",
+      label: "미소 비율",
+      value: "자연스러움",
+      progress: 72,
+      color:
+        "bg-gradient-to-r from-emerald-700 via-green-600 to-emerald-500 shadow-[0_0_10px_rgba(22,163,74,0.2)]",
+    },
+    {
+      label: "고개 안정성",
+      value: "안정적",
+      progress: 81,
+      color:
+        "bg-gradient-to-r from-[#5b4423] via-[#8b6a2b] to-[#c08a32] shadow-[0_0_10px_rgba(192,138,50,0.16)]",
+    },
+    {
+      label: "주요 감정 상태",
+      value: "중립",
+      progress: 86,
+      color: "bg-[#cebdff]/40",
     },
   ];
 

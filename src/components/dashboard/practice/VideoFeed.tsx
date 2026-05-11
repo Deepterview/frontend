@@ -89,7 +89,7 @@ const VideoFeed = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={toggleMic}
-          className={`w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
+          className={`w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-all cursor-pointer ${
             isMicOn
               ? "bg-white/10 text-white border border-white/20"
               : "bg-red-500 text-white"
@@ -101,7 +101,7 @@ const VideoFeed = () => {
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg shadow-red-500/30"
+          className="w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg shadow-red-500/30 cursor-pointer"
           onClick={() => {
             navigate("/dashboard/analytics");
           }}
@@ -113,7 +113,7 @@ const VideoFeed = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={toggleVideo}
-          className={`w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
+          className={`w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-all cursor-pointer ${
             isVideoOn
               ? "bg-white/10 text-white border border-white/20"
               : "bg-red-500 text-white"
