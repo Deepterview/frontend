@@ -4,13 +4,13 @@ const EmotionAnalysis = () => {
   const metrics = [
     {
       label: "아이 컨택",
-      value: "우수",
+      value: "높음",
       color: "text-green-400",
       bg: "bg-green-400/10",
     },
     {
       label: "자신감 지수",
-      value: "안정적",
+      value: "보통",
       color: "text-yellow-400",
       bg: "bg-yellow-400/10",
     },

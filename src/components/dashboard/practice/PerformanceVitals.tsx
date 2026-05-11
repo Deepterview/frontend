@@ -4,15 +4,15 @@ const PerformanceVitals = () => {
   const vitals = [
     {
       label: "미소 비율",
-      value: "자연스러움",
-      progress: 72,
+      value: "92%",
+      progress: 92,
       color:
         "bg-gradient-to-r from-emerald-700 via-green-600 to-emerald-500 shadow-[0_0_10px_rgba(22,163,74,0.2)]",
     },
     {
       label: "고개 안정성",
-      value: "안정적",
-      progress: 81,
+      value: "60%",
+      progress: 60,
       color:
         "bg-gradient-to-r from-[#5b4423] via-[#8b6a2b] to-[#c08a32] shadow-[0_0_10px_rgba(192,138,50,0.16)]",
     },
