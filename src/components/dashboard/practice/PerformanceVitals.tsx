@@ -1,7 +1,11 @@
-import React from "react";
-
+type vitalsProps = {
+  label?: string;
+  value?: string;
+  progress?: number;
+  color?: string;
+};
 const PerformanceVitals = () => {
-  const vitals = [
+  const vitals: vitalsProps[] = [
     {
       label: "미소 비율",
       value: "92%",
@@ -19,8 +23,6 @@ const PerformanceVitals = () => {
     {
       label: "주요 감정 상태",
       value: "중립",
-      progress: 86,
-      color: "bg-[#cebdff]/40",
     },
   ];
 
@@ -37,12 +39,14 @@ const PerformanceVitals = () => {
               <span className="text-[#cbc3d7]/60">{v.label}</span>
               <span className="text-[#e1e2e7]">{v.value}</span>
             </div>
-            <div className="h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
-              <div
-                className={`h-full ${v.color || "bg-[#7bd0ff]"} rounded-full transition-all duration-1000`}
-                style={{ width: `${v.progress}%` }}
-              />
-            </div>
+            {v.progress !== undefined && (
+              <div className="h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
+                <div
+                  className={`h-full ${v.color || "bg-[#7bd0ff]"} rounded-full transition-all duration-1000`}
+                  style={{ width: `${v.progress}%` }}
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>
