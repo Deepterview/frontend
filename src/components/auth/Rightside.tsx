@@ -110,7 +110,6 @@ const Rightside = () => {
       } else {
         const form = document.querySelector("form") as HTMLFormElement;
         const formData = new FormData(form);
-
         const id = formData.get("id") as string;
         const password = formData.get("password") as string;
 
@@ -131,9 +130,10 @@ const Rightside = () => {
           setMessageType("error");
           return;
         }
-        const data = await fakeLogin();
-        console.log(data);
+        const data = await fakeLogin(1);
         login(data.accessToken, data.refreshToken, data.user);
+        console.log(data);
+        // const data = await authService.getProfile();
         navigate("/dashboard");
       }
     } catch (error) {

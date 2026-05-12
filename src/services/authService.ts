@@ -9,4 +9,11 @@ export const authService = {
 
   getGoogleAuthUrl: () => `${API_BASE_URL}/api/v1/auth/google`,
   getKakaoAuthUrl: () => `${API_BASE_URL}/api/v1/auth/kakao`,
+  deleteAccount: async (): Promise<void> => {
+    await api.delete("/api/v1/users/me");
+  },
+  updateProfile: async (profileData: Partial<User>): Promise<User> => {
+    const res = await api.patch("/api/v1/users/me", profileData);
+    return res.data.data;
+  },
 };

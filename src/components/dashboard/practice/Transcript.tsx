@@ -26,10 +26,7 @@ const Transcript = () => {
           </h4>
           <div className="flex gap-2">
             <span className="px-3 py-1 bg-[#cebdff]/10 text-[#cebdff] text-[0.6rem] font-bold uppercase rounded-full border border-[#cebdff]/20">
-              자신감 있음
-            </span>
-            <span className="px-3 py-1 bg-[#7bd0ff]/10 text-[#7bd0ff] text-[0.6rem] font-bold uppercase rounded-full border border-[#7bd0ff]/20">
-              또렷한 전달력
+              300s
             </span>
           </div>
         </div>

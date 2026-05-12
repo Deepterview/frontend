@@ -42,7 +42,7 @@ const PerformanceVitals = () => {
             {v.progress !== undefined && (
               <div className="h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
                 <div
-                  className={`h-full ${v.color || "bg-[#7bd0ff]"} rounded-full transition-all duration-1000`}
+                  className={`h-full ${v.color} rounded-full transition-all duration-1000`}
                   style={{ width: `${v.progress}%` }}
                 />
               </div>

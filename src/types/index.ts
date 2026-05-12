@@ -2,9 +2,9 @@ export type Auth = "login" | "register";
 export type NavKey = "overview" | "resources";
 
 export interface User {
-  id: string;
-  email?: string;
+  id: number;
   name?: string;
-  avatar?: string;
+  email?: string;
+  profileImageUrl?: string;
   bio?: string;
 }

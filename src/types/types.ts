@@ -52,7 +52,7 @@ export interface SessionDetailHeaderProps {
 export interface UserProfile {
   name: string;
   email: string;
-  avatar: string;
+  profileImageUrl: string;
   bio: string;
 }
 

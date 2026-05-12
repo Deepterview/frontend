@@ -1,39 +1,88 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import type { UserProfile } from "../../types/types";
 import AvatarUpload from "../../components/dashboard/myinfo/AvatarUpload";
 import ProfileForm from "../../components/dashboard/myinfo/ProfileForm";
 import AccountActions from "../../components/dashboard/myinfo/AccountActions";
+import { authService } from "../../services/authService";
+import { AuthContext } from "../../services/AuthContext";
 
 const MyinfoLayout = () => {
   const [profile, setProfile] = useState<UserProfile>({
     name: "김동우",
     email: "kimdongju123@gmail.com",
-    avatar: "",
+    profileImageUrl: "",
     bio: "",
   });
   const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await authService.getProfile();
+        setProfile({
+          name: data.name || "",
+          email: data.email || "",
+          profileImageUrl: data.profileImageUrl || "",
+          bio: data.bio || "",
+        });
+      } catch (error) {
+        console.error("Failed to fetch profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const handleFieldChange = (field: keyof UserProfile, value: string) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsSaving(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSaving(false);
+    try {
+      await authService.updateProfile({
+        name: profile.name,
+        bio: profile.bio,
+        profileImageUrl: profile.profileImageUrl,
+      });
       alert("프로필이 성공적으로 업데이트되었습니다!");
-    }, 1000);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      alert("프로필 업데이트 중 오류가 발생했습니다.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (
       window.confirm("계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")
     ) {
-      alert("계정 삭제가 요청되었습니다.");
+      try {
+        await authService.deleteAccount();
+        alert("계정이 성공적으로 삭제되었습니다.");
+        logout();
+        navigate("/");
+      } catch (error) {
+        console.error("Failed to delete account:", error);
+        alert("계정 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   };
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#9B7FED]"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto">
       <motion.div
@@ -57,8 +106,10 @@ const MyinfoLayout = () => {
         transition={{ delay: 0.8, duration: 0.6 }}
       >
         <AvatarUpload
-          avatar={profile.avatar}
-          onAvatarChange={(newAvatar) => handleFieldChange("avatar", newAvatar)}
+          avatar={profile.profileImageUrl}
+          onAvatarChange={(newAvatar) =>
+            handleFieldChange("profileImageUrl", newAvatar)
+          }
         />
 
         <ProfileForm profile={profile} onChange={handleFieldChange} />
