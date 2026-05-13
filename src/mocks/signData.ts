@@ -13,7 +13,7 @@ type Login = {
 export async function fakeLogin(id: number): Promise<Login> {
   return {
     accessToken:
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJoZWxsb0BnbWFpbC5jb20iLCJ0eXBlIjoiQUNDRVNTIiwiaWF0IjoxNzc4NjA0NzMwLCJleHAiOjE3Nzg2MDgzMzB9.On6cWqU_UpUcvBhhsVGCnxIWkVxh2MkC7_aSHjJrroo",
+      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiZW1haWwiOiJoZWxsbzFAZ21haWwuY29tIiwidHlwZSI6IkFDQ0VTUyIsImlhdCI6MTc3ODY0Mzg5NywiZXhwIjoxNzc4NjQ3NDk3fQ.Y-EwH1-Y5zHpjng72xNBPLt8vgwTCabbF7pC1JRKbbw",
     refreshToken: "refresh-token",
     user: {
       id: id,

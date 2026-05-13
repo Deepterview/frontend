@@ -1,35 +1,39 @@
-type vitalsProps = {
-  label?: string;
-  value?: string;
-  progress?: number;
-  color?: string;
+type PerformanceVitalsProps = {
+  smileRatio: number;
+  headStability: number;
+  dominantEmotion: string;
 };
-const PerformanceVitals = () => {
-  const vitals: vitalsProps[] = [
+
+const PerformanceVitals = ({
+  smileRatio,
+  headStability,
+  dominantEmotion,
+}: PerformanceVitalsProps) => {
+  const vitals = [
     {
       label: "미소 비율",
-      value: "92%",
-      progress: 92,
+      value: `${smileRatio}%`,
+      progress: smileRatio,
       color:
         "bg-gradient-to-r from-emerald-700 via-green-600 to-emerald-500 shadow-[0_0_10px_rgba(22,163,74,0.2)]",
     },
     {
       label: "고개 안정성",
-      value: "60%",
-      progress: 60,
+      value: `${headStability}%`,
+      progress: headStability,
       color:
         "bg-gradient-to-r from-[#5b4423] via-[#8b6a2b] to-[#c08a32] shadow-[0_0_10px_rgba(192,138,50,0.16)]",
     },
     {
       label: "주요 감정 상태",
-      value: "중립",
+      value: dominantEmotion,
     },
   ];
 
   return (
-    <div className="bg-[#191c1f] rounded-[2rem] p-8 border border-[#494454]/10">
+    <div className="bg-[#191c1f] rounded-[2rem] p-8 border border-[#494454]/10 h-full">
       <h4 className="text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/60 font-bold mb-8">
-        성과 지표
+        성과 지표 (LIVE)
       </h4>
 
       <div className="space-y-8">
@@ -42,7 +46,7 @@ const PerformanceVitals = () => {
             {v.progress !== undefined && (
               <div className="h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
                 <div
-                  className={`h-full ${v.color} rounded-full transition-all duration-1000`}
+                  className={`h-full ${v.color} rounded-full transition-all duration-300`}
                   style={{ width: `${v.progress}%` }}
                 />
               </div>

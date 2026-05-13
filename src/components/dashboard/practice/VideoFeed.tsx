@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Mic, MicOff, VibrateOff, Video, VideoOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const VideoFeed = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+const VideoFeed = forwardRef<HTMLVideoElement>((_, ref) => {
   const [isMicOn, setIsMicOn] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -18,8 +17,8 @@ const VideoFeed = () => {
           audio: true,
         });
         setStream(mediaStream);
-        if (videoRef.current) {
-          videoRef.current.srcObject = mediaStream;
+        if (ref && "current" in ref && ref.current) {
+          ref.current.srcObject = mediaStream;
         }
       } catch (err) {
         console.error("Error accessing camera:", err);
@@ -53,7 +52,7 @@ const VideoFeed = () => {
     <div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden bg-[#111417] shadow-[0_0_50px_rgba(0,0,0,0.3)]">
       {/* Video Element */}
       <video
-        ref={videoRef}
+        ref={ref}
         autoPlay
         playsInline
         muted
@@ -124,6 +123,6 @@ const VideoFeed = () => {
       </div>
     </div>
   );
-};
+});
 
 export default VideoFeed;

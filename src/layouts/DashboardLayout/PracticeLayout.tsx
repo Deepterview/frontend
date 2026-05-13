@@ -1,11 +1,16 @@
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import VideoFeed from "../../components/dashboard/practice/VideoFeed";
 import Transcript from "../../components/dashboard/practice/Transcript";
 import EmotionAnalysis from "../../components/dashboard/practice/EmotionAnalysis";
 import PerformanceVitals from "../../components/dashboard/practice/PerformanceVitals";
 import AIInsight from "../../components/dashboard/practice/AIInsight";
+import { useFaceAnalysis } from "../../hooks/useFaceAnalysis";
 
 const PracticeLayout = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const analysisResult = useFaceAnalysis(videoRef);
+
   return (
     <motion.div
       className="grid grid-cols-12 gap-8 min-h-screen items-stretch"
@@ -20,7 +25,7 @@ const PracticeLayout = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          <VideoFeed />
+          <VideoFeed ref={videoRef} />
         </motion.div>
 
         <motion.div
@@ -40,7 +45,11 @@ const PracticeLayout = () => {
           transition={{ delay: 1.2, duration: 0.5 }}
           className="flex-1"
         >
-          <EmotionAnalysis />
+          <EmotionAnalysis
+            eyeContact={analysisResult.eyeContact}
+            confidence={analysisResult.confidence}
+            anxiety={analysisResult.anxiety}
+          />
         </motion.div>
 
         <motion.div
@@ -49,7 +58,11 @@ const PracticeLayout = () => {
           transition={{ delay: 1.3, duration: 0.5 }}
           className="flex-1"
         >
-          <PerformanceVitals />
+          <PerformanceVitals
+            smileRatio={analysisResult.smileRatio}
+            headStability={analysisResult.headStability}
+            dominantEmotion={analysisResult.dominantEmotion}
+          />
         </motion.div>
 
         <motion.div
