@@ -18,36 +18,36 @@ const DashboardLayout = () => {
       objective,
     });
   };
-  // const handleCreateSession = async () => {
-  //   try {
-  //     const formData = new FormData();
+  const handleCreateSession = async () => {
+    try {
+      const formData = new FormData();
 
-  //     formData.append("scenario", scenario);
-  //     formData.append("targetCompany", targetCompany);
-  //     formData.append("openPosition", openPosition);
+      formData.append("scenario", scenario);
+      formData.append("targetCompany", targetCompany);
+      formData.append("openPosition", openPosition);
 
-  //     if (objective && objective.length > 0) {
-  //       objective.forEach((file) => {
-  //         formData.append("objective", file);
-  //       });
-  //     }
+      if (objective && objective.length > 0) {
+        objective.forEach((file) => {
+          formData.append("objective", file);
+        });
+      }
 
-  //     const response = await fetch("/api/v1/sessions", {
-  //       method: "POST",
-  //       body: formData,
-  //     });
+      const response = await fetch("/api/v1/sessions", {
+        method: "POST",
+        body: formData,
+      });
 
-  //     if (!response.ok) {
-  //       throw new Error("Failed to create session");
-  //     }
+      if (!response.ok) {
+        throw new Error("Failed to create session");
+      }
 
-  //     const data = await response.json();
+      const data = await response.json();
 
-  //     console.log("Session created:", data);
-  //   } catch (error) {
-  //     console.error("API Error:", error);
-  //   }
-  // };
+      console.log("Session created:", data);
+    } catch (error) {
+      console.error("API Error:", error);
+    }
+  };
 
   return (
     <div>
@@ -91,7 +91,7 @@ const DashboardLayout = () => {
       >
         <div className="flex justify-center py-20">
           <motion.button
-            onClick={printConsole}
+            onClick={handleCreateSession}
             whileHover={{
               scale: 1.05,
               boxShadow: "0 0 60px rgba(155, 127, 237, 0.4)",

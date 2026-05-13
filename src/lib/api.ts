@@ -1,7 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -65,7 +64,7 @@ api.interceptors.response.use(
         localStorage.removeItem("user");
 
         // Chuyển hướng về trang login (hoặc reload để AuthProvider xử lý)
-        window.location.href = "/login";
+        window.location.href = "/signin";
         return Promise.reject(refreshError);
       }
     }

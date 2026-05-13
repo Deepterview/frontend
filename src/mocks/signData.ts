@@ -12,7 +12,8 @@ type Login = {
 
 export async function fakeLogin(id: number): Promise<Login> {
   return {
-    accessToken: "access-token",
+    accessToken:
+      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJoZWxsb0BnbWFpbC5jb20iLCJ0eXBlIjoiQUNDRVNTIiwiaWF0IjoxNzc4NjA0NzMwLCJleHAiOjE3Nzg2MDgzMzB9.On6cWqU_UpUcvBhhsVGCnxIWkVxh2MkC7_aSHjJrroo",
     refreshToken: "refresh-token",
     user: {
       id: id,

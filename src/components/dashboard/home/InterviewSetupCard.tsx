@@ -1,5 +1,7 @@
 import { Sliders, ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { jobCategoryService } from "../../../services/jobCategoryService";
 
 type InterviewSetupCardProps = {
   scenario: string;
@@ -9,6 +11,12 @@ type InterviewSetupCardProps = {
   setTargetCompany: (m: string) => void;
   setOpenPosition: (m: string) => void;
 };
+
+type JobCategory = {
+  id: number;
+  name: string;
+};
+
 const InterviewSetupCard = ({
   scenario,
   targetCompany,
@@ -17,6 +25,17 @@ const InterviewSetupCard = ({
   setTargetCompany,
   setOpenPosition,
 }: InterviewSetupCardProps) => {
+  const [jobCategories, setJobCategories] = useState<JobCategory[]>([]);
+
+  useEffect(() => {
+    const fetchJobCategories = async () => {
+      const data = await jobCategoryService.getJobCategories();
+      setJobCategories(data);
+    };
+
+    fetchJobCategories();
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -42,11 +61,6 @@ const InterviewSetupCard = ({
               onChange={(e) => setScenario(e.target.value)}
             >
               <option>기술 인터뷰 (코딩, 컴퓨터 공학 지식 관련 질문)</option>
-              <option>행동 인터뷰 (팀워크, 갈등 해결, 리더십 관련 질문)</option>
-              <option>
-                인사 인터뷰 (성격, 지원 동기, 조직 문화 적합성 관련 질문)
-              </option>
-              <option>시스템 설계 인터뷰 (아키텍처, 확장성 관련 질문)</option>
             </select>
             <ChevronDown
               size={18}
@@ -55,30 +69,59 @@ const InterviewSetupCard = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>
-            <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 mb-3 font-semibold">
-              목표 기업
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+          <div className="space-y-3">
+            <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 font-semibold">
+              경력 연차
             </label>
-            <input
-              type="text"
-              className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 outline-none"
-              placeholder="예: 구글, 스트라이프"
-              value={targetCompany}
-              onChange={(e) => setTargetCompany(e.target.value)}
-            />
+
+            <div className="relative group">
+              <select
+                className="w-full h-[58px] bg-[#0c0e12] border border-[#494454]/10 rounded-2xl px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none"
+                value={targetCompany}
+                onChange={(e) => setTargetCompany(e.target.value)}
+              >
+                <option value="0-1 years">0~1년</option>
+                <option value="1-3 years">1~3년</option>
+                <option value="3+ years">3년 이상</option>
+              </select>
+
+              <ChevronDown
+                size={18}
+                className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-[#cbc3d7] group-hover:text-[#cebdff] transition-colors"
+              />
+            </div>
           </div>
-          <div>
-            <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 mb-3 font-semibold">
-              모집 분야
+
+          <div className="space-y-3">
+            <label className="block text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/70 font-semibold">
+              모집 포지션
             </label>
-            <input
-              type="text"
-              className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all placeholder:text-[#cbc3d7]/20 outline-none"
-              placeholder="예: 시니어 아키텍트"
-              value={openPosition}
-              onChange={(e) => setOpenPosition(e.target.value)}
-            />
+
+            <div className="relative group">
+              <select
+                className="w-full h-[58px] bg-[#0c0e12] border border-[#494454]/10 rounded-2xl px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none"
+                value={openPosition}
+                onChange={(e) => {
+                  setOpenPosition(e.target.value);
+                  const job = jobCategories.find(
+                    (v) => v.name === e.target.value,
+                  );
+                  console.log({ job });
+                }}
+              >
+                {jobCategories.map((category) => (
+                  <option key={category.id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
+              <ChevronDown
+                size={18}
+                className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-[#cbc3d7] group-hover:text-[#cebdff] transition-colors"
+              />
+            </div>
           </div>
         </div>
       </form>
