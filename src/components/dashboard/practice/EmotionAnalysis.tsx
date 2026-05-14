@@ -49,7 +49,7 @@ const EmotionAnalysis = ({
     },
   ];
 
-  // Each bar represents one of the 3 metrics
+  // The bars represent the 3 metrics
   const bars = [
     { value: eyeContact, label: "아이 컨택" },
     { value: confidence, label: "자신감 지수" },

@@ -11,6 +11,26 @@ const PerformanceVitals = ({
   headStability,
   dominantEmotion,
 }: PerformanceVitalsProps) => {
+  const getEmotionColor = (emotion: string) => {
+    switch (emotion) {
+      case "행복":
+        return "text-emerald-400";
+      case "슬픔":
+        return "text-blue-500";
+      case "놀람":
+        return "text-yellow-400";
+      case "분노":
+        return "text-red-500";
+      case "공포":
+        return "text-slate-400";
+      case "혐오":
+        return "text-orange-500";
+      case "중립":
+      default:
+        return "text-[#cebdff]";
+    }
+  };
+
   const vitals = [
     {
       label: "미소 비율",
@@ -31,7 +51,7 @@ const PerformanceVitals = ({
     {
       label: "주요 감정 상태",
       value: dominantEmotion,
-      textColor: "text-[#cebdff]",
+      textColor: getEmotionColor(dominantEmotion),
     },
   ];
 
