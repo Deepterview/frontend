@@ -30,11 +30,16 @@ const Transcript = ({ isInterviewStarted = false }: TranscriptProps) => {
   const audioChunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
 
   // Auto-scroll to the bottom of the transcript when new answers appear
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [messages]);
 

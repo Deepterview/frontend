@@ -80,11 +80,43 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         isMounted = false;
 
         // 1. Stop recorder and save if active during unmount
+        const recorder = mediaRecorderRef.current;
         if (
-          mediaRecorderRef.current &&
-          mediaRecorderRef.current.state !== "inactive"
+          recorder &&
+          recorder.state !== "inactive"
         ) {
-          mediaRecorderRef.current.stop();
+          const chunks = chunksRef.current;
+
+          // Override onstop to a dedicated, lightweight download handler for unmount
+          // This captures the final chunk and avoids duplicate redirects
+          recorder.onstop = () => {
+            if (chunks.length === 0) return;
+            try {
+              const blob = new Blob(chunks, {
+                type: recorder.mimeType || "video/mp4",
+              });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              document.body.appendChild(a);
+              a.style.display = "none";
+              a.href = url;
+              const timestamp = new Date()
+                .toISOString()
+                .slice(0, 19)
+                .replace(/:/g, "-");
+              a.download = `deepterview_practice_${timestamp}.mp4`;
+              a.click();
+
+              setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+              }, 100);
+            } catch (err) {
+              console.error("Failed to save video on unmount:", err);
+            }
+          };
+
+          recorder.stop();
         }
 
         // 2. Stop camera stream tracks
