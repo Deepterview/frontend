@@ -1,4 +1,4 @@
-import { AlertCircle, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const AIInsight = () => {
   return (

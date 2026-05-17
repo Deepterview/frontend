@@ -10,12 +10,15 @@ const VideoFeed = forwardRef<HTMLVideoElement>((_, ref) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let activeStream: MediaStream | null = null;
+
     async function setupCamera() {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: true,
           audio: true,
         });
+        activeStream = mediaStream;
         setStream(mediaStream);
         if (ref && "current" in ref && ref.current) {
           ref.current.srcObject = mediaStream;
@@ -28,8 +31,8 @@ const VideoFeed = forwardRef<HTMLVideoElement>((_, ref) => {
     setupCamera();
 
     return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+      if (activeStream) {
+        activeStream.getTracks().forEach((track) => track.stop());
       }
     };
   }, []);

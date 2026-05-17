@@ -26,6 +26,8 @@ export const useFaceAnalysis = (videoRef: React.RefObject<HTMLVideoElement | nul
 
   useEffect(() => {
     let animationFrameId: number;
+    let isMounted = true;
+    let landmarkerInstance: FaceLandmarker | null = null;
 
     const initMediaPipe = async () => {
       const vision = await FilesetResolver.forVisionTasks(
@@ -39,10 +41,19 @@ export const useFaceAnalysis = (videoRef: React.RefObject<HTMLVideoElement | nul
         outputFaceBlendshapes: true,
         runningMode: "VIDEO",
       });
+      
+      if (!isMounted) {
+        landmarker.close();
+        return;
+      }
+      
+      landmarkerInstance = landmarker;
       landmarkerRef.current = landmarker;
     };
 
     const predict = () => {
+      if (!isMounted) return;
+
       if (
         videoRef.current &&
         videoRef.current.readyState >= 2 &&
@@ -129,12 +140,18 @@ export const useFaceAnalysis = (videoRef: React.RefObject<HTMLVideoElement | nul
     };
 
     initMediaPipe().then(() => {
-      predict();
+      if (isMounted) {
+        predict();
+      }
     });
 
     return () => {
+      isMounted = false;
       cancelAnimationFrame(animationFrameId);
-      landmarkerRef.current?.close();
+      if (landmarkerInstance) {
+        landmarkerInstance.close();
+      }
+      landmarkerRef.current = null;
     };
   }, [videoRef]);
 
