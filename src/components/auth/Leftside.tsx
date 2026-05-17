@@ -1,5 +1,3 @@
-import React from "react";
-
 const Leftside = () => {
   return (
     <section className="w-full md:w-1/2 min-h-[600px] md:min-h-screen bg-surface-container-lowest relative flex items-center justify-center p-8 md:p-16 lg:p-24 overflow-hidden border-r border-white/5">

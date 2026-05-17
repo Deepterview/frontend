@@ -9,15 +9,6 @@ const DashboardLayout = () => {
   const [targetCompany, setTargetCompany] = useState("");
   const [openPosition, setOpenPosition] = useState("");
   const [objective, setObjective] = useState<File[] | null>(null);
-
-  const printConsole = () => {
-    console.log({
-      scenario,
-      targetCompany,
-      openPosition,
-      objective,
-    });
-  };
   const handleCreateSession = async () => {
     try {
       const formData = new FormData();

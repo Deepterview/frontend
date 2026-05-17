@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import type { SessionDetailHeaderProps } from "../../../types/types";
 import { Clock, FileText, MessageSquare, Share2 } from "lucide-react";
 
-const SessionDetailHeader = ({ session }: SessionDetailHeaderProps) => {
+const SessionDetailHeader = ({ session, onViewReport }: SessionDetailHeaderProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -69,7 +69,10 @@ const SessionDetailHeader = ({ session }: SessionDetailHeaderProps) => {
         <button className="flex flex-nowrap items-center gap-2 px-6 py-3 whitespace-nowrap bg-[#111417] border border-[#494454]/20 text-[#e1e2e7] rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#191c1f] transition-all">
           <Share2 size={14} /> 보고서 공유
         </button>
-        <button className="flex flex-nowrap items-center gap-2 px-8 py-4 whitespace-nowrap bg-[#9b7fed] text-[#31057e] rounded-full text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-[#9b7fed]/20">
+        <button
+          onClick={onViewReport}
+          className="flex flex-nowrap items-center gap-2 px-8 py-4 whitespace-nowrap bg-[#9b7fed] text-[#31057e] rounded-full text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-[#9b7fed]/20 cursor-pointer"
+        >
           <FileText size={14} /> 전체 분석 보기
         </button>
       </div>

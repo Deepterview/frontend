@@ -10,7 +10,7 @@ interface VideoFeedProps {
 
 const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
   ({ onStartInterview, onEndInterview }, ref) => {
-    const [isVideoOn, setIsVideoOn] = useState(true);
+    const [isVideoOn] = useState(true);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [isRecording, setIsRecording] = useState(false);
     const [recordingTime, setRecordingTime] = useState(0);
@@ -21,7 +21,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
 
     // Dynamic live recording timer
     useEffect(() => {
-      let interval: NodeJS.Timeout | null = null;
+      let interval: any = null;
       if (isRecording) {
         setRecordingTime(0);
         interval = setInterval(() => {
@@ -48,6 +48,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
     };
 
     useEffect(() => {
+      let isMounted = true;
       let activeStream: MediaStream | null = null;
 
       async function setupCamera() {
@@ -56,6 +57,13 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
             video: true,
             audio: true,
           });
+
+          if (!isMounted) {
+            // Stop tracks immediately if unmounted before promise resolved
+            mediaStream.getTracks().forEach((track) => track.stop());
+            return;
+          }
+
           activeStream = mediaStream;
           setStream(mediaStream);
           if (ref && "current" in ref && ref.current) {
@@ -69,6 +77,8 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
       setupCamera();
 
       return () => {
+        isMounted = false;
+
         // 1. Stop recorder and save if active during unmount
         if (
           mediaRecorderRef.current &&
@@ -80,6 +90,11 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         // 2. Stop camera stream tracks
         if (activeStream) {
           activeStream.getTracks().forEach((track) => track.stop());
+        }
+
+        // 3. Clear video element srcObject to fully release camera hardware
+        if (ref && "current" in ref && ref.current) {
+          ref.current.srcObject = null;
         }
 
         // Notify parent layout that interview ended on unmount
@@ -157,16 +172,17 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
     };
 
     const stopRecordingAndNavigate = () => {
+      const recorder = mediaRecorderRef.current;
       if (
-        mediaRecorderRef.current &&
-        mediaRecorderRef.current.state !== "inactive"
+        recorder &&
+        recorder.state !== "inactive"
       ) {
-        const originalOnStop = mediaRecorderRef.current.onstop;
+        const originalOnStop = recorder.onstop;
 
         // Override onstop to trigger download AND navigate
-        mediaRecorderRef.current.onstop = (e) => {
+        recorder.onstop = (e) => {
           if (originalOnStop) {
-            originalOnStop.call(mediaRecorderRef.current, e);
+            originalOnStop.call(recorder, e);
           }
           if (onEndInterview) {
             onEndInterview();
@@ -174,7 +190,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
           navigate("/dashboard/analytics");
         };
 
-        mediaRecorderRef.current.stop();
+        recorder.stop();
       } else {
         if (onEndInterview) {
           onEndInterview();

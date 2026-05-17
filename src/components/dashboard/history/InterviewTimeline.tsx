@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import type { InterviewTimelineProps } from "../../../types/types";
 import { AlertCircle, MessageCircle, Sparkles, User } from "lucide-react";
 
-const InterviewTimeline = ({ qaPairs }: InterviewTimelineProps) => {
+const InterviewTimeline = ({ qaPairs, onNavigateToAnalysis }: InterviewTimelineProps) => {
   return (
     <div className="relative pl-12 space-y-12 py-8">
       {/* Timeline Line */}
@@ -79,6 +79,17 @@ const InterviewTimeline = ({ qaPairs }: InterviewTimelineProps) => {
                 {pair.answer}
               </p>
             </div>
+
+            {pair.answerId && onNavigateToAnalysis && (
+              <div className="flex justify-end pt-4 border-t border-white/5">
+                <button
+                  onClick={() => onNavigateToAnalysis(pair.answerId!)}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-[#cebdff]/10 hover:bg-[#cebdff]/20 text-[#cebdff] rounded-full border border-[#cebdff]/20 text-[0.7rem] font-bold transition-all hover:scale-102 cursor-pointer shadow-lg shadow-[#cebdff]/5 hover:border-[#cebdff]/40"
+                >
+                  <Sparkles size={12} className="animate-pulse" /> AI 상세 분석 보고서 보기
+                </button>
+              </div>
+            )}
           </div>
         </motion.div>
       ))}

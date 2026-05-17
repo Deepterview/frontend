@@ -31,12 +31,14 @@ export interface QAPair {
   tags?: string[];
   aiInsight?: string;
   aiInsightType?: "positive" | "negative";
+  answerId?: number;
 }
 
 // important
 
 export interface InterviewTimelineProps {
   qaPairs: QAPair[];
+  onNavigateToAnalysis?: (answerId: number) => void;
 }
 
 export interface SessionListProps {
@@ -47,6 +49,7 @@ export interface SessionListProps {
 
 export interface SessionDetailHeaderProps {
   session: InterviewSession;
+  onViewReport?: () => void;
 }
 
 export interface UserProfile {

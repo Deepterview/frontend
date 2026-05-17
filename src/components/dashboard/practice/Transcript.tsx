@@ -90,6 +90,39 @@ const Transcript = ({ isInterviewStarted = false }: TranscriptProps) => {
     }
   }, []);
 
+  // Clean up all active voice streams, audio recorders, and speech recognition on component unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {
+          console.error("Failed to abort SpeechRecognition on unmount:", e);
+        }
+      }
+
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== "inactive"
+      ) {
+        try {
+          mediaRecorderRef.current.stop();
+        } catch (e) {
+          console.error("Failed to stop MediaRecorder on unmount:", e);
+        }
+      }
+
+      if (streamRef.current) {
+        try {
+          streamRef.current.getTracks().forEach((track) => track.stop());
+        } catch (e) {
+          console.error("Failed to stop stream tracks on unmount:", e);
+        }
+        streamRef.current = null;
+      }
+    };
+  }, []);
+
   // Safe helper to synthesize a 1-second silent audio WAV file
   const createSilentAudioBlob = (): Blob => {
     const sampleRate = 8000;

@@ -9,8 +9,8 @@ import { useFaceAnalysis } from "../../hooks/useFaceAnalysis";
 
 const PracticeLayout = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const analysisResult = useFaceAnalysis(videoRef);
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
+  const analysisResult = useFaceAnalysis(videoRef, isInterviewStarted);
 
   return (
     <motion.div

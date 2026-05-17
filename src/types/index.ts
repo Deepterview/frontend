@@ -151,6 +151,8 @@ export interface QuestionResponse {
   content: string;
   questionType: "TECHNICAL" | "BEHAVIORAL" | "SITUATIONAL" | "EXPERIENCE";
   timeLimitSec: number;
+  answerId?: number;
+  answerText?: string;
 }
 
 export interface SessionDetail {
