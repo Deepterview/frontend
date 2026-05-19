@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Sparkles,
@@ -22,6 +22,7 @@ import type { AnswerAnalysis } from "../../types";
 const AnalyticsLayout = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { sessionId } = useParams();
 
   const answerIdParam = searchParams.get("answerId");
   const [activeAnswerId, setActiveAnswerId] = useState<number | null>(
@@ -53,8 +54,8 @@ const AnalyticsLayout = () => {
         const data = await answerService.getAnalysis(activeAnswerId);
         setAnalysis(data);
 
-        // Once we have the answer, if we don't have the sidebar loaded, load its session questions
-        if (data && sessionQuestions.length === 0) {
+        // Once we have the answer, if we don't have the sidebar loaded and no sessionId route, load its session questions
+        if (data && sessionQuestions.length === 0 && !sessionId) {
           loadSessionSidebarOfAnswer(activeAnswerId);
         }
       } catch (err: any) {
@@ -67,6 +68,35 @@ const AnalyticsLayout = () => {
 
     fetchAnalysis();
   }, [activeAnswerId]);
+
+  // Load session questions directly if sessionId is on the path
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const loadSessionData = async () => {
+      try {
+        const detail = await sessionService.getSessionDetail(Number(sessionId));
+        setSessionQuestions(detail.questions);
+        setSessionTitle(detail.jobTitle);
+
+        // If no activeAnswerId is set yet, auto-select the first answered question of this session
+        if (!answerIdParam) {
+          const firstAnswered = detail.questions.find((q) => q.answerId);
+          if (firstAnswered && firstAnswered.answerId) {
+            setSearchParams({ answerId: String(firstAnswered.answerId) });
+            setActiveAnswerId(firstAnswered.answerId);
+          } else {
+            setError("이 세션에는 AI 분석 완료된 답변이 없습니다.");
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load session info from path parameter:", err);
+        setError("세션 정보를 불러오는데 실패했습니다.");
+      }
+    };
+
+    loadSessionData();
+  }, [sessionId, answerIdParam]);
 
   // 2. Fetch the session and all its questions so the user can easily switch between them!
   const loadSessionSidebarOfAnswer = async (ansId: number) => {
@@ -87,9 +117,9 @@ const AnalyticsLayout = () => {
     }
   };
 
-  // 3. Fallback: If page is loaded directly without an answerId, auto-load the latest completed session's first answer
+  // 3. Fallback: If page is loaded directly without an answerId and no sessionId route, auto-load the latest completed session's first answer
   useEffect(() => {
-    if (answerIdParam) return; // Already have active param, skip auto-load
+    if (answerIdParam || sessionId) return; // Already have active param or sessionId route, skip auto-load
 
     const autoLoadLatest = async () => {
       try {
@@ -122,7 +152,7 @@ const AnalyticsLayout = () => {
     };
 
     autoLoadLatest();
-  }, [answerIdParam]);
+  }, [answerIdParam, sessionId]);
 
   const handleSelectQuestion = (ansId: number) => {
     setSearchParams({ answerId: String(ansId) });
@@ -139,6 +169,15 @@ const AnalyticsLayout = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
+          {/* Comeback Button */}
+          <button
+            onClick={() => navigate("/dashboard/history")}
+            className="flex items-center gap-3 w-full px-5 py-3.5 mb-6 bg-[#111417]/80 hover:bg-[#111417] text-[#cbc3d7] hover:text-white rounded-2xl border border-white/5 text-xs font-bold transition-all cursor-pointer group shadow-sm hover:shadow-md"
+          >
+            <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+            <span>이전 기록으로 돌아가기</span>
+          </button>
+
           <div className="mb-6">
             <span className="text-[0.6rem] uppercase tracking-[0.25em] text-[#cebdff] font-bold">
               진행 중인 세션

@@ -3,38 +3,48 @@ import InterviewSetupCard from "../../components/dashboard/home/InterviewSetupCa
 import DocumentsCard from "../../components/dashboard/home/DocumentsCard";
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { sessionService } from "../../services/sessionService";
 
 const DashboardLayout = () => {
-  const [scenario, setScenario] = useState("기술 인터뷰");
-  const [targetCompany, setTargetCompany] = useState("");
   const [openPosition, setOpenPosition] = useState("");
+  const [jobCategoryId, setJobCategoryId] = useState<number | null>(null);
+  const [careerYears, setCareerYears] = useState("0-1 years");
+  const [totalQuestions, setTotalQuestions] = useState("1");
   const [objective, setObjective] = useState<File[] | null>(null);
+  const navigate = useNavigate();
+
   const handleCreateSession = async () => {
     try {
-      const formData = new FormData();
-
-      formData.append("scenario", scenario);
-      formData.append("targetCompany", targetCompany);
-      formData.append("openPosition", openPosition);
-
-      if (objective && objective.length > 0) {
-        objective.forEach((file) => {
-          formData.append("objective", file);
-        });
+      if (!jobCategoryId) {
+        console.error("Job category ID is not set yet");
+        return;
       }
 
-      const response = await fetch("/api/v1/sessions", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create session");
+      // Convert careerYears selection (string) to normalized careerYears number
+      let careerYearsNum = 0;
+      if (careerYears === "1-3 years") {
+        careerYearsNum = 2;
+      } else if (careerYears === "3+ years") {
+        careerYearsNum = 3;
       }
 
-      const data = await response.json();
+      // Prepare request payload for JSON API
+      const requestPayload = {
+        jobCategoryId,
+        jobTitle: openPosition,
+        careerYears: careerYearsNum,
+        sessionType: "TECHNICAL" as const, // Defaulted to TECHNICAL per user request
+        totalQuestions: parseInt(totalQuestions, 10),
+      };
 
-      console.log("Session created:", data);
+      console.log("Creating session with payload:", requestPayload);
+      const data = await sessionService.createSession(requestPayload);
+      console.log("Session created successfully:", data);
+
+      if (data && data.sessionId) {
+        navigate("/dashboard/practice", { state: { sessionId: data.sessionId } });
+      }
     } catch (error) {
       console.error("API Error:", error);
     }
@@ -65,12 +75,13 @@ const DashboardLayout = () => {
         transition={{ delay: 0.8, duration: 0.6 }}
       >
         <InterviewSetupCard
-          scenario={scenario}
-          targetCompany={targetCompany}
+          totalQuestions={totalQuestions}
+          careerYears={careerYears}
           openPosition={openPosition}
-          setScenario={setScenario}
-          setTargetCompany={setTargetCompany}
+          setTotalQuestions={setTotalQuestions}
+          setCareerYears={setCareerYears}
           setOpenPosition={setOpenPosition}
+          setJobCategoryId={setJobCategoryId}
         />
         <DocumentsCard objective={objective} setObjective={setObjective} />
       </motion.div>

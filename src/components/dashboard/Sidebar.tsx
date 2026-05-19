@@ -11,11 +11,6 @@ const Sidebar = () => {
       link: "/dashboard/practice",
     },
     {
-      icon: BarChart3,
-      label: "분석",
-      link: "/dashboard/analytics",
-    },
-    {
       icon: History,
       label: "기록",
       link: "/dashboard/history",

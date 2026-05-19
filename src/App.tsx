@@ -41,18 +41,18 @@ function App() {
             }
           />
           <Route
-            path="/dashboard/analytics"
-            element={
-              <Dashboard>
-                <AnalyticsLayout />
-              </Dashboard>
-            }
-          />
-          <Route
             path="/dashboard/history"
             element={
               <Dashboard>
                 <HistoryLayout />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/dashboard/history/:sessionId/analytics"
+            element={
+              <Dashboard>
+                <AnalyticsLayout />
               </Dashboard>
             }
           />

@@ -81,10 +81,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
 
         // 1. Stop recorder and save if active during unmount
         const recorder = mediaRecorderRef.current;
-        if (
-          recorder &&
-          recorder.state !== "inactive"
-        ) {
+        if (recorder && recorder.state !== "inactive") {
           const chunks = chunksRef.current;
 
           // Override onstop to a dedicated, lightweight download handler for unmount
@@ -205,10 +202,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
 
     const stopRecordingAndNavigate = () => {
       const recorder = mediaRecorderRef.current;
-      if (
-        recorder &&
-        recorder.state !== "inactive"
-      ) {
+      if (recorder && recorder.state !== "inactive") {
         const originalOnStop = recorder.onstop;
 
         // Override onstop to trigger download AND navigate
@@ -219,7 +213,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
           if (onEndInterview) {
             onEndInterview();
           }
-          navigate("/dashboard/analytics");
+          navigate("/dashboard/history");
         };
 
         recorder.stop();
@@ -227,7 +221,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         if (onEndInterview) {
           onEndInterview();
         }
-        navigate("/dashboard/analytics");
+        navigate("/dashboard/history");
       }
       setIsRecording(false);
     };

@@ -138,17 +138,27 @@ const HistoryLayout = () => {
 
   // Navigations
   const handleNavigateToAnalysis = (answerId: number) => {
-    navigate(`/dashboard/analytics?answerId=${answerId}`);
+    if (selectedSessionId) {
+      navigate(`/dashboard/history/${selectedSessionId}/analytics?answerId=${answerId}`);
+    } else {
+      navigate(`/dashboard/analytics?answerId=${answerId}`);
+    }
   };
 
   const handleViewReport = () => {
-    if (sessionDetail?.questions && sessionDetail.questions.length > 0) {
-      // Find the first question with a valid answerId
-      const firstAnswered = sessionDetail.questions.find((q) => q.answerId);
-      if (firstAnswered && firstAnswered.answerId) {
-        handleNavigateToAnalysis(firstAnswered.answerId);
+    if (selectedSessionId) {
+      if (sessionDetail?.questions && sessionDetail.questions.length > 0) {
+        // Find the first question with a valid answerId
+        const firstAnswered = sessionDetail.questions.find((q) => q.answerId);
+        if (firstAnswered && firstAnswered.answerId) {
+          navigate(`/dashboard/history/${selectedSessionId}/analytics?answerId=${firstAnswered.answerId}`);
+        } else {
+          // Navigate anyway so the user can see the questions in the sidebar
+          navigate(`/dashboard/history/${selectedSessionId}/analytics`);
+        }
       } else {
-        alert("이 세션에는 AI 분석 완료된 답변이 없습니다.");
+        // Navigate anyway if there are no questions loaded yet
+        navigate(`/dashboard/history/${selectedSessionId}/analytics`);
       }
     }
   };

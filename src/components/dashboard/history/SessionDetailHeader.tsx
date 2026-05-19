@@ -7,11 +7,11 @@ const SessionDetailHeader = ({ session, onViewReport }: SessionDetailHeaderProps
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-[#191c1f] rounded-[2.5rem] p-8 border border-[#494454]/10 shadow-[0_0_50px_rgba(0,0,0,0.2)] flex items-center justify-between"
+      className="bg-[#191c1f] rounded-[2.5rem] p-8 border border-[#494454]/10 shadow-[0_0_50px_rgba(0,0,0,0.2)] flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden"
     >
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-8 min-w-0 flex-1">
         {/* Score Circle */}
-        <div className="relative w-24 h-24 flex items-center justify-center">
+        <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
           <svg className="w-full h-full -rotate-90">
             <circle
               cx="48"
@@ -41,8 +41,8 @@ const SessionDetailHeader = ({ session, onViewReport }: SessionDetailHeaderProps
           </span>
         </div>
 
-        <div>
-          <h3 className="text-2xl font-black tracking-tighter text-[#e1e2e7] whitespace-nowrap">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-2xl font-black tracking-tighter text-[#e1e2e7] leading-tight">
             {session.company} • {session.role}
           </h3>
           <p className="text-[#cbc3d7]/60 text-sm mt-1">
@@ -65,7 +65,7 @@ const SessionDetailHeader = ({ session, onViewReport }: SessionDetailHeaderProps
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4 shrink-0">
         <button className="flex flex-nowrap items-center gap-2 px-6 py-3 whitespace-nowrap bg-[#111417] border border-[#494454]/20 text-[#e1e2e7] rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#191c1f] transition-all">
           <Share2 size={14} /> 보고서 공유
         </button>
