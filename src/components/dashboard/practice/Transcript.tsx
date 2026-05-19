@@ -16,7 +16,7 @@ interface TranscriptProps {
 const Transcript = ({ isInterviewStarted = false }: TranscriptProps) => {
   const [inputText, setInputText] = useState("");
   const [isListening, setIsListening] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300); // 300 seconds countdown
+  const [timeLeft, setTimeLeft] = useState(120); // 120 seconds countdown
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -220,7 +220,7 @@ const Transcript = ({ isInterviewStarted = false }: TranscriptProps) => {
     const audioBlob = createSilentAudioBlob();
     try {
       const mockQuestionId = 1;
-      const mockDurationSec = 300;
+      const mockDurationSec = 120;
 
       await answerService.submitAnswer(
         mockQuestionId,
@@ -244,7 +244,7 @@ const Transcript = ({ isInterviewStarted = false }: TranscriptProps) => {
       }
 
       audioChunksRef.current = [];
-      setTimeLeft(300); // Reset timer for the next question
+      setTimeLeft(120); // Reset timer for the next question
     } catch (err) {
       console.error("Failed to auto-submit timeout answer:", err);
     }
@@ -263,8 +263,8 @@ const Transcript = ({ isInterviewStarted = false }: TranscriptProps) => {
 
     try {
       const mockQuestionId = 1;
-      // Calculate actual time spent (e.g. if timeLeft is 285s, spent is 15s)
-      const actualDurationSec = Math.max(1, 300 - timeLeft);
+      // Calculate actual time spent (e.g. if timeLeft is 105s, spent is 15s)
+      const actualDurationSec = Math.max(1, 120 - timeLeft);
 
       await answerService.submitAnswer(
         mockQuestionId,
@@ -289,7 +289,7 @@ const Transcript = ({ isInterviewStarted = false }: TranscriptProps) => {
       }
 
       audioChunksRef.current = [];
-      setTimeLeft(300); // Reset timer back to 300 for the next question
+      setTimeLeft(120); // Reset timer back to 120 for the next question
     } catch (err) {
       console.error("Failed to submit answer:", err);
       alert("답변을 전송하는 데 실패했습니다. 네트워크 상태를 확인해 주세요.");
