@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import type { SessionDetailHeaderProps } from "../../../types/types";
-import { Clock, FileText, MessageSquare, Share2 } from "lucide-react";
+import { Clock, FileText, MessageSquare, Share2, Trash2 } from "lucide-react";
 
-const SessionDetailHeader = ({ session, onViewReport }: SessionDetailHeaderProps) => {
+const SessionDetailHeader = ({ session, onViewReport, onDeleteSession }: SessionDetailHeaderProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -75,6 +75,15 @@ const SessionDetailHeader = ({ session, onViewReport }: SessionDetailHeaderProps
         >
           <FileText size={14} /> 전체 분석 보기
         </button>
+        {onDeleteSession && (
+          <button
+            onClick={onDeleteSession}
+            className="flex items-center justify-center p-3.5 bg-red-500/5 hover:bg-red-500/10 border border-red-500/10 hover:border-red-500/30 text-red-400 hover:text-red-300 rounded-full transition-all cursor-pointer shadow-md group"
+            title="세션 삭제"
+          >
+            <Trash2 size={16} className="group-hover:scale-105 transition-transform" />
+          </button>
+        )}
       </div>
     </motion.div>
   );

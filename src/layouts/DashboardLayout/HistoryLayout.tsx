@@ -22,29 +22,33 @@ const HistoryLayout = () => {
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const loadSessionsList = async (shouldAutoSelect: boolean = true) => {
+    try {
+      setIsLoadingList(true);
+      setError(null);
+      // Load sessions
+      const res = await sessionService.getSessions(0, 50);
+      const completedSessions = res.content || [];
+      setSessions(completedSessions);
+      
+      if (shouldAutoSelect && completedSessions.length > 0) {
+        setSelectedSessionId(completedSessions[0].sessionId);
+      } else if (completedSessions.length === 0) {
+        setSelectedSessionId(null);
+        setSessionDetail(null);
+        setSessionReport(null);
+      }
+    } catch (err: any) {
+      console.error("Failed to load sessions:", err);
+      setError("세션 목록을 불러오는 중 오류가 발생했습니다.");
+    } finally {
+      setIsLoadingList(false);
+    }
+  };
+
   // 1. Fetch sessions list on mount
   useEffect(() => {
-    const loadSessionsList = async () => {
-      try {
-        setIsLoadingList(true);
-        setError(null);
-        // Load sessions
-        const res = await sessionService.getSessions(0, 50);
-        const completedSessions = res.content || [];
-        setSessions(completedSessions);
-        
-        if (completedSessions.length > 0) {
-          setSelectedSessionId(completedSessions[0].sessionId);
-        }
-      } catch (err: any) {
-        console.error("Failed to load sessions:", err);
-        setError("세션 목록을 불러오는 중 오류가 발생했습니다.");
-      } finally {
-        setIsLoadingList(false);
-      }
-    };
-
-    loadSessionsList();
+    loadSessionsList(true);
   }, []);
 
   // 2. Load session detail & report when selectedSessionId changes
@@ -163,6 +167,29 @@ const HistoryLayout = () => {
     }
   };
 
+  const handleDeleteSession = async () => {
+    if (!selectedSessionId) return;
+
+    const confirmDelete = window.confirm(
+      "이 면접 연습 기록을 정말로 삭제하시겠습니까? 삭제된 기록은 복구할 수 없습니다."
+    );
+    if (!confirmDelete) return;
+
+    try {
+      setIsLoadingDetail(true);
+      await sessionService.deleteSession(selectedSessionId);
+      
+      // Successfully deleted, refresh list and auto-select next
+      alert("면접 연습 기록이 성공적으로 삭제되었습니다.");
+      await loadSessionsList(true);
+    } catch (err) {
+      console.error("Failed to delete session:", err);
+      alert("세션 삭제에 실패했습니다. 다시 시도해 주세요.");
+    } finally {
+      setIsLoadingDetail(false);
+    }
+  };
+
   const selectedMappedSession = getMappedSelectedSession();
 
   return (
@@ -260,6 +287,7 @@ const HistoryLayout = () => {
                 <SessionDetailHeader
                   session={selectedMappedSession}
                   onViewReport={handleViewReport}
+                  onDeleteSession={handleDeleteSession}
                 />
 
                 {/* Session AI Qualitative Summaries (If report exists) */}

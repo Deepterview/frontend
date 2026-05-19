@@ -50,6 +50,7 @@ export interface SessionListProps {
 export interface SessionDetailHeaderProps {
   session: InterviewSession;
   onViewReport?: () => void;
+  onDeleteSession?: () => void;
 }
 
 export interface UserProfile {
