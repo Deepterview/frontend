@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { jobCategoryService } from "../../../services/jobCategoryService";
 
 type InterviewSetupCardProps = {
-  totalQuestions: string;
-  careerYears: string;
+  totalQuestions: number;
+  careerYears: number;
   openPosition: string;
-  setTotalQuestions: (m: string) => void;
-  setCareerYears: (m: string) => void;
+  setTotalQuestions: (m: number) => void;
+  setCareerYears: (m: number) => void;
   setOpenPosition: (m: string) => void;
   setJobCategoryId: (id: number) => void;
 };
@@ -103,11 +103,11 @@ const InterviewSetupCard = ({
               <select
                 className="w-full h-[58px] bg-[#0c0e12] border border-[#494454]/10 rounded-2xl px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none"
                 value={careerYears}
-                onChange={(e) => setCareerYears(e.target.value)}
+                onChange={(e) => setCareerYears(Number(e.target.value))}
               >
-                <option value="0-1 years">0~1년</option>
-                <option value="1-3 years">1~3년</option>
-                <option value="3+ years">3년 이상</option>
+                <option value={0}>0~1년</option>
+                <option value={1}>1~3년</option>
+                <option value={3}>3년 이상</option>
               </select>
 
               <ChevronDown
@@ -125,11 +125,11 @@ const InterviewSetupCard = ({
               <select
                 className="w-full bg-[#0c0e12] border border-[#494454]/10 rounded-2xl py-4 px-5 text-[#e1e2e7] appearance-none focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all cursor-pointer outline-none"
                 value={totalQuestions}
-                onChange={(e) => setTotalQuestions(e.target.value)}
+                onChange={(e) => setTotalQuestions(Number(e.target.value))}
               >
-                <option value="1">질문 1개</option>
-                <option value="5">질문 5개</option>
-                <option value="10">질문 10개</option>
+                <option value={1}>질문 1개</option>
+                <option value={5}>질문 5개</option>
+                <option value={10}>질문 10개</option>
               </select>
               <ChevronDown
                 size={18}

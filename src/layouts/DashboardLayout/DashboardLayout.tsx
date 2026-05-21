@@ -9,8 +9,8 @@ import { sessionService } from "../../services/sessionService";
 const DashboardLayout = () => {
   const [openPosition, setOpenPosition] = useState("");
   const [jobCategoryId, setJobCategoryId] = useState<number | null>(null);
-  const [careerYears, setCareerYears] = useState("0-1 years");
-  const [totalQuestions, setTotalQuestions] = useState("1");
+  const [careerYears, setCareerYears] = useState<number>(0);
+  const [totalQuestions, setTotalQuestions] = useState<number>(1);
   const [objective, setObjective] = useState<File[] | null>(null);
   const navigate = useNavigate();
 
@@ -21,21 +21,13 @@ const DashboardLayout = () => {
         return;
       }
 
-      // Convert careerYears selection (string) to normalized careerYears number
-      let careerYearsNum = 0;
-      if (careerYears === "1-3 years") {
-        careerYearsNum = 2;
-      } else if (careerYears === "3+ years") {
-        careerYearsNum = 3;
-      }
-
       // Prepare request payload for JSON API
       const requestPayload = {
         jobCategoryId,
         jobTitle: openPosition,
-        careerYears: careerYearsNum,
-        sessionType: "TECHNICAL" as const, // Defaulted to TECHNICAL per user request
-        totalQuestions: parseInt(totalQuestions, 10),
+        careerYears,
+        sessionType: "TECHNICAL" as const,
+        totalQuestions,
       };
 
       console.log("Creating session with payload:", requestPayload);
@@ -43,7 +35,9 @@ const DashboardLayout = () => {
       console.log("Session created successfully:", data);
 
       if (data && data.sessionId) {
-        navigate("/dashboard/practice", { state: { sessionId: data.sessionId } });
+        navigate("/dashboard/practice", {
+          state: { sessionId: data.sessionId },
+        });
       }
     } catch (error) {
       console.error("API Error:", error);
