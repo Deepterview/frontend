@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import VideoFeed from "../../components/dashboard/practice/VideoFeed";
 import Transcript from "../../components/dashboard/practice/Transcript";
 import EmotionAnalysis from "../../components/dashboard/practice/EmotionAnalysis";
@@ -8,6 +9,8 @@ import PerformanceVitals from "../../components/dashboard/practice/PerformanceVi
 import { useFaceAnalysis } from "../../hooks/useFaceAnalysis";
 
 const PracticeLayout = () => {
+  const location = useLocation();
+  const sessionId = location.state?.sessionId;
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
   const analysisResult = useFaceAnalysis(videoRef, isInterviewStarted);
@@ -28,6 +31,7 @@ const PracticeLayout = () => {
         >
           <VideoFeed
             ref={videoRef}
+            sessionId={sessionId}
             onStartInterview={() => setIsInterviewStarted(true)}
             onEndInterview={() => setIsInterviewStarted(false)}
           />

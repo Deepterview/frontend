@@ -2,14 +2,16 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Play, VibrateOff, VideoOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { sessionService } from "../../../services/sessionService";
 
 interface VideoFeedProps {
+  sessionId?: number;
   onStartInterview?: () => void;
   onEndInterview?: () => void;
 }
 
 const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
-  ({ onStartInterview, onEndInterview }, ref) => {
+  ({ sessionId, onStartInterview, onEndInterview }, ref) => {
     const [isVideoOn] = useState(true);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [isRecording, setIsRecording] = useState(false);
@@ -133,10 +135,20 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
       };
     }, []);
 
-    const startRecording = () => {
+    const startRecording = async () => {
       if (!stream) {
-        alert("카메라 스트림을 준비 중입니다. 잠시 후 다시 시 độ해 주세요.");
+        alert("카메라 스트림을 준비 중입니다. 잠시 후 다시 시도해 주세요.");
         return;
+      }
+
+      if (sessionId) {
+        try {
+          await sessionService.startSession(sessionId);
+        } catch (err) {
+          console.error("Failed to start session via API:", err);
+          alert("서버 연결에 실패하여 면접 세션을 시작할 수 없습니다. 다시 시도해 주세요.");
+          return;
+        }
       }
 
       chunksRef.current = [];
@@ -200,7 +212,15 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
       }
     };
 
-    const stopRecordingAndNavigate = () => {
+    const stopRecordingAndNavigate = async () => {
+      if (sessionId) {
+        try {
+          await sessionService.endSession(sessionId);
+        } catch (err) {
+          console.error("Failed to end session via API:", err);
+        }
+      }
+
       const recorder = mediaRecorderRef.current;
       if (recorder && recorder.state !== "inactive") {
         const originalOnStop = recorder.onstop;
