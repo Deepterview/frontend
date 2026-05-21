@@ -219,6 +219,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         } catch (err) {
           console.error("Failed to end session via API:", err);
         }
+        sessionStorage.removeItem("activeSessionId");
       }
 
       const recorder = mediaRecorderRef.current;

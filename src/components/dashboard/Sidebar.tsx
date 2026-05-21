@@ -21,7 +21,14 @@ const Sidebar = () => {
   const location = useLocation();
 
   function handleClickSidebarNav(link: string) {
-    navigate(link);
+    if (link === "/dashboard/practice") {
+      const activeId = sessionStorage.getItem("activeSessionId");
+      navigate(link, {
+        state: { sessionId: activeId ? Number(activeId) : undefined },
+      });
+    } else {
+      navigate(link);
+    }
   }
 
   return (
@@ -39,7 +46,10 @@ const Sidebar = () => {
         {navItems.map((item) => {
           const isNavActive = location.pathname === item.link;
           const isInPracticeRoom = location.pathname === "/dashboard/practice";
-          const isNavDisabled = isInPracticeRoom && item.link !== "/dashboard/practice";
+          const hasActiveSession = !!sessionStorage.getItem("activeSessionId");
+          const isNavDisabled = isInPracticeRoom
+            ? item.link !== "/dashboard/practice"
+            : item.link === "/dashboard/practice" && !hasActiveSession;
 
           return (
             <motion.button

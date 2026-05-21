@@ -35,6 +35,7 @@ const DashboardLayout = () => {
       console.log("Session created successfully:", data);
 
       if (data && data.sessionId) {
+        sessionStorage.setItem("activeSessionId", data.sessionId.toString());
         navigate("/dashboard/practice", {
           state: { sessionId: data.sessionId },
         });
