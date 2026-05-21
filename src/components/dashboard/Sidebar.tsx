@@ -38,15 +38,23 @@ const Sidebar = () => {
       <nav className="flex-1 space-y-2">
         {navItems.map((item) => {
           const isNavActive = location.pathname === item.link;
+          const isInPracticeRoom = location.pathname === "/dashboard/practice";
+          const isNavDisabled = isInPracticeRoom && item.link !== "/dashboard/practice";
+
           return (
             <motion.button
               key={item.label}
-              onClick={() => handleClickSidebarNav(item.link)}
-              whileHover={{ x: 4 }}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group w-full cursor-pointer ${
-                isNavActive
-                  ? "text-[#cebdff] bg-[#cebdff]/10 border-r-2 border-[#cebdff]"
-                  : "text-[#cbc3d7]/70 hover:bg-[#323539]/30"
+              onClick={() => {
+                if (isNavDisabled) return;
+                handleClickSidebarNav(item.link);
+              }}
+              whileHover={isNavDisabled ? {} : { x: 4 }}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group w-full ${
+                isNavDisabled
+                  ? "opacity-30 cursor-not-allowed text-[#cbc3d7]/30"
+                  : isNavActive
+                  ? "text-[#cebdff] bg-[#cebdff]/10 border-r-2 border-[#cebdff] cursor-pointer"
+                  : "text-[#cbc3d7]/70 hover:bg-[#323539]/30 cursor-pointer"
               }`}
             >
               <item.icon
@@ -54,6 +62,8 @@ const Sidebar = () => {
                 className={
                   isNavActive
                     ? "text-[#cebdff]"
+                    : isNavDisabled
+                    ? "text-[#cbc3d7]/30"
                     : "group-hover:text-[#cebdff] transition-colors"
                 }
               />
