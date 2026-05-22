@@ -7,8 +7,8 @@ export const authService = {
     return res.data.data;
   },
 
-  getGoogleAuthUrl: () => `${API_BASE_URL}/api/v1/auth/google`,
-  getKakaoAuthUrl: () => `${API_BASE_URL}/api/v1/auth/kakao`,
+  getGoogleAuthUrl: () => `http://localhost:8080/oauth2/authorization/google`,
+  getKakaoAuthUrl: () => `http://localhost:8080/oauth2/authorization/kakao`,
   deleteAccount: async (): Promise<void> => {
     await api.delete("/api/v1/users/me");
   },

@@ -1,6 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Landing from "./pages/Landing";
 import SignIn from "./pages/SignIn";
+import OAuth2Success from "./pages/OAuth2Success";
 import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import PracticeLayout from "./layouts/DashboardLayout/PracticeLayout";
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         {/* Public Routes - Anyone can access */}
         <Route path="/" element={<Landing />} />
+        <Route path="/oauth2/success" element={<OAuth2Success />} />
 
         {/* Auth Routes - Only for non-logged in users */}
         <Route element={<PublicRoute />}>

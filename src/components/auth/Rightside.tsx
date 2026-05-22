@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import type { Auth } from "../../types";
 import {
   ArrowRight,
@@ -17,7 +17,7 @@ import { authService } from "../../services/authService";
 const Rightside = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, loginSocial } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const [activeTab, setActiveTab] = useState<Auth>(
     location.state?.tab || "login",
@@ -36,32 +36,6 @@ const Rightside = () => {
     setMessageType(null);
   };
 
-  useEffect(() => {
-    const handleSocialLogin = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const accessToken = params.get("accessToken");
-      const refreshToken = params.get("refreshToken");
-
-      if (!accessToken || !refreshToken) return;
-
-      try {
-        await loginSocial(accessToken, refreshToken);
-
-        // clear URL
-        window.history.replaceState(
-          {},
-          document.title,
-          window.location.pathname,
-        );
-
-        navigate("/dashboard");
-      } catch (err) {
-        console.error("Social login failed", err);
-      }
-    };
-
-    handleSocialLogin();
-  }, [navigate]);
 
   const handleSubmit = async () => {
     setMessage(null);
