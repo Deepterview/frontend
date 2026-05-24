@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Filter, Sparkles, AlertCircle, RefreshCw } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Calendar, Filter, Sparkles, AlertCircle, RefreshCw, FileText } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import SessionList from "../../components/dashboard/history/SessionList";
 import SessionDetailHeader from "../../components/dashboard/history/SessionDetailHeader";
@@ -9,18 +9,27 @@ import InterviewTimeline from "../../components/dashboard/history/InterviewTimel
 
 import { sessionService } from "../../services/sessionService";
 import { reportService } from "../../services/reportService";
+import { runSessionAnalysisPipeline } from "../../lib/sessionAnalysisPipeline";
 import type { SessionListItem, SessionDetail, SessionReport } from "../../types";
 import type { InterviewSession, QAPair } from "../../types/types";
 
 const HistoryLayout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const focusSessionId = (location.state as { focusSessionId?: number } | null)?.focusSessionId;
+  const reportReadyNotice = (location.state as { reportReady?: boolean } | null)?.reportReady;
+
   const [sessions, setSessions] = useState<SessionListItem[]>([]);
   const [selectedSessionId, setSelectedSessionId] = useState<number | null>(null);
   const [sessionDetail, setSessionDetail] = useState<SessionDetail | null>(null);
   const [sessionReport, setSessionReport] = useState<SessionReport | null>(null);
   const [isLoadingList, setIsLoadingList] = useState(true);
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
+  const [isCreatingReport, setIsCreatingReport] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successBanner, setSuccessBanner] = useState<string | null>(
+    reportReadyNotice ? "AI 피드백 리포트가 생성되었습니다." : null,
+  );
 
   const loadSessionsList = async (shouldAutoSelect: boolean = true) => {
     try {
@@ -46,37 +55,60 @@ const HistoryLayout = () => {
     }
   };
 
-  // 1. Fetch sessions list on mount
-  useEffect(() => {
-    loadSessionsList(true);
+  const loadSessionData = useCallback(async (sessionId: number) => {
+    try {
+      setIsLoadingDetail(true);
+      const [detail, report] = await Promise.all([
+        sessionService.getSessionDetail(sessionId),
+        reportService.getSessionReport(sessionId).catch(() => null),
+      ]);
+
+      setSessionDetail(detail);
+      setSessionReport(report);
+    } catch (err) {
+      console.error("Failed to load session details:", err);
+    } finally {
+      setIsLoadingDetail(false);
+    }
   }, []);
 
-  // 2. Load session detail & report when selectedSessionId changes
+  useEffect(() => {
+    void loadSessionsList(!focusSessionId);
+  }, []);
+
+  useEffect(() => {
+    if (focusSessionId) {
+      setSelectedSessionId(focusSessionId);
+      window.history.replaceState({}, document.title);
+    }
+  }, [focusSessionId]);
+
   useEffect(() => {
     if (!selectedSessionId) return;
+    void loadSessionData(selectedSessionId);
+  }, [selectedSessionId, loadSessionData]);
 
-    const loadSessionData = async () => {
-      try {
-        setIsLoadingDetail(true);
-        const [detail, report] = await Promise.all([
-          sessionService.getSessionDetail(selectedSessionId),
-          reportService.getSessionReport(selectedSessionId).catch((err) => {
-            console.warn("Feedback report not yet created or failed to fetch:", err);
-            return null; // Return null so detail can still load
-          })
-        ]);
-        
-        setSessionDetail(detail);
-        setSessionReport(report);
-      } catch (err: any) {
-        console.error("Failed to load session details:", err);
-      } finally {
-        setIsLoadingDetail(false);
+  const handleCreateReport = async () => {
+    if (!selectedSessionId) return;
+
+    setIsCreatingReport(true);
+    try {
+      const result = await runSessionAnalysisPipeline(selectedSessionId, {
+        skipPythonTrigger: false,
+      });
+      if (result.success) {
+        setSuccessBanner("AI 피드백 리포트가 생성되었습니다.");
+        await loadSessionsList(false);
+        await loadSessionData(selectedSessionId);
+      } else {
+        alert(
+          "리포트 생성에 실패했습니다. 면접 영상 업로드·Python 서버·LLM API 설정을 확인한 뒤 다시 시도해 주세요.",
+        );
       }
-    };
-
-    loadSessionData();
-  }, [selectedSessionId]);
+    } finally {
+      setIsCreatingReport(false);
+    }
+  };
 
   // Convert real API response to InterviewSession mock shape for components
   const formatSessionsForList = (): InterviewSession[] => {
@@ -130,11 +162,7 @@ const HistoryLayout = () => {
           : sessionDetail.sessionType === "PERSONALITY"
           ? "인성 면접"
           : "종합 면접",
-      score: sessionReport?.overallScore
-        ? Math.round(sessionReport.overallScore)
-        : sessionDetail.status === "COMPLETED"
-        ? 75 // default mock score if report is still loading
-        : 0,
+      score: sessionReport?.overallScore ? Math.round(sessionReport.overallScore) : 0,
       questionCount: sessionDetail.totalQuestions,
       qaPairs: mappedPairs,
     };
@@ -225,6 +253,23 @@ const HistoryLayout = () => {
         </div>
       </motion.div>
 
+      {successBanner && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 px-5 py-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-medium flex items-center justify-between"
+        >
+          <span>{successBanner}</span>
+          <button
+            type="button"
+            onClick={() => setSuccessBanner(null)}
+            className="text-xs uppercase tracking-wider opacity-70 hover:opacity-100 cursor-pointer"
+          >
+            닫기
+          </button>
+        </motion.div>
+      )}
+
       {/* Main Content Area */}
       {isLoadingList ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-4">
@@ -289,6 +334,38 @@ const HistoryLayout = () => {
                   onViewReport={handleViewReport}
                   onDeleteSession={handleDeleteSession}
                 />
+
+                {!sessionReport &&
+                  sessionDetail?.status === "COMPLETED" &&
+                  sessionDetail.questions.some((q) => q.answerId) && (
+                    <motion.div
+                      className="mt-6 p-6 rounded-[2rem] bg-[#191c1f]/80 border border-amber-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <div className="text-left">
+                        <h4 className="text-sm font-bold text-amber-400 mb-1">
+                          종합 리포트가 아직 없습니다
+                        </h4>
+                        <p className="text-xs text-[#cbc3d7]/60">
+                          AI 분석이 완료되면 종합 점수와 요약을 생성할 수 있습니다.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => void handleCreateReport()}
+                        disabled={isCreatingReport}
+                        className="shrink-0 px-6 py-3 bg-[#9b7fed] text-[#31057e] rounded-full text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:brightness-110 transition-all cursor-pointer disabled:opacity-50"
+                      >
+                        {isCreatingReport ? (
+                          <RefreshCw size={14} className="animate-spin" />
+                        ) : (
+                          <FileText size={14} />
+                        )}
+                        리포트 생성
+                      </button>
+                    </motion.div>
+                  )}
 
                 {/* Session AI Qualitative Summaries (If report exists) */}
                 {sessionReport && (

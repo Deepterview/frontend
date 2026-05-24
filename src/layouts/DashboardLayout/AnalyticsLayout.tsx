@@ -31,7 +31,9 @@ const AnalyticsLayout = () => {
 
   const [analysis, setAnalysis] = useState<AnswerAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPendingAnalysis, setIsPendingAnalysis] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [analysisStatusLabel, setAnalysisStatusLabel] = useState<string | null>(null);
 
   // States to populate the sidebar of questions for the session
   const [sessionQuestions, setSessionQuestions] = useState<any[]>([]);
@@ -44,30 +46,67 @@ const AnalyticsLayout = () => {
     }
   }, [answerIdParam]);
 
+  const hasMeaningfulAnalysis = (data: AnswerAnalysis) =>
+    Boolean(
+      data.speechAnalysis ||
+        data.nonverbalAnalysis ||
+        data.llmFeedback ||
+        data.starAnalysis,
+    );
+
+  const fetchAnalysis = async (answerId: number) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const data = await answerService.getAnalysis(answerId);
+      setAnalysis(data);
+      setIsPendingAnalysis(!hasMeaningfulAnalysis(data));
+
+      if (sessionQuestions.length === 0 && !sessionId) {
+        await loadSessionSidebarOfAnswer(answerId);
+      }
+    } catch (err) {
+      console.error("Failed to load answer analysis:", err);
+      setAnalysis(null);
+      setIsPendingAnalysis(true);
+      setError("답변 분석 데이터를 불러오는데 실패했거나 AI 분석이 아직 진행 중입니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!activeAnswerId) return;
-
-    const fetchAnalysis = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await answerService.getAnalysis(activeAnswerId);
-        setAnalysis(data);
-
-        // Once we have the answer, if we don't have the sidebar loaded and no sessionId route, load its session questions
-        if (data && sessionQuestions.length === 0 && !sessionId) {
-          loadSessionSidebarOfAnswer(activeAnswerId);
-        }
-      } catch (err: any) {
-        console.error("Failed to load answer analysis:", err);
-        setError("답변 분석 데이터를 불러오는데 실패했거나 AI 분석이 아직 대기 중입니다.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAnalysis();
+    void fetchAnalysis(activeAnswerId);
   }, [activeAnswerId]);
+
+  useEffect(() => {
+    if (!sessionId || !isPendingAnalysis) return;
+
+    void sessionService
+      .getAnalysisStatus(Number(sessionId))
+      .then((status) => {
+        setAnalysisStatusLabel(
+          `Python 분석 ${status.analysesReadyCount}/${Math.max(status.answersWithVideoCount, status.answeredCount)} 완료`,
+        );
+      })
+      .catch(() => setAnalysisStatusLabel("AI 분석이 진행 중입니다."));
+  }, [sessionId, isPendingAnalysis]);
+
+  useEffect(() => {
+    if (!activeAnswerId || !isPendingAnalysis || error) return;
+
+    const interval = setInterval(() => {
+      void fetchAnalysis(activeAnswerId);
+    }, 5000);
+
+    const timeout = setTimeout(() => clearInterval(interval), 120000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [activeAnswerId, isPendingAnalysis, error]);
 
   // Load session questions directly if sessionId is on the path
   useEffect(() => {
@@ -207,8 +246,10 @@ const AnalyticsLayout = () => {
                   </span>
                   {!q.answerId ? (
                     <span className="text-[0.6rem] text-red-400 font-bold bg-red-400/5 px-2 py-0.5 rounded border border-red-400/10">미답변</span>
+                  ) : q.answerId === activeAnswerId && isPendingAnalysis ? (
+                    <span className="text-[0.6rem] text-amber-400 font-bold bg-amber-400/5 px-2 py-0.5 rounded border border-amber-400/10">분석 중</span>
                   ) : (
-                    <span className="text-[0.6rem] text-emerald-400 font-bold bg-emerald-400/5 px-2 py-0.5 rounded border border-emerald-400/10">AI 분석완료</span>
+                    <span className="text-[0.6rem] text-emerald-400 font-bold bg-emerald-400/5 px-2 py-0.5 rounded border border-emerald-400/10">답변 완료</span>
                   )}
                 </div>
                 <p className="font-medium line-clamp-2 leading-relaxed">{q.content}</p>
@@ -220,24 +261,36 @@ const AnalyticsLayout = () => {
 
       {/* 2. Main Analytics Dashboard */}
       <div className="flex-1 min-w-0">
-        {isLoading ? (
+        {isLoading && !analysis ? (
           <div className="h-[60vh] flex flex-col items-center justify-center gap-4">
             <RefreshCw size={40} className="text-[#cebdff] animate-spin" />
             <p className="text-sm text-[#cbc3d7]/60 font-mono tracking-wider animate-pulse">
               AI 다차원 ML 리포트를 생성하고 있습니다...
             </p>
           </div>
-        ) : error ? (
+        ) : error && !analysis ? (
           <div className="h-[60vh] flex flex-col items-center justify-center bg-[#191c1f]/20 rounded-[2.5rem] border border-white/5 p-12 text-center">
-            <AlertCircle size={48} className="text-red-400 mb-4" />
+            <AlertCircle size={48} className="text-amber-400 mb-4" />
             <h3 className="text-xl font-bold text-[#e1e2e7] mb-2">분석을 불러올 수 없습니다</h3>
             <p className="text-[#cbc3d7]/50 text-sm max-w-sm mx-auto mb-6">{error}</p>
-            <button
-              onClick={() => navigate("/dashboard/history")}
-              className="px-6 py-2.5 bg-[#cebdff]/10 hover:bg-[#cebdff]/20 text-[#cebdff] rounded-full border border-[#cebdff]/30 text-xs font-bold transition-all cursor-pointer"
-            >
-              <ArrowLeft size={12} className="inline mr-2" /> 히스토리 목록으로 이동
-            </button>
+            <div className="flex flex-wrap gap-3 justify-center">
+              {activeAnswerId && (
+                <button
+                  type="button"
+                  onClick={() => void fetchAnalysis(activeAnswerId)}
+                  className="px-6 py-2.5 bg-[#9b7fed] text-[#31057e] rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-2"
+                >
+                  <RefreshCw size={12} /> 새로고침
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => navigate("/dashboard/history")}
+                className="px-6 py-2.5 bg-[#cebdff]/10 hover:bg-[#cebdff]/20 text-[#cebdff] rounded-full border border-[#cebdff]/30 text-xs font-bold transition-all cursor-pointer"
+              >
+                <ArrowLeft size={12} className="inline mr-2" /> 히스토리 목록으로 이동
+              </button>
+            </div>
           </div>
         ) : analysis ? (
           <motion.div
@@ -246,6 +299,23 @@ const AnalyticsLayout = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
+            {isPendingAnalysis && (
+              <div className="flex items-center justify-between gap-4 px-6 py-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                <p className="text-xs text-amber-300/90">
+                  {analysisStatusLabel || "AI 분석이 진행 중입니다. 잠시 후 자동으로 갱신됩니다."}
+                </p>
+                {activeAnswerId && (
+                  <button
+                    type="button"
+                    onClick={() => void fetchAnalysis(activeAnswerId)}
+                    className="shrink-0 px-4 py-2 text-[0.65rem] font-bold uppercase tracking-wider text-amber-200 bg-amber-500/10 rounded-full border border-amber-500/30 cursor-pointer hover:bg-amber-500/20"
+                  >
+                    새로고침
+                  </button>
+                )}
+              </div>
+            )}
+
             {/* Header & Question Context */}
             <div className="bg-[#191c1f]/60 backdrop-blur-xl border border-white/5 rounded-[2.5rem] p-8 shadow-2xl space-y-6">
               <div>

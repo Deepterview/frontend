@@ -154,6 +154,15 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
           }
 
           sessionStorage.removeItem("activeSessionId");
+
+          if (onEndInterview) {
+            onEndInterview();
+          }
+
+          navigate("/dashboard/practice/processing", {
+            state: { sessionId, skipPythonTrigger: true },
+          });
+          return;
         }
 
         if (onEndInterview) {

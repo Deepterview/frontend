@@ -166,3 +166,13 @@ export interface SessionDetail {
   startedAt?: string;
   questions: QuestionResponse[];
 }
+
+export interface SessionAnalysisStatus {
+  sessionId: number;
+  status: SessionStatus;
+  totalQuestions: number;
+  answeredCount: number;
+  answersWithVideoCount: number;
+  analysesReadyCount: number;
+  feedbackReportExists: boolean;
+}

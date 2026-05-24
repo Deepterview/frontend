@@ -5,6 +5,7 @@ import OAuth2Success from "./pages/OAuth2Success";
 import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import PracticeLayout from "./layouts/DashboardLayout/PracticeLayout";
+import ProcessingLayout from "./layouts/DashboardLayout/ProcessingLayout";
 import HistoryLayout from "./layouts/DashboardLayout/HistoryLayout";
 import MyinfoLayout from "./layouts/DashboardLayout/MyinfoLayout";
 import AnalyticsLayout from "./layouts/DashboardLayout/AnalyticsLayout";
@@ -39,6 +40,14 @@ function App() {
             element={
               <Dashboard>
                 <PracticeLayout />
+              </Dashboard>
+            }
+          />
+          <Route
+            path="/dashboard/practice/processing"
+            element={
+              <Dashboard>
+                <ProcessingLayout />
               </Dashboard>
             }
           />
