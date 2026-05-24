@@ -56,4 +56,15 @@ export const sessionService = {
   deleteSession: async (sessionId: number): Promise<void> => {
     await api.delete(`/api/v1/sessions/${sessionId}`);
   },
+
+  uploadSessionVideo: async (sessionId: number, videoBlob: Blob): Promise<void> => {
+    const formData = new FormData();
+    formData.append("video", videoBlob, `full_${sessionId}.webm`);
+
+    await api.post<ApiResponse<void>>(`/api/v1/sessions/${sessionId}/video`, formData);
+  },
+
+  generatePythonReport: async (sessionId: number): Promise<void> => {
+    await api.post<ApiResponse<void>>(`/api/v1/sessions/${sessionId}/report/generate`);
+  },
 };
