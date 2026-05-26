@@ -7,12 +7,13 @@ import { useInterviewRecording } from "../../../contexts/InterviewRecordingConte
 
 interface VideoFeedProps {
   sessionId?: number;
+  hasMoreQuestions?: boolean;
   onStartInterview?: () => void;
   onEndInterview?: () => void;
 }
 
 const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
-  ({ sessionId, onStartInterview, onEndInterview }, ref) => {
+  ({ sessionId, hasMoreQuestions = true, onStartInterview, onEndInterview }, ref) => {
     const [isVideoOn] = useState(true);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [recordingTime, setRecordingTime] = useState(0);
@@ -29,8 +30,6 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         interval = setInterval(() => {
           setRecordingTime((prev) => prev + 1);
         }, 1000);
-      } else {
-        setRecordingTime(0);
       }
 
       return () => {
@@ -93,6 +92,13 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         }
       };
     }, []);
+
+    // Automatically stop recording when there are no more questions left
+    useEffect(() => {
+      if (isRecording && !hasMoreQuestions) {
+        void stopRecorder();
+      }
+    }, [isRecording, hasMoreQuestions, stopRecorder]);
 
     const startRecording = async () => {
       if (!stream) {
@@ -211,23 +217,27 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={!isRecording && hasMoreQuestions ? { scale: 1.05 } : {}}
+            whileTap={!isRecording && hasMoreQuestions ? { scale: 0.95 } : {}}
             onClick={startRecording}
-            disabled={isRecording || isEnding}
+            disabled={isRecording || isEnding || !hasMoreQuestions}
             className={`px-6 py-4 rounded-full font-bold flex items-center gap-2 shadow-lg transition-all cursor-pointer ${
-              isRecording
+              isRecording || !hasMoreQuestions
                 ? "bg-[#191c1f] text-emerald-400 border border-emerald-500/30 shadow-none cursor-not-allowed opacity-80"
                 : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30 hover:shadow-emerald-500/50"
             }`}
           >
             <Play
               size={20}
-              fill={isRecording ? "none" : "currentColor"}
+              fill={isRecording || !hasMoreQuestions ? "none" : "currentColor"}
               className={isRecording ? "animate-pulse text-emerald-400" : ""}
             />
             <span className="text-xs uppercase tracking-wider">
-              {isRecording ? "Recording..." : "면접 시작 (Start)"}
+              {isRecording
+                ? "Recording..."
+                : !hasMoreQuestions
+                  ? "답변 완료 (Completed)"
+                  : "면접 시작 (Start)"}
             </span>
           </motion.button>
 

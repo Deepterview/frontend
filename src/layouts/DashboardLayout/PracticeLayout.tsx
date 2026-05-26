@@ -94,6 +94,7 @@ const PracticeLayout = () => {
             <VideoFeed
               ref={videoRef}
               sessionId={sessionId}
+              hasMoreQuestions={hasMoreQuestions}
               onStartInterview={() => setIsInterviewStarted(true)}
               onEndInterview={() => setIsInterviewStarted(false)}
             />
