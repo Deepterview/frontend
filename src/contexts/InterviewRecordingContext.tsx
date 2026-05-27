@@ -18,9 +18,8 @@ interface InterviewRecordingContextValue {
   getMimeType: () => string;
 }
 
-const InterviewRecordingContext = createContext<InterviewRecordingContextValue | null>(
-  null,
-);
+const InterviewRecordingContext =
+  createContext<InterviewRecordingContextValue | null>(null);
 
 function resolveMimeType(): string {
   const candidates = [
@@ -36,36 +35,40 @@ function resolveMimeType(): string {
   return "video/webm";
 }
 
-export function InterviewRecordingProvider({ children }: { children: ReactNode }) {
-  const allChunksRef = useRef<Blob[]>([]);
-  const chunkCountRef = useRef(0);
-  const questionStartChunkIndexRef = useRef(0);
-  const mimeTypeRef = useRef(resolveMimeType());
+export function InterviewRecordingProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const streamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const currentChunksRef = useRef<Blob[]>([]);
+  const completedQuestionBlobsRef = useRef<Blob[]>([]);
+  const mimeTypeRef = useRef(resolveMimeType());
   const stopResolverRef = useRef<(() => void) | null>(null);
 
   const [isRecording, setIsRecording] = useState(false);
 
-  const markQuestionStart = useCallback(() => {
-    questionStartChunkIndexRef.current = chunkCountRef.current;
-  }, []);
-
-  const startRecorder = useCallback((stream: MediaStream) => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
-      return;
-    }
-
-    allChunksRef.current = [];
-    chunkCountRef.current = 0;
-    questionStartChunkIndexRef.current = 0;
-    mimeTypeRef.current = resolveMimeType();
-
-    const recorder = new MediaRecorder(stream, { mimeType: mimeTypeRef.current });
+  const startNewRecorderSession = useCallback((stream: MediaStream) => {
+    const recorder = new MediaRecorder(stream, {
+      mimeType: mimeTypeRef.current,
+    });
+    const chunks: Blob[] = [];
+    currentChunksRef.current = chunks;
 
     recorder.ondataavailable = (event) => {
       if (event.data && event.data.size > 0) {
-        allChunksRef.current.push(event.data);
-        chunkCountRef.current += 1;
+        chunks.push(event.data);
+      }
+    };
+
+    recorder.onstop = () => {
+      const blob = new Blob(chunks, { type: mimeTypeRef.current });
+      if (blob.size > 0) {
+        // Only add if not already in completed lists to prevent duplicates
+        if (!completedQuestionBlobsRef.current.includes(blob)) {
+          completedQuestionBlobsRef.current.push(blob);
+        }
       }
     };
 
@@ -75,9 +78,38 @@ export function InterviewRecordingProvider({ children }: { children: ReactNode }
 
     recorder.start(1000);
     mediaRecorderRef.current = recorder;
-    setIsRecording(true);
-    markQuestionStart();
-  }, [markQuestionStart]);
+  }, []);
+
+  const startRecorder = useCallback(
+    (stream: MediaStream) => {
+      streamRef.current = stream;
+      completedQuestionBlobsRef.current = [];
+      currentChunksRef.current = [];
+      mimeTypeRef.current = resolveMimeType();
+
+      startNewRecorderSession(stream);
+      setIsRecording(true);
+    },
+    [startNewRecorderSession],
+  );
+
+  const markQuestionStart = useCallback(() => {
+    const recorder = mediaRecorderRef.current;
+    if (recorder && recorder.state !== "inactive") {
+      try {
+        recorder.stop();
+      } catch (err) {
+        console.error(
+          "Failed to stop MediaRecorder on question boundary:",
+          err,
+        );
+      }
+    }
+
+    if (streamRef.current) {
+      startNewRecorderSession(streamRef.current);
+    }
+  }, [startNewRecorderSession]);
 
   const stopRecorder = useCallback(() => {
     return new Promise<void>((resolve) => {
@@ -89,23 +121,29 @@ export function InterviewRecordingProvider({ children }: { children: ReactNode }
       }
 
       stopResolverRef.current = resolve;
-      recorder.onstop = () => {
+      const originalOnStop = recorder.onstop;
+      recorder.onstop = (event) => {
+        if (originalOnStop) {
+          originalOnStop.call(recorder, event);
+        }
         stopResolverRef.current?.();
         stopResolverRef.current = null;
         mediaRecorderRef.current = null;
         setIsRecording(false);
       };
-      recorder.stop();
+
+      try {
+        recorder.stop();
+      } catch (err) {
+        console.error(err);
+        setIsRecording(false);
+        resolve();
+      }
     });
   }, []);
 
   const extractAnswerBlob = useCallback((): Blob | null => {
-    const start = questionStartChunkIndexRef.current;
-    const end = chunkCountRef.current;
-    if (end <= start) {
-      return null;
-    }
-    const chunks = allChunksRef.current.slice(start, end);
+    const chunks = currentChunksRef.current;
     if (chunks.length === 0) {
       return null;
     }
@@ -113,11 +151,16 @@ export function InterviewRecordingProvider({ children }: { children: ReactNode }
   }, []);
 
   const extractFullInterviewBlob = useCallback((): Blob | null => {
-    if (allChunksRef.current.length === 0) {
-      return null;
+    if (completedQuestionBlobsRef.current.length === 0) {
+      return extractAnswerBlob();
     }
-    return new Blob(allChunksRef.current, { type: mimeTypeRef.current });
-  }, []);
+    const blobs = [...completedQuestionBlobsRef.current];
+    const activeBlob = extractAnswerBlob();
+    if (activeBlob && activeBlob.size > 0 && !blobs.includes(activeBlob)) {
+      blobs.push(activeBlob);
+    }
+    return new Blob(blobs, { type: mimeTypeRef.current });
+  }, [extractAnswerBlob]);
 
   const getMimeType = useCallback(() => mimeTypeRef.current, []);
 
@@ -152,7 +195,9 @@ export function InterviewRecordingProvider({ children }: { children: ReactNode }
 export function useInterviewRecording() {
   const context = useContext(InterviewRecordingContext);
   if (!context) {
-    throw new Error("useInterviewRecording must be used within InterviewRecordingProvider");
+    throw new Error(
+      "useInterviewRecording must be used within InterviewRecordingProvider",
+    );
   }
   return context;
 }
