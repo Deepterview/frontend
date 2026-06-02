@@ -1,7 +1,11 @@
 import { answerService } from "../services/answerService";
 import { reportService } from "../services/reportService";
 import { sessionService } from "../services/sessionService";
-import type { AnswerAnalysis, SessionAnalysisStatus, SessionReport } from "../types";
+import type {
+  AnswerAnalysis,
+  SessionAnalysisStatus,
+  SessionReport,
+} from "../types";
 
 const POLL_INTERVAL_MS = 3000;
 const MAX_POLL_ATTEMPTS = 60;
@@ -29,7 +33,10 @@ function isPythonAnalysisReady(analysis: AnswerAnalysis): boolean {
   return Boolean(analysis.speechAnalysis || analysis.nonverbalAnalysis);
 }
 
-function analysisTargetCount(answersWithVideo: number, answeredCount: number): number {
+function analysisTargetCount(
+  answersWithVideo: number,
+  answeredCount: number,
+): number {
   if (answersWithVideo > 0) {
     return answersWithVideo;
   }
@@ -54,7 +61,10 @@ async function fetchAnalysisStatusSafe(
   try {
     return await sessionService.getAnalysisStatus(sessionId);
   } catch (err) {
-    console.warn("analysis-status API unavailable, using fallback polling:", err);
+    console.warn(
+      "analysis-status API unavailable, using fallback polling:",
+      err,
+    );
     return null;
   }
 }
@@ -90,7 +100,10 @@ async function pollUntilAnalysesReady(
         break;
       }
 
-      const target = analysisTargetCount(status.answersWithVideoCount, status.answeredCount);
+      const target = analysisTargetCount(
+        status.answersWithVideoCount,
+        status.answeredCount,
+      );
 
       onProgress?.({
         phase: "polling",
@@ -108,7 +121,13 @@ async function pollUntilAnalysesReady(
         }
       }
 
-      if (isStatusReady(status.analysesReadyCount, status.answersWithVideoCount, status.answeredCount)) {
+      if (
+        isStatusReady(
+          status.analysesReadyCount,
+          status.answersWithVideoCount,
+          status.answeredCount,
+        )
+      ) {
         return { timedOut: false, existingReport: null };
       }
     } else {
@@ -163,7 +182,10 @@ export async function runSessionAnalysisPipeline(
       try {
         await sessionService.generatePythonReport(sessionId);
       } catch (err) {
-        console.warn("Python report trigger failed (may already be running):", err);
+        console.warn(
+          "Python report trigger failed (may already be running):",
+          err,
+        );
       }
     }
 
@@ -183,7 +205,11 @@ export async function runSessionAnalysisPipeline(
         completedAnswers: 1,
         totalAnswers: 1,
       });
-      return { success: true, report: pollResult.existingReport, timedOut: false };
+      return {
+        success: true,
+        report: pollResult.existingReport,
+        timedOut: false,
+      };
     }
 
     const detail = await sessionService.getSessionDetail(sessionId);
@@ -206,7 +232,9 @@ export async function runSessionAnalysisPipeline(
         const results = await Promise.all(
           batch.map((id) => answerService.getAnalysis(id).catch(() => null)),
         );
-        llmReady += results.filter((r) => r && (r.llmFeedback || isPythonAnalysisReady(r))).length;
+        llmReady += results.filter(
+          (r) => r && (r.llmFeedback || isPythonAnalysisReady(r)),
+        ).length;
         onProgress?.({
           phase: "polling",
           message: "답변별 상세 피드백을 생성하고 있습니다...",
@@ -239,7 +267,8 @@ export async function runSessionAnalysisPipeline(
     console.error("Session analysis pipeline failed:", err);
     onProgress?.({
       phase: "error",
-      message: "리포트 생성 중 오류가 발생했습니다. 히스토리에서 다시 시도할 수 있습니다.",
+      message:
+        "리포트 생성 중 오류가 발생했습니다. 히스토리에서 다시 시도할 수 있습니다.",
       completedAnswers: 0,
       totalAnswers: 0,
     });

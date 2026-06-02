@@ -61,12 +61,17 @@ const PracticeLayout = () => {
     };
   }, [sessionId, navigate]);
 
-  const unansweredQuestions = session?.questions.filter((q) => !q.answerId) ?? [];
-  const currentQuestion: QuestionResponse | null = unansweredQuestions[0] ?? null;
+  const unansweredQuestions =
+    session?.questions.filter((q) => !q.answerId) ?? [];
+  const currentQuestion: QuestionResponse | null =
+    unansweredQuestions[0] ?? null;
   const hasMoreQuestions = unansweredQuestions.length > 0;
 
   const handleQuestionAnswered = useCallback(() => {
-    void sessionService.getSessionDetail(sessionId!).then(setSession).catch(console.error);
+    void sessionService
+      .getSessionDetail(sessionId!)
+      .then(setSession)
+      .catch(console.error);
   }, [sessionId]);
 
   if (!sessionId || isLoadingSession) {

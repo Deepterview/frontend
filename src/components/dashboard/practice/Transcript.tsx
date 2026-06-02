@@ -36,7 +36,8 @@ const Transcript = ({
   const timeLimitRef = useRef(120);
   const timeoutHandledForQuestionRef = useRef<number | null>(null);
 
-  const { isRecording, extractAnswerBlob, markQuestionStart } = useInterviewRecording();
+  const { isRecording, extractAnswerBlob, markQuestionStart } =
+    useInterviewRecording();
 
   const submitAnswerFlow = useCallback(
     async (
@@ -104,7 +105,9 @@ const Transcript = ({
         }
       } catch (err) {
         console.error("Failed to submit answer:", err);
-        alert("답변을 전송하는 데 실패했습니다. 네트워크 상태를 확인해 주세요.");
+        alert(
+          "답변을 전송하는 데 실패했습니다. 네트워크 상태를 확인해 주세요.",
+        );
       } finally {
         setIsSubmitting(false);
       }
@@ -136,14 +139,21 @@ const Transcript = ({
         text: currentQuestion.content,
       },
     ]);
-  }, [currentQuestion?.id, currentQuestion?.content, currentQuestion?.timeLimitSec]);
+  }, [
+    currentQuestion?.id,
+    currentQuestion?.content,
+    currentQuestion?.timeLimitSec,
+  ]);
 
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
   }, [messages]);
 
   useEffect(() => {
@@ -172,7 +182,8 @@ const Transcript = ({
 
   useEffect(() => {
     const SpeechRecognitionCtor =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognitionCtor) return;
 
@@ -248,7 +259,10 @@ const Transcript = ({
   };
 
   const submitDisabled =
-    isSubmitting || !isInterviewStarted || !currentQuestion || !hasMoreQuestions;
+    isSubmitting ||
+    !isInterviewStarted ||
+    !currentQuestion ||
+    !hasMoreQuestions;
 
   return (
     <div className="space-y-6">

@@ -13,15 +13,22 @@ interface VideoFeedProps {
 }
 
 const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
-  ({ sessionId, hasMoreQuestions = true, onStartInterview, onEndInterview }, ref) => {
+  (
+    { sessionId, hasMoreQuestions = true, onStartInterview, onEndInterview },
+    ref,
+  ) => {
     const [isVideoOn] = useState(true);
     const [stream, setStream] = useState<MediaStream | null>(null);
     const [recordingTime, setRecordingTime] = useState(0);
     const [isEnding, setIsEnding] = useState(false);
 
     const navigate = useNavigate();
-    const { isRecording, startRecorder, stopRecorder, extractFullInterviewBlob } =
-      useInterviewRecording();
+    const {
+      isRecording,
+      startRecorder,
+      stopRecorder,
+      extractFullInterviewBlob,
+    } = useInterviewRecording();
 
     useEffect(() => {
       let interval: ReturnType<typeof setInterval> | null = null;
@@ -111,7 +118,9 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
           await sessionService.startSession(sessionId);
         } catch (err) {
           console.error("Failed to start session via API:", err);
-          alert("서버 연결에 실패하여 면접 세션을 시작할 수 없습니다. 다시 시도해 주세요.");
+          alert(
+            "서버 연결에 실패하여 면접 세션을 시작할 수 없습니다. 다시 시도해 주세요.",
+          );
           return;
         }
       }
