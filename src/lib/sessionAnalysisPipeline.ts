@@ -1,11 +1,7 @@
 import { answerService } from "../services/answerService";
 import { reportService } from "../services/reportService";
 import { sessionService } from "../services/sessionService";
-import type {
-  AnswerAnalysis,
-  SessionAnalysisStatus,
-  SessionReport,
-} from "../types";
+import type { AnswerAnalysis, SessionReport } from "../types";
 
 const POLL_INTERVAL_MS = 3000;
 const MAX_POLL_ATTEMPTS = 60;
@@ -33,42 +29,6 @@ function isPythonAnalysisReady(analysis: AnswerAnalysis): boolean {
   return Boolean(analysis.speechAnalysis || analysis.nonverbalAnalysis);
 }
 
-function analysisTargetCount(
-  answersWithVideo: number,
-  answeredCount: number,
-): number {
-  if (answersWithVideo > 0) {
-    return answersWithVideo;
-  }
-  return answeredCount;
-}
-
-function isStatusReady(
-  analysesReadyCount: number,
-  answersWithVideoCount: number,
-  answeredCount: number,
-): boolean {
-  const target = analysisTargetCount(answersWithVideoCount, answeredCount);
-  if (target === 0) {
-    return true;
-  }
-  return analysesReadyCount >= target;
-}
-
-async function fetchAnalysisStatusSafe(
-  sessionId: number,
-): Promise<SessionAnalysisStatus | null> {
-  try {
-    return await sessionService.getAnalysisStatus(sessionId);
-  } catch (err) {
-    console.warn(
-      "analysis-status API unavailable, using fallback polling:",
-      err,
-    );
-    return null;
-  }
-}
-
 async function countReadyAnalyses(answerIds: number[]): Promise<number> {
   if (answerIds.length === 0) {
     return 0;
@@ -91,70 +51,31 @@ async function pollUntilAnalysesReady(
   onProgress?: (progress: PipelineProgress) => void,
 ): Promise<{ timedOut: boolean; existingReport: SessionReport | null }> {
   let timedOut = false;
-  const useStatusApi = (await fetchAnalysisStatusSafe(sessionId)) !== null;
 
   for (let attempt = 0; attempt < MAX_POLL_ATTEMPTS; attempt++) {
-    if (useStatusApi) {
-      const status = await fetchAnalysisStatusSafe(sessionId);
-      if (!status) {
-        break;
-      }
+    try {
+      const report = await reportService.createSessionReport(sessionId);
+      return { timedOut: false, existingReport: report };
+    } catch {
+      /* not created yet */
+    }
 
-      const target = analysisTargetCount(
-        status.answersWithVideoCount,
-        status.answeredCount,
-      );
+    const detail = await sessionService.getSessionDetail(sessionId);
+    const answerIds = detail.questions
+      .map((q) => q.answerId)
+      .filter((id): id is number => id != null);
 
-      onProgress?.({
-        phase: "polling",
-        message: "AI가 답변 영상을 분석하고 있습니다...",
-        completedAnswers: status.analysesReadyCount,
-        totalAnswers: target,
-      });
+    const ready = await countReadyAnalyses(answerIds);
 
-      if (status.feedbackReportExists) {
-        try {
-          const report = await reportService.getSessionReport(sessionId);
-          return { timedOut: false, existingReport: report };
-        } catch {
-          /* continue */
-        }
-      }
+    onProgress?.({
+      phase: "polling",
+      message: "AI가 답변 영상을 분석하고 있습니다...",
+      completedAnswers: ready,
+      totalAnswers: answerIds.length,
+    });
 
-      if (
-        isStatusReady(
-          status.analysesReadyCount,
-          status.answersWithVideoCount,
-          status.answeredCount,
-        )
-      ) {
-        return { timedOut: false, existingReport: null };
-      }
-    } else {
-      try {
-        const report = await reportService.getSessionReport(sessionId);
-        return { timedOut: false, existingReport: report };
-      } catch {
-        /* not created yet */
-      }
-
-      const detail = await sessionService.getSessionDetail(sessionId);
-      const answerIds = detail.questions
-        .map((q) => q.answerId)
-        .filter((id): id is number => id != null);
-
-      const ready = await countReadyAnalyses(answerIds);
-
-      onProgress?.({
-        phase: "polling",
-        message: "AI가 답변 영상을 분석하고 있습니다...",
-        completedAnswers: ready,
-        totalAnswers: answerIds.length,
-      });
-
-      if (answerIds.length === 0 || ready >= answerIds.length) {
-        return { timedOut: false, existingReport: null };
-      }
+    if (answerIds.length === 0 || ready >= answerIds.length) {
+      return { timedOut: false, existingReport: null };
     }
 
     if (attempt === MAX_POLL_ATTEMPTS - 1) {

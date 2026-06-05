@@ -27,7 +27,6 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
       isRecording,
       startRecorder,
       stopRecorder,
-      extractFullInterviewBlob,
     } = useInterviewRecording();
 
     useEffect(() => {
@@ -143,8 +142,6 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
       try {
         await stopRecorder();
 
-        const fullBlob = extractFullInterviewBlob();
-
         if (sessionId) {
           try {
             await sessionService.endSession(sessionId);
@@ -152,14 +149,6 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
             console.error("Failed to end session via API:", err);
             alert("세션 종료에 실패했습니다. 다시 시도해 주세요.");
             return;
-          }
-
-          if (fullBlob && fullBlob.size > 0) {
-            try {
-              await sessionService.uploadSessionVideo(sessionId, fullBlob);
-            } catch (err) {
-              console.error("Failed to upload full interview video:", err);
-            }
           }
 
           try {

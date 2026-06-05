@@ -60,7 +60,7 @@ const HistoryLayout = () => {
       setIsLoadingDetail(true);
       const [detail, report] = await Promise.all([
         sessionService.getSessionDetail(sessionId),
-        reportService.getSessionReport(sessionId).catch(() => null),
+        reportService.createSessionReport(sessionId).catch(() => null),
       ]);
 
       setSessionDetail(detail);

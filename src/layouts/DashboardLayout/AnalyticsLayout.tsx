@@ -33,7 +33,7 @@ const AnalyticsLayout = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPendingAnalysis, setIsPendingAnalysis] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [analysisStatusLabel, setAnalysisStatusLabel] = useState<string | null>(null);
+
 
   // States to populate the sidebar of questions for the session
   const [sessionQuestions, setSessionQuestions] = useState<any[]>([]);
@@ -80,18 +80,7 @@ const AnalyticsLayout = () => {
     void fetchAnalysis(activeAnswerId);
   }, [activeAnswerId]);
 
-  useEffect(() => {
-    if (!sessionId || !isPendingAnalysis) return;
 
-    void sessionService
-      .getAnalysisStatus(Number(sessionId))
-      .then((status) => {
-        setAnalysisStatusLabel(
-          `Python 분석 ${status.analysesReadyCount}/${Math.max(status.answersWithVideoCount, status.answeredCount)} 완료`,
-        );
-      })
-      .catch(() => setAnalysisStatusLabel("AI 분석이 진행 중입니다."));
-  }, [sessionId, isPendingAnalysis]);
 
   useEffect(() => {
     if (!activeAnswerId || !isPendingAnalysis || error) return;
@@ -302,7 +291,7 @@ const AnalyticsLayout = () => {
             {isPendingAnalysis && (
               <div className="flex items-center justify-between gap-4 px-6 py-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
                 <p className="text-xs text-amber-300/90">
-                  {analysisStatusLabel || "AI 분석이 진행 중입니다. 잠시 후 자동으로 갱신됩니다."}
+                  AI 분석이 진행 중입니다. 잠시 후 자동으로 갱신됩니다.
                 </p>
                 {activeAnswerId && (
                   <button
