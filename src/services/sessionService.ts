@@ -5,6 +5,7 @@ import type {
   CreateSessionRequest,
   SessionDetail,
   SessionStatus,
+  QuestionResponse,
 } from "../types";
 
 export const sessionService = {
@@ -57,6 +58,13 @@ export const sessionService = {
     await api.delete(`/api/v1/sessions/${sessionId}`);
   },
 
+  getNextQuestion: async (sessionId: number, answerId: number): Promise<QuestionResponse> => {
+    const res = await api.post<ApiResponse<QuestionResponse>>(
+      `/api/v1/sessions/${sessionId}/questions/next`,
+      { answerId }
+    );
+    return res.data.data;
+  },
 
   generatePythonReport: async (sessionId: number): Promise<void> => {
     await api.post<ApiResponse<void>>(`/api/v1/sessions/${sessionId}/report/generate`);

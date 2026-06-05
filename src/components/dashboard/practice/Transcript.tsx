@@ -15,7 +15,7 @@ interface TranscriptProps {
   isInterviewStarted?: boolean;
   currentQuestion?: QuestionResponse | null;
   hasMoreQuestions?: boolean;
-  onQuestionAnswered?: () => void;
+  onQuestionAnswered?: (answerId: number) => void;
 }
 
 const Transcript = ({
@@ -101,7 +101,7 @@ const Transcript = ({
         setTimeLeft(limit);
 
         if (hasMoreQuestions) {
-          onQuestionAnswered?.();
+          onQuestionAnswered?.(response.answerId);
         }
       } catch (err) {
         console.error("Failed to submit answer:", err);
