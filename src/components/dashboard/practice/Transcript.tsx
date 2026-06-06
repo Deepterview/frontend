@@ -31,7 +31,7 @@ const Transcript = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const recognitionRef = useRef<any>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const isFirstRender = useRef(true);
   const timeLimitRef = useRef(120);
   const timeoutHandledForQuestionRef = useRef<number | null>(null);
@@ -150,10 +150,12 @@ const Transcript = ({
       isFirstRender.current = false;
       return;
     }
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    });
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -324,7 +326,7 @@ const Transcript = ({
           </div>
         </div>
 
-        <div className="space-y-6 max-h-[300px] overflow-y-auto pr-4 custom-scrollbar">
+        <div ref={containerRef} className="space-y-6 max-h-[300px] overflow-y-auto pr-4 custom-scrollbar">
           {messages.map((msg) => (
             <div key={msg.id} className="space-y-2">
               <p
@@ -347,7 +349,6 @@ const Transcript = ({
               </p>
             </div>
           ))}
-          <div ref={messagesEndRef} />
         </div>
       </div>
     </div>
