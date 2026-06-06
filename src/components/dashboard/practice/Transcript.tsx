@@ -68,11 +68,12 @@ const Transcript = ({
 
         const videoBlob = extractAnswerBlob();
         if (videoBlob && videoBlob.size > 0) {
-          void answerService
-            .uploadAnswerVideo(response.answerId, videoBlob)
-            .catch((err) => {
-              console.error("Background video upload failed:", err);
-            });
+          try {
+            await answerService.uploadAnswerVideo(response.answerId, videoBlob);
+          } catch (err) {
+            console.error("Video upload failed:", err);
+            // 업로드 실패해도 답변 제출은 계속 진행
+          }
         }
 
         markQuestionStart();
@@ -326,7 +327,10 @@ const Transcript = ({
           </div>
         </div>
 
-        <div ref={containerRef} className="space-y-6 max-h-[300px] overflow-y-auto pr-4 custom-scrollbar">
+        <div
+          ref={containerRef}
+          className="space-y-6 max-h-[300px] overflow-y-auto pr-4 custom-scrollbar"
+        >
           {messages.map((msg) => (
             <div key={msg.id} className="space-y-2">
               <p
