@@ -25,9 +25,7 @@ const AnalyticsLayout = () => {
   const { sessionId } = useParams();
 
   const answerIdParam = searchParams.get("answerId");
-  const [activeAnswerId, setActiveAnswerId] = useState<number | null>(
-    answerIdParam ? Number(answerIdParam) : null
-  );
+  const activeAnswerId = answerIdParam ? Number(answerIdParam) : null;
 
   const [analysis, setAnalysis] = useState<AnswerAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,12 +37,7 @@ const AnalyticsLayout = () => {
   const [sessionQuestions, setSessionQuestions] = useState<any[]>([]);
   const [sessionTitle, setSessionTitle] = useState("");
 
-  // 1. If activeAnswerId changes, fetch the detailed analysis
-  useEffect(() => {
-    if (answerIdParam) {
-      setActiveAnswerId(Number(answerIdParam));
-    }
-  }, [answerIdParam]);
+
 
   const hasMeaningfulAnalysis = (data: AnswerAnalysis) =>
     Boolean(
@@ -106,17 +99,6 @@ const AnalyticsLayout = () => {
         const detail = await sessionService.getSessionDetail(Number(sessionId));
         setSessionQuestions(detail.questions);
         setSessionTitle(detail.jobTitle);
-
-        // If no activeAnswerId is set yet, auto-select the first answered question of this session
-        if (!answerIdParam) {
-          const firstAnswered = detail.questions.find((q) => q.answerId);
-          if (firstAnswered && firstAnswered.answerId) {
-            setSearchParams({ answerId: String(firstAnswered.answerId) });
-            setActiveAnswerId(firstAnswered.answerId);
-          } else {
-            setError("이 세션에는 AI 분석 완료된 답변이 없습니다.");
-          }
-        }
       } catch (err) {
         console.error("Failed to load session info from path parameter:", err);
         setError("세션 정보를 불러오는데 실패했습니다.");
@@ -124,7 +106,19 @@ const AnalyticsLayout = () => {
     };
 
     loadSessionData();
-  }, [sessionId, answerIdParam]);
+  }, [sessionId]);
+
+  // Auto-select the first answered question of this session if no activeAnswerId is set yet
+  useEffect(() => {
+    if (sessionQuestions.length > 0 && !answerIdParam) {
+      const firstAnswered = sessionQuestions.find((q) => q.answerId);
+      if (firstAnswered && firstAnswered.answerId) {
+        setSearchParams({ answerId: String(firstAnswered.answerId) });
+      } else {
+        setError("이 세션에는 AI 분석 완료된 답변이 없습니다.");
+      }
+    }
+  }, [sessionQuestions, answerIdParam, setSearchParams]);
 
   // 2. Fetch the session and all its questions so the user can easily switch between them!
   const loadSessionSidebarOfAnswer = async (ansId: number) => {
@@ -164,7 +158,6 @@ const AnalyticsLayout = () => {
           const firstAnswered = detail.questions.find((q) => q.answerId);
           if (firstAnswered && firstAnswered.answerId) {
             setSearchParams({ answerId: String(firstAnswered.answerId) });
-            setActiveAnswerId(firstAnswered.answerId);
           } else {
             setError("최근 진행한 세션 중 완료된 답변 분석 데이터가 없습니다.");
           }
@@ -184,7 +177,6 @@ const AnalyticsLayout = () => {
 
   const handleSelectQuestion = (ansId: number) => {
     setSearchParams({ answerId: String(ansId) });
-    setActiveAnswerId(ansId);
   };
 
   return (
