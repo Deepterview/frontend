@@ -40,13 +40,12 @@ const DocumentsCard = ({ objective, setObjective }: DocumentsCardProps) => {
   };
 
   const processFile = (selectedFile: File) => {
-    setObjective((prev: File[] | null) => {
-      if (prev === null) {
-        return [selectedFile];
-      }
+    if (selectedFile.type !== "application/pdf" && !selectedFile.name.endsWith(".pdf")) {
+      alert("포트폴리오는 PDF 파일만 업로드할 수 있습니다.");
+      return;
+    }
 
-      return [...prev, selectedFile];
-    });
+    setObjective([selectedFile]);
   };
 
   const handleDelete = (index: number) => {
@@ -85,8 +84,7 @@ const DocumentsCard = ({ objective, setObjective }: DocumentsCardProps) => {
           ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
-          accept=".pdf,.doc,.docx"
-          multiple
+          accept=".pdf,application/pdf"
         />
 
         <motion.div
@@ -108,7 +106,7 @@ const DocumentsCard = ({ objective, setObjective }: DocumentsCardProps) => {
             여기에 파일을 드롭하거나 클릭하여 업로드하세요
           </p>
           <p className="text-[#cbc3d7]/60 text-xs font-medium max-w-[200px] pointer-events-none">
-            이력서를 업로드하세요 (PDF, DOCX)
+            포트폴리오를 업로드하세요 (PDF)
           </p>
         </motion.div>
 

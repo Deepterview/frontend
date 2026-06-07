@@ -22,9 +22,23 @@ const PracticeLayout = () => {
   const [session, setSession] = useState<SessionDetail | null>(null);
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
   const [isLoadingSession, setIsLoadingSession] = useState(true);
+  const [portfolioQuestions, setPortfolioQuestions] = useState<string[]>([]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const analysisResult = useFaceAnalysis(videoRef, isInterviewStarted);
+
+  useEffect(() => {
+    const storedQuestions = sessionStorage.getItem("portfolioQuestions");
+    if (storedQuestions) {
+      try {
+        setPortfolioQuestions(JSON.parse(storedQuestions));
+      } catch {
+        setPortfolioQuestions([]);
+      }
+    } else if (Array.isArray(location.state?.portfolioQuestions)) {
+      setPortfolioQuestions(location.state.portfolioQuestions);
+    }
+  }, [location.state?.portfolioQuestions]);
 
   useEffect(() => {
     if (!sessionId) {
@@ -66,6 +80,8 @@ const PracticeLayout = () => {
   const currentQuestion: QuestionResponse | null =
     unansweredQuestions[0] ?? null;
   const hasMoreQuestions = unansweredQuestions.length > 0;
+  const answeredCount = (session?.questions.length ?? 0) - unansweredQuestions.length;
+  const portfolioQuestionText = portfolioQuestions[answeredCount] ?? null;
 
   const handleQuestionAnswered = useCallback((answerId: number) => {
     async function fetchNext() {
@@ -121,6 +137,7 @@ const PracticeLayout = () => {
             <Transcript
               isInterviewStarted={isInterviewStarted}
               currentQuestion={currentQuestion}
+              questionOverride={portfolioQuestionText}
               hasMoreQuestions={hasMoreQuestions}
               onQuestionAnswered={handleQuestionAnswered}
             />

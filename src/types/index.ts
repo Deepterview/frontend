@@ -88,6 +88,25 @@ export interface AnswerAnalysis {
 }
 
 // -------------------------------------------------------------
+// Portfolio Service Types
+// -------------------------------------------------------------
+export interface PortfolioUploadResponse {
+  portfolioId: number;
+  filePath: string;
+}
+
+export interface PortfolioExtractResponse {
+  portfolioId: number;
+  extractedText: string;
+  isScanned: boolean;
+}
+
+export interface PortfolioQuestionsResponse {
+  portfolioId: number;
+  questions: string[];
+}
+
+// -------------------------------------------------------------
 // Job Category Service Types
 // -------------------------------------------------------------
 export interface JobCategory {

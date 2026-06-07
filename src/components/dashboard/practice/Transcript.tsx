@@ -14,6 +14,7 @@ interface Message {
 interface TranscriptProps {
   isInterviewStarted?: boolean;
   currentQuestion?: QuestionResponse | null;
+  questionOverride?: string | null;
   hasMoreQuestions?: boolean;
   onQuestionAnswered?: (answerId: number) => void;
 }
@@ -21,6 +22,7 @@ interface TranscriptProps {
 const Transcript = ({
   isInterviewStarted = false,
   currentQuestion = null,
+  questionOverride = null,
   hasMoreQuestions = true,
   onQuestionAnswered,
 }: TranscriptProps) => {
@@ -137,12 +139,13 @@ const Transcript = ({
       {
         id: `q-${currentQuestion.id}`,
         sender: "interviewer",
-        text: currentQuestion.content,
+        text: questionOverride ?? currentQuestion.content,
       },
     ]);
   }, [
     currentQuestion?.id,
     currentQuestion?.content,
+    questionOverride,
     currentQuestion?.timeLimitSec,
   ]);
 
