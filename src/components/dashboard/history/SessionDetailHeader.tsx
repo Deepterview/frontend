@@ -2,7 +2,11 @@ import { motion } from "framer-motion";
 import type { SessionDetailHeaderProps } from "../../../types/types";
 import { Clock, FileText, MessageSquare, Share2, Trash2 } from "lucide-react";
 
-const SessionDetailHeader = ({ session, onViewReport, onDeleteSession }: SessionDetailHeaderProps) => {
+const SessionDetailHeader = ({
+  session,
+  onViewReport,
+  onDeleteSession,
+}: SessionDetailHeaderProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -11,7 +15,7 @@ const SessionDetailHeader = ({ session, onViewReport, onDeleteSession }: Session
     >
       <div className="flex items-center gap-8 min-w-0 flex-1">
         {/* Score Circle */}
-        <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
+        {/* <div className="relative w-24 h-24 flex items-center justify-center shrink-0">
           <svg className="w-full h-full -rotate-90">
             <circle
               cx="48"
@@ -39,7 +43,7 @@ const SessionDetailHeader = ({ session, onViewReport, onDeleteSession }: Session
           <span className="absolute text-2xl font-black text-[#e1e2e7]">
             {session.score}
           </span>
-        </div>
+        </div> */}
 
         <div className="min-w-0 flex-1">
           <h3 className="text-2xl font-black tracking-tighter text-[#e1e2e7] leading-tight">
@@ -81,7 +85,10 @@ const SessionDetailHeader = ({ session, onViewReport, onDeleteSession }: Session
             className="flex items-center justify-center p-3.5 bg-red-500/5 hover:bg-red-500/10 border border-red-500/10 hover:border-red-500/30 text-red-400 hover:text-red-300 rounded-full transition-all cursor-pointer shadow-md group"
             title="세션 삭제"
           >
-            <Trash2 size={16} className="group-hover:scale-105 transition-transform" />
+            <Trash2
+              size={16}
+              className="group-hover:scale-105 transition-transform"
+            />
           </button>
         )}
       </div>
