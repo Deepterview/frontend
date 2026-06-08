@@ -39,9 +39,12 @@ const HistoryLayout = () => {
   const [sessionDetail, setSessionDetail] = useState<SessionDetail | null>(
     null,
   );
-  const [sessionReport, setSessionReport] = useState<SessionReport | null>(
-    null,
-  );
+  const [
+    sessionReport,
+    setSessionReport,
+    weaknessSummary,
+    improvementPriority,
+  ] = useState<SessionReport | null>(null);
   const [isLoadingList, setIsLoadingList] = useState(true);
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [isCreatingReport, setIsCreatingReport] = useState(false);
@@ -431,6 +434,24 @@ const HistoryLayout = () => {
                       </h4>
                       <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
                         {sessionReport.strengthSummary ||
+                          "강점 데이터를 분석 중입니다..."}
+                      </p>
+                    </div>
+                    <div className="bg-[#191c1f]/80 backdrop-blur-md rounded-[2rem] p-6 border border-white/5">
+                      <h4 className="text-[0.65rem] uppercase tracking-widest text-[#cbc3d7]/80 font-black mb-3">
+                        약점 요약
+                      </h4>
+                      <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
+                        {sessionReport.weaknessSummary ||
+                          "강점 데이터를 분석 중입니다..."}
+                      </p>
+                    </div>
+                    <div className="bg-[#191c1f]/80 backdrop-blur-md rounded-[2rem] p-6 border border-white/5">
+                      <h4 className="text-[0.65rem] uppercase tracking-widest text-emerald-400 font-black mb-3">
+                        개선 방향
+                      </h4>
+                      <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
+                        {sessionReport.improvementPriority ||
                           "강점 데이터를 분석 중입니다..."}
                       </p>
                     </div>
