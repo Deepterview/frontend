@@ -438,7 +438,7 @@ const HistoryLayout = () => {
                       </p>
                     </div>
                     <div className="bg-[#191c1f]/80 backdrop-blur-md rounded-[2rem] p-6 border border-white/5">
-                      <h4 className="text-[0.65rem] uppercase tracking-widest text-[#cbc3d7]/80 font-black mb-3">
+                      <h4 className="text-[0.65rem] uppercase tracking-widest text-red-300 font-black mb-3">
                         약점 요약
                       </h4>
                       <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
