@@ -270,51 +270,76 @@ const Transcript = ({
     !currentQuestion ||
     !hasMoreQuestions;
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 160)}px`;
+    }
+  }, [inputText]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (inputText.trim() && !submitDisabled) {
+        void handleSubmit();
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="relative group">
-        <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-          <Sparkles size={18} className="text-[#cebdff]" />
-        </div>
-        <input
-          type="text"
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          disabled={submitDisabled}
-          placeholder={
-            !hasMoreQuestions
-              ? "모든 질문에 답변했습니다. 면접 종료 버튼을 눌러 주세요."
-              : isListening
-                ? "말씀해 주세요... 실시간으로 받아적고 있습니다..."
-                : "메모를 입력하거나 음성 인식으로 답변하세요..."
-          }
-          className="w-full bg-[#191c1f] border border-[#494454]/20 rounded-full py-5 pl-14 pr-48 text-sm text-[#e1e2e7] focus:ring-2 focus:ring-[#cebdff]/20 focus:border-[#cebdff]/30 transition-all outline-none disabled:opacity-50"
-        />
+        <div className="bg-[#191c1f] border border-[#494454]/20 rounded-2xl p-4 transition-all focus-within:ring-2 focus-within:ring-[#cebdff]/20 focus-within:border-[#cebdff]/30 shadow-lg">
+          <div className="flex items-start gap-3">
+            <div className="pt-1 flex-shrink-0 text-[#cebdff]">
+              <Sparkles size={18} />
+            </div>
+            <textarea
+              ref={textareaRef}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={submitDisabled}
+              rows={1}
+              placeholder={
+                !hasMoreQuestions
+                  ? "모든 질문에 답변했습니다. 면접 종료 버튼을 눌러 주세요."
+                  : isListening
+                    ? "말씀해 주세요... 실시간으로 받아적고 있습니다..."
+                    : "메모를 입력하거나 음성 인식으로 답변하세요..."
+              }
+              className="w-full bg-transparent text-sm text-[#e1e2e7] outline-none disabled:opacity-50 resize-none min-h-[44px] max-h-40 overflow-y-auto leading-relaxed placeholder-[#cbc3d7]/40 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            />
+          </div>
 
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-          <motion.button
-            type="button"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={toggleListening}
-            disabled={!isInterviewStarted || submitDisabled}
-            className={`p-3 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
-              isListening
-                ? "bg-red-500 text-white border-red-400/30 animate-pulse"
-                : "bg-white/5 text-[#cebdff] hover:bg-white/10 border-white/10"
-            } disabled:opacity-40 disabled:cursor-not-allowed`}
-            title={isListening ? "음성 인식 중지" : "음성 인식 시작"}
-          >
-            {isListening ? <MicOff size={16} /> : <Mic size={16} />}
-          </motion.button>
+          <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-[#494454]/15">
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={toggleListening}
+              disabled={!isInterviewStarted || submitDisabled}
+              className={`p-2.5 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
+                isListening
+                  ? "bg-red-500 text-white border-red-400/30 animate-pulse"
+                  : "bg-white/5 text-[#cebdff] hover:bg-white/10 border-white/10"
+              } disabled:opacity-40 disabled:cursor-not-allowed`}
+              title={isListening ? "음성 인식 중지" : "음성 인식 시작"}
+            >
+              {isListening ? <MicOff size={16} /> : <Mic size={16} />}
+            </motion.button>
 
-          <button
-            type="submit"
-            disabled={submitDisabled || !inputText.trim()}
-            className="px-6 py-3 bg-[#9b7fed] text-[#31057e] font-bold rounded-full text-xs uppercase tracking-widest flex items-center gap-2 hover:brightness-110 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            제출 <Send size={14} />
-          </button>
+            <button
+              type="submit"
+              disabled={submitDisabled || !inputText.trim()}
+              className="px-5 py-2.5 bg-[#9b7fed] text-[#31057e] font-bold rounded-full text-xs uppercase tracking-widest flex items-center gap-2 hover:brightness-110 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
+            >
+              제출 <Send size={14} />
+            </button>
+          </div>
         </div>
       </form>
 
