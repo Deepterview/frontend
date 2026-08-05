@@ -80,23 +80,27 @@ const PracticeLayout = () => {
   const currentQuestion: QuestionResponse | null =
     unansweredQuestions[0] ?? null;
   const hasMoreQuestions = unansweredQuestions.length > 0;
-  const answeredCount = (session?.questions.length ?? 0) - unansweredQuestions.length;
+  const answeredCount =
+    (session?.questions.length ?? 0) - unansweredQuestions.length;
   const portfolioQuestionText = portfolioQuestions[answeredCount] ?? null;
 
-  const handleQuestionAnswered = useCallback((answerId: number) => {
-    async function fetchNext() {
-      try {
-        if (session && session.questions.length < session.totalQuestions) {
-          await sessionService.getNextQuestion(sessionId!, answerId);
+  const handleQuestionAnswered = useCallback(
+    (answerId: number) => {
+      async function fetchNext() {
+        try {
+          if (session && session.questions.length < session.totalQuestions) {
+            await sessionService.getNextQuestion(sessionId!, answerId);
+          }
+          const detail = await sessionService.getSessionDetail(sessionId!);
+          setSession(detail);
+        } catch (err) {
+          console.error("Failed to fetch next question:", err);
         }
-        const detail = await sessionService.getSessionDetail(sessionId!);
-        setSession(detail);
-      } catch (err) {
-        console.error("Failed to fetch next question:", err);
       }
-    }
-    void fetchNext();
-  }, [sessionId, session]);
+      void fetchNext();
+    },
+    [sessionId, session],
+  );
 
   if (!sessionId || isLoadingSession) {
     return (

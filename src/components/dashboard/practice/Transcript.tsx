@@ -292,9 +292,9 @@ const Transcript = ({
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="relative group">
-        <div className="bg-[#191c1f] border border-[#494454]/20 rounded-2xl p-4 transition-all focus-within:ring-2 focus-within:ring-[#cebdff]/20 focus-within:border-[#cebdff]/30 shadow-lg">
-          <div className="flex items-start gap-3">
-            <div className="pt-1 flex-shrink-0 text-[#cebdff]">
+        <div className="bg-[#191c1f] border border-[#494454]/20 rounded-2xl p-2.5 transition-all focus-within:ring-2 focus-within:ring-[#cebdff]/20 focus-within:border-[#cebdff]/30 shadow-lg">
+          <div className="flex items-start gap-2.5">
+            <div className="pt-0.5 flex-shrink-0 text-[#cebdff]">
               <Sparkles size={18} />
             </div>
             <textarea
@@ -311,18 +311,18 @@ const Transcript = ({
                     ? "말씀해 주세요... 실시간으로 받아적고 있습니다..."
                     : "메모를 입력하거나 음성 인식으로 답변하세요..."
               }
-              className="w-full bg-transparent text-sm text-[#e1e2e7] outline-none disabled:opacity-50 resize-none min-h-[44px] max-h-40 overflow-y-auto leading-relaxed placeholder-[#cbc3d7]/40 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              className="w-full bg-transparent text-sm text-[#e1e2e7] outline-none disabled:opacity-50 resize-none min-h-[28px] max-h-36 overflow-y-auto leading-relaxed placeholder-[#cbc3d7]/40 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-[#494454]/15">
+          <div className="flex items-center justify-end gap-2 mt-2 pt-2 border-t border-[#494454]/15">
             <motion.button
               type="button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleListening}
               disabled={!isInterviewStarted || submitDisabled}
-              className={`p-2.5 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
+              className={`p-2 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
                 isListening
                   ? "bg-red-500 text-white border-red-400/30 animate-pulse"
                   : "bg-white/5 text-[#cebdff] hover:bg-white/10 border-white/10"
@@ -335,7 +335,7 @@ const Transcript = ({
             <button
               type="submit"
               disabled={submitDisabled || !inputText.trim()}
-              className="px-5 py-2.5 bg-[#9b7fed] text-[#31057e] font-bold rounded-full text-xs uppercase tracking-widest flex items-center gap-2 hover:brightness-110 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
+              className="px-4 py-2 bg-[#9b7fed] text-[#31057e] font-bold rounded-full text-xs uppercase tracking-widest flex items-center gap-1.5 hover:brightness-110 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
             >
               제출 <Send size={14} />
             </button>
@@ -343,13 +343,13 @@ const Transcript = ({
         </div>
       </form>
 
-      <div className="bg-[#191c1f] rounded-[2rem] p-8 border border-[#494454]/10 shadow-[0_0_40px_0_rgba(206,189,255,0.05)]">
-        <div className="flex items-center justify-between mb-8">
+      <div className="bg-[#191c1f] rounded-2xl p-4 border border-[#494454]/10 shadow-[0_0_30px_0_rgba(206,189,255,0.03)]">
+        <div className="flex items-center justify-between mb-3">
           <h4 className="text-[0.65rem] uppercase tracking-[0.2em] text-[#cbc3d7]/60 font-bold">
             실시간 대화록
           </h4>
           <div className="flex gap-2">
-            <span className="px-3 py-1 bg-[#cebdff]/10 text-[#cebdff] text-[0.6rem] font-bold uppercase rounded-full border border-[#cebdff]/20">
+            <span className="px-2.5 py-0.5 bg-[#cebdff]/10 text-[#cebdff] text-[0.6rem] font-bold uppercase rounded-full border border-[#cebdff]/20">
               {timeLeft}s
             </span>
           </div>
@@ -357,12 +357,12 @@ const Transcript = ({
 
         <div
           ref={containerRef}
-          className="space-y-6 max-h-[300px] overflow-y-auto pr-4 custom-scrollbar"
+          className="space-y-3 max-h-44 overflow-y-auto pr-2 custom-scrollbar"
         >
           {messages.map((msg) => (
-            <div key={msg.id} className="space-y-2">
+            <div key={msg.id} className="space-y-1">
               <p
-                className={`text-sm font-bold ${
+                className={`text-xs font-bold ${
                   msg.sender === "interviewer"
                     ? "text-[#cebdff]"
                     : "text-emerald-400"
@@ -371,10 +371,10 @@ const Transcript = ({
                 {msg.sender === "interviewer" ? "면접관:" : "나 (답변):"}
               </p>
               <p
-                className={`leading-relaxed ${
+                className={`leading-relaxed text-lg ${
                   msg.sender === "interviewer"
-                    ? "text-[#e1e2e7]/80 italic"
-                    : "text-[#e1e2e7] text-lg font-light"
+                    ? "text-[#e1e2e7]/90 italic"
+                    : "text-[#e1e2e7] font-light"
                 }`}
               >
                 {msg.text}

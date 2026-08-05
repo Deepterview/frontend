@@ -100,7 +100,7 @@ const EmotionAnalysis = ({
               transition={{ type: "spring", stiffness: 200, damping: 25 }}
               className={`w-full bg-gradient-to-t ${getBarColor(
                 bar.value,
-                bar.label
+                bar.label,
               )} rounded-t-lg relative group transition-colors duration-500 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]`}
             >
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity rounded-t-lg" />
