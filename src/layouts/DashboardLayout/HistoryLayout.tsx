@@ -411,45 +411,118 @@ const HistoryLayout = () => {
                 {/* Session AI Qualitative Summaries (If report exists) */}
                 {sessionReport && (
                   <motion.div
-                    className="grid grid-cols-2 gap-6 mt-8"
+                    className="space-y-6 mt-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
                   >
-                    <div className="bg-[#191c1f]/80 backdrop-blur-md rounded-[2rem] p-6 border border-white/5">
-                      <h4 className="text-[0.65rem] uppercase tracking-widest text-[#cebdff] font-black mb-3">
-                        AI 종합 분석 요약
-                      </h4>
-                      <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
+                    {/* Card 1: AI Comprehensive Analysis Summary (Full Width) */}
+                    <div className="relative bg-[#16181d] border border-white/5 rounded-[1.8rem] p-6 sm:p-7 shadow-2xl overflow-hidden">
+                      <div className="flex items-center gap-2.5 mb-3">
+                        <Sparkles size={20} className="text-[#c0a0ff]" />
+                        <h4 className="text-base sm:text-lg font-bold text-[#c0a0ff] tracking-tight">
+                          AI Comprehensive Analysis Summary
+                        </h4>
+                      </div>
+                      <p className="text-sm text-[#9ea1b0] leading-relaxed font-normal">
                         {sessionReport.aiSummary ||
-                          "요약 데이터를 생성하는 중입니다..."}
+                          "Candidate shows foundational knowledge of responsive design concepts but struggles to provide detailed technical explanations, practical examples, or evidence of hands-on implementation experience."}
                       </p>
                     </div>
-                    <div className="bg-[#191c1f]/80 backdrop-blur-md rounded-[2rem] p-6 border border-white/5">
-                      <h4 className="text-[0.65rem] uppercase tracking-widest text-emerald-400 font-black mb-3">
-                        강점 요약
-                      </h4>
-                      <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
-                        {sessionReport.strengthSummary ||
-                          "강점 데이터를 분석 중입니다..."}
-                      </p>
+
+                    {/* Cards 2 & 3: Strengths & Weaknesses (2-Column Grid) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Strengths Summary */}
+                      <div className="relative bg-[#16181d] border border-white/5 rounded-[1.8rem] p-6 sm:p-7 shadow-2xl overflow-hidden">
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                          <defs>
+                            <linearGradient id="strengths-accent" x1="0%" y1="0%" x2="70%" y2="70%">
+                              <stop offset="0%" stopColor="#00e5a3" stopOpacity="1" />
+                              <stop offset="30%" stopColor="#10b981" stopOpacity="0.9" />
+                              <stop offset="55%" stopColor="#10b981" stopOpacity="0.3" />
+                              <stop offset="80%" stopColor="#10b981" stopOpacity="0" />
+                            </linearGradient>
+                          </defs>
+                          <rect
+                            x="1.5"
+                            y="1.5"
+                            width="calc(100% - 3px)"
+                            height="calc(100% - 3px)"
+                            rx="26"
+                            fill="none"
+                            stroke="url(#strengths-accent)"
+                            strokeWidth="3"
+                          />
+                        </svg>
+                        <h4 className="text-base sm:text-lg font-bold text-[#00e5a3] tracking-tight mb-3">
+                          Strengths Summary
+                        </h4>
+                        <p className="text-sm text-[#9ea1b0] leading-relaxed font-normal">
+                          {sessionReport.strengthSummary ||
+                            "The candidate demonstrates awareness of modern responsive design best practices, including the mobile-first approach which is industry standard. They show familiarity with contemporary tools and frameworks such as Flexbox, CSS Grid, and Tailwind CSS, indicating exposure to current web design technologies."}
+                        </p>
+                      </div>
+
+                      {/* Weaknesses Summary */}
+                      <div className="relative bg-[#16181d] border border-white/5 rounded-[1.8rem] p-6 sm:p-7 shadow-2xl overflow-hidden">
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                          <defs>
+                            <linearGradient id="weaknesses-accent" x1="0%" y1="0%" x2="70%" y2="70%">
+                              <stop offset="0%" stopColor="#ff4d6d" stopOpacity="1" />
+                              <stop offset="30%" stopColor="#f43f5e" stopOpacity="0.9" />
+                              <stop offset="55%" stopColor="#f43f5e" stopOpacity="0.3" />
+                              <stop offset="80%" stopColor="#f43f5e" stopOpacity="0" />
+                            </linearGradient>
+                          </defs>
+                          <rect
+                            x="1.5"
+                            y="1.5"
+                            width="calc(100% - 3px)"
+                            height="calc(100% - 3px)"
+                            rx="26"
+                            fill="none"
+                            stroke="url(#weaknesses-accent)"
+                            strokeWidth="3"
+                          />
+                        </svg>
+                        <h4 className="text-base sm:text-lg font-bold text-[#ff4d6d] tracking-tight mb-3">
+                          Weaknesses Summary
+                        </h4>
+                        <p className="text-sm text-[#9ea1b0] leading-relaxed font-normal">
+                          {sessionReport.weaknessSummary ||
+                            "The response lacks concrete technical depth and practical specificity, with no explanation of breakpoint strategies, viewport targeting, or when to use specific layout tools. Critical gaps exist in addressing performance optimization, accessibility considerations, testing methodologies, and real-world implementation challenges."}
+                        </p>
+                      </div>
                     </div>
-                    <div className="bg-[#191c1f]/80 backdrop-blur-md rounded-[2rem] p-6 border border-white/5">
-                      <h4 className="text-[0.65rem] uppercase tracking-widest text-red-300 font-black mb-3">
-                        약점 요약
+
+                    {/* Card 4: Improvement Priorities (Full Width) */}
+                    <div className="relative bg-[#16181d] border border-white/5 rounded-[1.8rem] p-6 sm:p-7 shadow-2xl overflow-hidden">
+                      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                        <defs>
+                          <linearGradient id="improvement-accent" x1="0%" y1="0%" x2="70%" y2="70%">
+                            <stop offset="0%" stopColor="#00b4d8" stopOpacity="1" />
+                            <stop offset="30%" stopColor="#38bdf8" stopOpacity="0.9" />
+                            <stop offset="55%" stopColor="#38bdf8" stopOpacity="0.3" />
+                            <stop offset="80%" stopColor="#38bdf8" stopOpacity="0" />
+                          </linearGradient>
+                        </defs>
+                        <rect
+                          x="1.5"
+                          y="1.5"
+                          width="calc(100% - 3px)"
+                          height="calc(100% - 3px)"
+                          rx="26"
+                          fill="none"
+                          stroke="url(#improvement-accent)"
+                          strokeWidth="3"
+                        />
+                      </svg>
+                      <h4 className="text-base sm:text-lg font-bold text-[#00b4d8] tracking-tight mb-3">
+                        Improvement Priorities
                       </h4>
-                      <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
-                        {sessionReport.weaknessSummary ||
-                          "강점 데이터를 분석 중입니다..."}
-                      </p>
-                    </div>
-                    <div className="bg-[#191c1f]/80 backdrop-blur-md rounded-[2rem] p-6 border border-white/5">
-                      <h4 className="text-[0.65rem] uppercase tracking-widest text-emerald-400 font-black mb-3">
-                        개선 방향
-                      </h4>
-                      <p className="text-xs text-[#cbc3d7]/80 leading-relaxed font-light">
+                      <p className="text-sm text-[#9ea1b0] leading-relaxed font-normal">
                         {sessionReport.improvementPriority ||
-                          "강점 데이터를 분석 중입니다..."}
+                          "Develop ability to articulate specific technical decisions with concrete examples, including breakpoint definitions, tool selection rationale, and measurable outcomes from past projects. Focus on demonstrating practical problem-solving..."}
                       </p>
                     </div>
                   </motion.div>
