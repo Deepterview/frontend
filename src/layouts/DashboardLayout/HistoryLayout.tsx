@@ -39,12 +39,9 @@ const HistoryLayout = () => {
   const [sessionDetail, setSessionDetail] = useState<SessionDetail | null>(
     null,
   );
-  const [
-    sessionReport,
-    setSessionReport,
-    weaknessSummary,
-    improvementPriority,
-  ] = useState<SessionReport | null>(null);
+  const [sessionReport, setSessionReport] = useState<SessionReport | null>(
+    null,
+  );
   const [isLoadingList, setIsLoadingList] = useState(true);
   const [isLoadingDetail, setIsLoadingDetail] = useState(false);
   const [isCreatingReport, setIsCreatingReport] = useState(false);

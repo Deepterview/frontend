@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Play, VibrateOff, VideoOff } from "lucide-react";
+import { CheckCircle2, Play, Square, VideoOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { sessionService } from "../../../services/sessionService";
 import { useInterviewRecording } from "../../../contexts/InterviewRecordingContext";
@@ -214,40 +214,64 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         </div>
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4">
-          <motion.button
-            whileHover={!isRecording && hasMoreQuestions ? { scale: 1.05 } : {}}
-            whileTap={!isRecording && hasMoreQuestions ? { scale: 0.95 } : {}}
-            onClick={startRecording}
-            disabled={isRecording || isEnding || !hasMoreQuestions}
-            className={`px-6 py-4 rounded-full font-bold flex items-center gap-2 shadow-lg transition-all cursor-pointer ${
-              isRecording || !hasMoreQuestions
-                ? "bg-[#191c1f] text-emerald-400 border border-emerald-500/30 shadow-none cursor-not-allowed opacity-80"
-                : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30 hover:shadow-emerald-500/50"
-            }`}
-          >
-            <Play
-              size={20}
-              fill={isRecording || !hasMoreQuestions ? "none" : "currentColor"}
-              className={isRecording ? "animate-pulse text-emerald-400" : ""}
-            />
-            <span className="text-xs uppercase tracking-wider">
-              {isRecording
-                ? "Recording..."
-                : !hasMoreQuestions
-                  ? "답변 완료 (Completed)"
-                  : "면접 시작 (Start)"}
-            </span>
-          </motion.button>
+          {!hasMoreQuestions ? (
+            <>
+              <div className="px-5 py-3.5 rounded-full bg-[#191c1f]/90 border border-emerald-500/30 text-emerald-400 font-semibold text-xs flex items-center gap-2 backdrop-blur-md shadow-md">
+                <CheckCircle2 size={18} className="text-emerald-400" />
+                <span>모든 질문 답변 완료</span>
+              </div>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            disabled={isEnding}
-            className="w-14 h-14 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg shadow-red-500/30 hover:shadow-red-500/50 cursor-pointer disabled:opacity-60"
-            onClick={stopRecordingAndNavigate}
-          >
-            <VibrateOff size={24} />
-          </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                animate={{ scale: [1, 1.04, 1] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                disabled={isEnding}
+                onClick={stopRecordingAndNavigate}
+                className="px-6 py-3.5 rounded-full font-bold flex items-center gap-2.5 bg-gradient-to-r from-red-500 via-rose-500 to-red-600 hover:from-red-600 hover:to-rose-700 text-white shadow-xl shadow-red-500/50 ring-4 ring-red-500/30 cursor-pointer disabled:opacity-60 transition-all"
+                title="면접 세션을 종료하고 결과 리포트를 확인합니다"
+              >
+                <Square size={18} className="fill-current" />
+                <span className="text-xs uppercase tracking-wider font-extrabold">
+                  {isEnding ? "세션 종료 중..." : "면접 종료 및 결과 보기"}
+                </span>
+              </motion.button>
+            </>
+          ) : (
+            <>
+              <motion.button
+                whileHover={!isRecording ? { scale: 1.05 } : {}}
+                whileTap={!isRecording ? { scale: 0.95 } : {}}
+                onClick={startRecording}
+                disabled={isRecording || isEnding}
+                className={`px-6 py-4 rounded-full font-bold flex items-center gap-2 shadow-lg transition-all cursor-pointer ${
+                  isRecording
+                    ? "bg-[#191c1f] text-emerald-400 border border-emerald-500/30 shadow-none cursor-not-allowed opacity-80"
+                    : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30 hover:shadow-emerald-500/50"
+                }`}
+              >
+                <Play
+                  size={20}
+                  fill={isRecording ? "none" : "currentColor"}
+                  className={isRecording ? "animate-pulse text-emerald-400" : ""}
+                />
+                <span className="text-xs uppercase tracking-wider">
+                  {isRecording ? "Recording..." : "면접 시작 (Start)"}
+                </span>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                disabled={isEnding}
+                className="w-14 h-14 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-500/30 hover:shadow-red-500/50 cursor-pointer disabled:opacity-60 transition-all"
+                onClick={stopRecordingAndNavigate}
+                title="면접 종료"
+              >
+                <Square size={22} className="fill-current" />
+              </motion.button>
+            </>
+          )}
         </div>
       </div>
     );
