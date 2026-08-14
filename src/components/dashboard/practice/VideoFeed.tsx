@@ -23,11 +23,8 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
     const [isEnding, setIsEnding] = useState(false);
 
     const navigate = useNavigate();
-    const {
-      isRecording,
-      startRecorder,
-      stopRecorder,
-    } = useInterviewRecording();
+    const { isRecording, startRecorder, stopRecorder } =
+      useInterviewRecording();
 
     useEffect(() => {
       let interval: ReturnType<typeof setInterval> | null = null;
@@ -225,7 +222,11 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 animate={{ scale: [1, 1.04, 1] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 2,
+                  ease: "easeInOut",
+                }}
                 disabled={isEnding}
                 onClick={stopRecordingAndNavigate}
                 className="px-6 py-3.5 rounded-full font-bold flex items-center gap-2.5 bg-gradient-to-r from-red-500 via-rose-500 to-red-600 hover:from-red-600 hover:to-rose-700 text-white shadow-xl shadow-red-500/50 ring-4 ring-red-500/30 cursor-pointer disabled:opacity-60 transition-all"
@@ -242,21 +243,38 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
               <motion.button
                 whileHover={!isRecording ? { scale: 1.05 } : {}}
                 whileTap={!isRecording ? { scale: 0.95 } : {}}
+                {...(!isRecording && {
+                  animate: {
+                    scale: [1, 1.06, 1],
+                    boxShadow: [
+                      "0 0 0px rgba(16, 185, 129, 0.3)",
+                      "0 0 28px rgba(16, 185, 129, 0.7)",
+                      "0 0 0px rgba(16, 185, 129, 0.3)",
+                    ],
+                  },
+                  transition: {
+                    repeat: Infinity,
+                    duration: 1.5,
+                    ease: "easeInOut",
+                  },
+                })}
                 onClick={startRecording}
                 disabled={isRecording || isEnding}
                 className={`px-6 py-4 rounded-full font-bold flex items-center gap-2 shadow-lg transition-all cursor-pointer ${
                   isRecording
                     ? "bg-[#191c1f] text-emerald-400 border border-emerald-500/30 shadow-none cursor-not-allowed opacity-80"
-                    : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30 hover:shadow-emerald-500/50"
+                    : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30 hover:shadow-emerald-500/50 ring-2 ring-emerald-400/50"
                 }`}
               >
                 <Play
                   size={20}
                   fill={isRecording ? "none" : "currentColor"}
-                  className={isRecording ? "animate-pulse text-emerald-400" : ""}
+                  className={
+                    isRecording ? "animate-pulse text-emerald-400" : ""
+                  }
                 />
-                <span className="text-xs uppercase tracking-wider">
-                  {isRecording ? "Recording..." : "면접 시작 (Start)"}
+                <span className="text-xs uppercase tracking-wider font-extrabold">
+                  {isRecording ? "Recording..." : "면접 시작 (START)"}
                 </span>
               </motion.button>
 
