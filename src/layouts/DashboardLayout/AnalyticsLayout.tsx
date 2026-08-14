@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import {
   Sparkles,
   Smile,
-  Volume2,
   Award,
   AlertCircle,
   ArrowLeft,
@@ -333,129 +332,9 @@ const AnalyticsLayout = () => {
             </div>
 
             {/* Visual Analytics Columns */}
-            <div className={analysis.nonverbalAnalysis ? "grid grid-cols-2 gap-8" : "grid grid-cols-1 gap-8"}>
-              {/* verbal / speech analytics */}
-              <div className="bg-[#191c1f]/80 backdrop-blur-xl border border-white/5 rounded-[2.5rem] p-8 space-y-6">
-                <div className="flex items-center gap-3">
-                  <Volume2 size={20} className="text-[#7bd0ff]" />
-                  <h3 className="text-sm font-black tracking-wider uppercase text-[#e1e2e7]">
-                    언어적 자질 분석 (Speech)
-                  </h3>
-                </div>
-
-                {analysis.speechAnalysis ? (
-                  <div className="space-y-6">
-                    {/* WPM Gauge */}
-                    {analysis.speechAnalysis.wpm != null && (
-                      <div className="flex items-center justify-between p-4 bg-black/20 rounded-2xl border border-white/5">
-                        <div>
-                          <h4 className="text-[0.65rem] text-[#cbc3d7]/40 font-bold uppercase tracking-wider">발화 속도 (WPM)</h4>
-                          <p className="text-2xl font-black text-white mt-1">
-                            {Math.round(analysis.speechAnalysis.wpm)} <span className="text-xs text-[#cbc3d7]/40 font-medium">단어/분</span>
-                          </p>
-                        </div>
-                        <span className={`px-3 py-1 rounded-full text-[0.6rem] font-bold ${
-                          analysis.speechAnalysis.wpm >= 110 && analysis.speechAnalysis.wpm <= 150
-                            ? "bg-emerald-400/10 text-emerald-400 border border-emerald-400/20"
-                            : "bg-amber-400/10 text-amber-400 border border-amber-400/20"
-                        }`}>
-                          {analysis.speechAnalysis.wpm >= 110 && analysis.speechAnalysis.wpm <= 150 ? "안정적 속도" : "조율 권장"}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Filler Words */}
-                    {analysis.speechAnalysis.fillerCount != null && (
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-[0.65rem] text-[#cbc3d7]/60 font-bold uppercase">사용 빈도 높은 습관어</span>
-                          <span className="text-xs text-amber-400 font-bold">{analysis.speechAnalysis.fillerCount}회 발견</span>
-                        </div>
-                        <div className="flex flex-wrap gap-2 p-4 bg-black/20 rounded-2xl border border-white/5 min-h-[50px] items-center">
-                          {analysis.speechAnalysis.fillerWords && Object.keys(analysis.speechAnalysis.fillerWords).length > 0 ? (
-                            Object.entries(analysis.speechAnalysis.fillerWords).map(([word, count]) => (
-                              <span key={word} className="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-[0.65rem] font-bold rounded-xl">
-                                "{word}" : {count}회
-                              </span>
-                            ))
-                          ) : (
-                            <span className="text-xs text-[#cbc3d7]/30">습관어가 검출되지 않아 맑고 정돈된 표현입니다. ✨</span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Progress Bars */}
-                    {(analysis.speechAnalysis.clarityScore != null || 
-                      analysis.speechAnalysis.paceScore != null || 
-                      analysis.speechAnalysis.silenceRatio != null) && (
-                      <div className="space-y-4 pt-2">
-                        {analysis.speechAnalysis.paceScore != null && (
-                          <div>
-                            <div className="flex justify-between text-[0.65rem] font-bold mb-1">
-                              <span className="text-[#cbc3d7]/60 uppercase">발화 템포 점수 (Pace Score)</span>
-                              <span className="text-[#7bd0ff]">{Math.round(analysis.speechAnalysis.paceScore)}점</span>
-                            </div>
-                            <div className="h-2 bg-black/40 rounded-full overflow-hidden border border-white/5">
-                              <motion.div
-                                className="h-full bg-gradient-to-r from-sky-400 to-blue-500"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${analysis.speechAnalysis.paceScore}%` }}
-                                transition={{ duration: 1, ease: "easeOut" }}
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        {analysis.speechAnalysis.clarityScore != null && (
-                          <div>
-                            <div className="flex justify-between text-[0.65rem] font-bold mb-1">
-                              <span className="text-[#cbc3d7]/60 uppercase">문장 전달 선명도 (Clarity Score)</span>
-                              <span className="text-[#7bd0ff]">{Math.round(analysis.speechAnalysis.clarityScore)}점</span>
-                            </div>
-                            <div className="h-2 bg-black/40 rounded-full overflow-hidden border border-white/5">
-                              <motion.div
-                                className="h-full bg-gradient-to-r from-sky-400 to-blue-500"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${analysis.speechAnalysis.clarityScore}%` }}
-                                transition={{ duration: 1, ease: "easeOut" }}
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        {analysis.speechAnalysis.silenceRatio != null && (
-                          <div>
-                            <div className="flex justify-between text-[0.65rem] font-bold mb-1">
-                              <span className="text-[#cbc3d7]/60 uppercase">발화 공백 안정비 (Silence)</span>
-                              <span className="text-[#7bd0ff]">{Math.round((1 - analysis.speechAnalysis.silenceRatio) * 100)}%</span>
-                            </div>
-                            <div className="h-2 bg-black/40 rounded-full overflow-hidden border border-white/5">
-                              <motion.div
-                                className="h-full bg-gradient-to-r from-sky-400 to-blue-500"
-                                initial={{ width: 0 }}
-                                animate={{ width: `${(1 - analysis.speechAnalysis.silenceRatio) * 100}%` }}
-                                transition={{ duration: 1, ease: "easeOut" }}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {analysis.speechAnalysis.feedback != null && (
-                      <div className="p-4 bg-white/5 rounded-2xl border border-white/5 text-[0.7rem] text-[#cbc3d7]/80 leading-relaxed font-light">
-                        {analysis.speechAnalysis.feedback}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="text-xs text-[#cbc3d7]/40 italic">언어 감정 분석을 대기 중입니다...</p>
-                )}
-              </div>
-
-              {/* nonverbal / facial analytics */}
-              {analysis.nonverbalAnalysis && (
+            {analysis.nonverbalAnalysis && (
+              <div className="grid grid-cols-1 gap-8">
+                {/* nonverbal / facial analytics */}
                 <div className="bg-[#191c1f]/80 backdrop-blur-xl border border-white/5 rounded-[2.5rem] p-8 space-y-6">
                   <div className="flex items-center gap-3">
                     <Smile size={20} className="text-[#cebdff]" />
@@ -552,8 +431,8 @@ const AnalyticsLayout = () => {
                     )}
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* STAR Structural competency card */}
             {analysis.starAnalysis && (
