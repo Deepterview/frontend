@@ -585,7 +585,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">S (상황)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.situationScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light line-clamp-4">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
                         {analysis.starAnalysis.situationFeedback}
                       </p>
                     </div>
@@ -598,7 +598,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">T (목표/과제)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.taskScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light line-clamp-4">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
                         {analysis.starAnalysis.taskFeedback}
                       </p>
                     </div>
@@ -611,7 +611,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">A (해결 행동)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.actionScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light line-clamp-4">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
                         {analysis.starAnalysis.actionFeedback}
                       </p>
                     </div>
@@ -624,7 +624,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">R (성과)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.resultScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light line-clamp-4">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
                         {analysis.starAnalysis.resultFeedback}
                       </p>
                     </div>
