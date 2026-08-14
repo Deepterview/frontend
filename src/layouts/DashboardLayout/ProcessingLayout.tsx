@@ -38,6 +38,14 @@ const ProcessingLayout = () => {
       });
 
       if (result.success) {
+        setProgress({
+          phase: "done",
+          message: "분석이 완료되었습니다!",
+          completedAnswers: progress.totalAnswers || 1,
+          totalAnswers: progress.totalAnswers || 1,
+        });
+        // Wait for the progress bar to animate to 100% before navigating
+        await new Promise((resolve) => setTimeout(resolve, 800));
         navigate("/dashboard/history", {
           replace: true,
           state: { focusSessionId: sessionId, reportReady: true },
