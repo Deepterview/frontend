@@ -535,7 +535,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">S (상황)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.situationScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light break-words [overflow-wrap:anywhere]">
                         {analysis.starAnalysis.situationFeedback}
                       </p>
                     </div>
@@ -548,7 +548,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">T (목표/과제)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.taskScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light break-words [overflow-wrap:anywhere]">
                         {analysis.starAnalysis.taskFeedback}
                       </p>
                     </div>
@@ -561,7 +561,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">A (해결 행동)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.actionScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light break-words [overflow-wrap:anywhere]">
                         {analysis.starAnalysis.actionFeedback}
                       </p>
                     </div>
@@ -574,7 +574,7 @@ const AnalyticsLayout = () => {
                         <span className="text-[0.65rem] font-bold text-[#cebdff] uppercase tracking-wider">R (성과)</span>
                         <span className="text-[0.65rem] font-black text-white">{Math.round(analysis.starAnalysis.resultScore)}점</span>
                       </div>
-                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light">
+                      <p className="text-[0.65rem] text-[#cbc3d7]/60 leading-relaxed font-light break-words [overflow-wrap:anywhere]">
                         {analysis.starAnalysis.resultFeedback}
                       </p>
                     </div>
@@ -603,7 +603,7 @@ const AnalyticsLayout = () => {
                     <span className="text-[0.6rem] text-emerald-400 font-bold uppercase tracking-widest block mb-2">
                       강점 (Strengths)
                     </span>
-                    <p className="text-[0.7rem] text-[#cbc3d7]/80 leading-relaxed font-light">
+                    <p className="text-[0.7rem] text-[#cbc3d7]/80 leading-relaxed font-light break-words [overflow-wrap:anywhere]">
                       {analysis.llmFeedback.strength}
                     </p>
                   </div>
@@ -612,7 +612,7 @@ const AnalyticsLayout = () => {
                     <span className="text-[0.6rem] text-red-400 font-bold uppercase tracking-widest block mb-2">
                       보완할 점 (Weaknesses)
                     </span>
-                    <p className="text-[0.7rem] text-[#cbc3d7]/80 leading-relaxed font-light">
+                    <p className="text-[0.7rem] text-[#cbc3d7]/80 leading-relaxed font-light break-words [overflow-wrap:anywhere]">
                       {analysis.llmFeedback.weakness}
                     </p>
                   </div>
