@@ -31,12 +31,13 @@ const AnalyticsLayout = () => {
   const [isPendingAnalysis, setIsPendingAnalysis] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Per-answer completion & loading maps
+  const [completedAnswersMap, setCompletedAnswersMap] = useState<Record<number, boolean>>({});
+  const [loadingAnswersMap, setLoadingAnswersMap] = useState<Record<number, boolean>>({});
 
   // States to populate the sidebar of questions for the session
   const [sessionQuestions, setSessionQuestions] = useState<any[]>([]);
   const [sessionTitle, setSessionTitle] = useState("");
-
-
 
   const hasMeaningfulAnalysis = (data: AnswerAnalysis) =>
     Boolean(
@@ -49,10 +50,16 @@ const AnalyticsLayout = () => {
   const fetchAnalysis = async (answerId: number) => {
     try {
       setIsLoading(true);
+      setLoadingAnswersMap((prev) => ({ ...prev, [answerId]: true }));
       setError(null);
       const data = await answerService.getAnalysis(answerId);
       setAnalysis(data);
-      setIsPendingAnalysis(!hasMeaningfulAnalysis(data));
+      const isReady = hasMeaningfulAnalysis(data);
+      setIsPendingAnalysis(!isReady);
+
+      if (isReady) {
+        setCompletedAnswersMap((prev) => ({ ...prev, [answerId]: true }));
+      }
 
       if (sessionQuestions.length === 0 && !sessionId) {
         await loadSessionSidebarOfAnswer(answerId);
@@ -64,15 +71,58 @@ const AnalyticsLayout = () => {
       setError("답변 분석 데이터를 불러오는데 실패했거나 AI 분석이 아직 진행 중입니다.");
     } finally {
       setIsLoading(false);
+      setLoadingAnswersMap((prev) => ({ ...prev, [answerId]: false }));
     }
   };
+
+  const checkAllAnswersStatus = async (questions: any[]) => {
+    const answered = questions.filter((q) => q.answerId != null);
+    await Promise.all(
+      answered.map(async (q) => {
+        const ansId = q.answerId;
+        if (completedAnswersMap[ansId]) return;
+
+        setLoadingAnswersMap((prev) => ({ ...prev, [ansId]: true }));
+        try {
+          const data = await answerService.getAnalysis(ansId);
+          if (hasMeaningfulAnalysis(data)) {
+            setCompletedAnswersMap((prev) => ({ ...prev, [ansId]: true }));
+          }
+        } catch {
+          // not ready yet
+        } finally {
+          setLoadingAnswersMap((prev) => ({ ...prev, [ansId]: false }));
+        }
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (sessionQuestions.length > 0) {
+      void checkAllAnswersStatus(sessionQuestions);
+    }
+  }, [sessionQuestions]);
+
+  useEffect(() => {
+    if (sessionQuestions.length === 0) return;
+
+    const pendingQuestions = sessionQuestions.filter(
+      (q) => q.answerId && !completedAnswersMap[q.answerId]
+    );
+
+    if (pendingQuestions.length === 0) return;
+
+    const interval = setInterval(() => {
+      void checkAllAnswersStatus(sessionQuestions);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [sessionQuestions, completedAnswersMap]);
 
   useEffect(() => {
     if (!activeAnswerId) return;
     void fetchAnalysis(activeAnswerId);
   }, [activeAnswerId]);
-
-
 
   useEffect(() => {
     if (!activeAnswerId || !isPendingAnalysis || error) return;
@@ -207,34 +257,55 @@ const AnalyticsLayout = () => {
           </div>
 
           <div className="space-y-3">
-            {sessionQuestions.map((q, idx) => (
-              <button
-                key={q.id}
-                onClick={() => q.answerId && handleSelectQuestion(q.answerId)}
-                disabled={!q.answerId}
-                className={`w-full text-left p-4 rounded-2xl transition-all border text-xs flex flex-col gap-2 ${
-                  !q.answerId
-                    ? "bg-black/20 border-transparent text-[#cbc3d7]/20 cursor-not-allowed"
-                    : q.answerId === activeAnswerId
-                    ? "bg-[#cebdff]/10 border-[#cebdff]/30 text-[#e1e2e7] shadow-lg shadow-[#cebdff]/5"
-                    : "bg-[#111417]/40 border-transparent hover:bg-[#191c1f] hover:border-white/5 text-[#cbc3d7]/60 cursor-pointer"
-                }`}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-bold text-[0.65rem] uppercase tracking-wider text-[#cebdff]">
-                    질문 0{idx + 1}
-                  </span>
-                  {!q.answerId ? (
-                    <span className="text-[0.6rem] text-red-400 font-bold bg-red-400/5 px-2 py-0.5 rounded border border-red-400/10">미답변</span>
-                  ) : q.answerId === activeAnswerId && isPendingAnalysis ? (
-                    <span className="text-[0.6rem] text-amber-400 font-bold bg-amber-400/5 px-2 py-0.5 rounded border border-amber-400/10">분석 중</span>
-                  ) : (
-                    <span className="text-[0.6rem] text-emerald-400 font-bold bg-emerald-400/5 px-2 py-0.5 rounded border border-emerald-400/10">답변 완료</span>
-                  )}
-                </div>
-                <p className="font-medium line-clamp-2 leading-relaxed">{q.content}</p>
-              </button>
-            ))}
+            {sessionQuestions.map((q, idx) => {
+              const ansId = q.answerId;
+              const isSelected = ansId === activeAnswerId;
+              const isCompleted = ansId ? Boolean(completedAnswersMap[ansId]) : false;
+              const isQuestionLoading = ansId
+                ? Boolean(loadingAnswersMap[ansId]) || (isSelected && isLoading)
+                : false;
+
+              // Disabled if no answerId OR if not completed yet (still loading / analyzing)
+              const isDisabled = !ansId || !isCompleted || isQuestionLoading;
+
+              return (
+                <button
+                  key={q.id}
+                  onClick={() => ansId && !isDisabled && handleSelectQuestion(ansId)}
+                  disabled={isDisabled}
+                  className={`w-full text-left p-4 rounded-2xl transition-all border text-xs flex flex-col gap-2 ${
+                    !ansId
+                      ? "bg-black/20 border-transparent text-[#cbc3d7]/20 cursor-not-allowed opacity-50"
+                      : !isCompleted
+                      ? "bg-[#111417]/40 border-transparent text-[#cbc3d7]/40 cursor-not-allowed opacity-60"
+                      : isSelected
+                      ? "bg-[#cebdff]/10 border-[#cebdff]/30 text-[#e1e2e7] shadow-lg shadow-[#cebdff]/5 cursor-pointer"
+                      : "bg-[#111417]/40 border-transparent hover:bg-[#191c1f] hover:border-white/5 text-[#cbc3d7]/60 cursor-pointer"
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <span className="font-bold text-[0.65rem] uppercase tracking-wider text-[#cebdff]">
+                      질문 0{idx + 1}
+                    </span>
+                    {!ansId ? (
+                      <span className="text-[0.6rem] text-red-400 font-bold bg-red-400/5 px-2 py-0.5 rounded border border-red-400/10">
+                        미답변
+                      </span>
+                    ) : isCompleted ? (
+                      <span className="text-[0.6rem] text-emerald-400 font-bold bg-emerald-400/5 px-2 py-0.5 rounded border border-emerald-400/10">
+                        답변 완료
+                      </span>
+                    ) : (
+                      <span className="text-[0.6rem] text-sky-400 font-bold bg-sky-400/10 px-2 py-0.5 rounded border border-sky-400/20 flex items-center gap-1.5 animate-pulse">
+                        <RefreshCw size={10} className="animate-spin text-sky-400 inline" />
+                        로딩 중...
+                      </span>
+                    )}
+                  </div>
+                  <p className="font-medium line-clamp-2 leading-relaxed">{q.content}</p>
+                </button>
+              );
+            })}
           </div>
         </motion.div>
       )}
