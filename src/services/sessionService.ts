@@ -67,6 +67,6 @@ export const sessionService = {
   },
 
   generatePythonReport: async (sessionId: number): Promise<void> => {
-    await api.post<ApiResponse<void>>(`/api/v1/sessions/${sessionId}/report/generate`);
+    await api.post<ApiResponse<void>>(`/api/v1/sessions/${sessionId}/report`);
   },
 };

@@ -148,12 +148,6 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
             return;
           }
 
-          try {
-            await sessionService.generatePythonReport(sessionId);
-          } catch (err) {
-            console.error("Failed to trigger Python report generation:", err);
-          }
-
           sessionStorage.removeItem("activeSessionId");
 
           if (onEndInterview) {
@@ -161,7 +155,7 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
           }
 
           navigate("/dashboard/practice/processing", {
-            state: { sessionId, skipPythonTrigger: true },
+            state: { sessionId },
           });
           return;
         }
