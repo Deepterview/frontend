@@ -207,8 +207,8 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4">
           {!hasMoreQuestions ? (
             <>
-              <div className="px-5 py-3.5 rounded-full bg-[#191c1f]/90 border border-emerald-500/30 text-emerald-400 font-semibold text-xs flex items-center gap-2 backdrop-blur-md shadow-md">
-                <CheckCircle2 size={18} className="text-emerald-400" />
+              <div className="px-5 py-3.5 rounded-full bg-[#191c1f]/90 border border-emerald-500/30 text-emerald-400 font-semibold text-xs flex items-center gap-2 backdrop-blur-md shadow-md whitespace-nowrap">
+                <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
                 <span>모든 질문 답변 완료</span>
               </div>
 
@@ -223,10 +223,10 @@ const VideoFeed = forwardRef<HTMLVideoElement, VideoFeedProps>(
                 }}
                 disabled={isEnding}
                 onClick={stopRecordingAndNavigate}
-                className="px-6 py-3.5 rounded-full font-bold flex items-center gap-2.5 bg-gradient-to-r from-red-500 via-rose-500 to-red-600 hover:from-red-600 hover:to-rose-700 text-white shadow-xl shadow-red-500/50 ring-4 ring-red-500/30 cursor-pointer disabled:opacity-60 transition-all"
+                className="px-6 py-3.5 rounded-full font-bold flex items-center gap-2.5 bg-gradient-to-r from-red-500 via-rose-500 to-red-600 hover:from-red-600 hover:to-rose-700 text-white shadow-xl shadow-red-500/50 ring-4 ring-red-500/30 cursor-pointer disabled:opacity-60 transition-all whitespace-nowrap"
                 title="면접 세션을 종료하고 결과 리포트를 확인합니다"
               >
-                <Square size={18} className="fill-current" />
+                <Square size={18} className="fill-current shrink-0" />
                 <span className="text-xs uppercase tracking-wider font-extrabold">
                   {isEnding ? "세션 종료 중..." : "면접 종료 및 결과 보기"}
                 </span>
