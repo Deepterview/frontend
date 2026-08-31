@@ -162,6 +162,7 @@ export interface CreateSessionRequest {
   careerYears?: number;
   sessionType: "TECHNICAL" | "PERSONALITY" | "COMBINED";
   totalQuestions?: number;
+  portfolioId?: number;
 }
 
 export interface QuestionResponse {

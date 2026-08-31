@@ -69,6 +69,7 @@ const DashboardLayout = () => {
         totalQuestions: portfolioResult
           ? Math.min(totalQuestions, portfolioResult.questions.length)
           : totalQuestions,
+        ...(portfolioResult && { portfolioId: portfolioResult.portfolioId }),
       };
 
       setPortfolioStatus("면접 세션 생성 중...");

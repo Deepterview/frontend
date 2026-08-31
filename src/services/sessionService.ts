@@ -12,45 +12,54 @@ export const sessionService = {
   getSessions: async (
     page = 0,
     size = 10,
-    status?: string
+    status?: string,
   ): Promise<SessionListResponse> => {
     const params = new URLSearchParams();
     params.append("page", page.toString());
     params.append("size", size.toString());
     if (status) params.append("status", status);
 
-    const res = await api.get<ApiResponse<SessionListResponse>>("/api/v1/sessions", {
-      params,
-    });
+    const res = await api.get<ApiResponse<SessionListResponse>>(
+      "/api/v1/sessions",
+      {
+        params,
+      },
+    );
     return res.data.data;
   },
 
-  createSession: async (request: CreateSessionRequest): Promise<SessionDetail> => {
+  createSession: async (
+    request: CreateSessionRequest,
+  ): Promise<SessionDetail> => {
     const res = await api.post<ApiResponse<SessionDetail>>(
       "/api/v1/sessions",
-      request
+      request,
     );
     return res.data.data;
   },
 
   getSessionDetail: async (sessionId: number): Promise<SessionDetail> => {
     const res = await api.get<ApiResponse<SessionDetail>>(
-      `/api/v1/sessions/${sessionId}`
+      `/api/v1/sessions/${sessionId}`,
     );
     return res.data.data;
   },
 
-  startSession: async (sessionId: number): Promise<{ sessionId: number; status: SessionStatus }> => {
-    const res = await api.patch<ApiResponse<{ sessionId: number; status: SessionStatus }>>(
-      `/api/v1/sessions/${sessionId}/start`
-    );
+  startSession: async (
+    sessionId: number,
+  ): Promise<{ sessionId: number; status: SessionStatus }> => {
+    const res = await api.patch<
+      ApiResponse<{ sessionId: number; status: SessionStatus }>
+    >(`/api/v1/sessions/${sessionId}/start`);
     return res.data.data;
   },
 
-  endSession: async (sessionId: number): Promise<{ sessionId: number; status: SessionStatus }> => {
-    const res = await api.patch<ApiResponse<{ sessionId: number; status: SessionStatus }>>(
-      `/api/v1/sessions/${sessionId}/end`
-    );
+  endSession: async (
+    sessionId: number,
+  ): Promise<{ sessionId: number; status: SessionStatus }> => {
+    const res = await api.patch<
+      ApiResponse<{ sessionId: number; status: SessionStatus }>
+    >(`/api/v1/sessions/${sessionId}/end`);
     return res.data.data;
   },
 
@@ -58,10 +67,13 @@ export const sessionService = {
     await api.delete(`/api/v1/sessions/${sessionId}`);
   },
 
-  getNextQuestion: async (sessionId: number, answerId: number): Promise<QuestionResponse> => {
+  getNextQuestion: async (
+    sessionId: number,
+    answerId: number,
+  ): Promise<QuestionResponse> => {
     const res = await api.post<ApiResponse<QuestionResponse>>(
       `/api/v1/sessions/${sessionId}/questions/next`,
-      { answerId }
+      { answerId },
     );
     return res.data.data;
   },
